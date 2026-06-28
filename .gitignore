@@ -1,2 +1,14 @@
 node_modules/
 public/uploads/
+
+# 이미지 파일 제외 (깃허브 업로드 방지)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.jfif
+*.svg
+
+# Tesseract OCR 언어 데이터 파일 제외
+*.traineddata
