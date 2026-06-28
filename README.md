@@ -1,4 +1,4 @@
-# 🤖 AI 미니 문서 스캐너 (AI Document Scanner)
+# 🤖 AI 미니 문서 scan (AI Document Scanner)
 
 이 프로젝트는 Node.js와 Express, 그리고 Tesseract.js를 사용하여 만든 아주 간단하고 직관적인 **웹 기반 문서 스캐너**입니다. 
 초보자도 쉽게 실행하고 테스트할 수 있도록 직관적인 UI와 쉬운 실행 구조로 제작되었습니다.
