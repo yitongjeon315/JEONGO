@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 미니 문서 스캐너 (OCR, 분석 & 저장 기능)</title>
+  <!-- Google Fonts 에서 고급스러운 폰트 가져오기 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent: #10b981;
+      --border-color: #334155;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+      text-align: center;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+    }
+
+    /* 업로드 영역 스타일링 */
+    .upload-area {
+      border: 2px dashed var(--border-color);
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      background: rgba(30, 41, 59, 0.5);
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: rgba(59, 130, 246, 0.05);
+    }
+
+    .upload-area.dragover {
+      border-color: var(--accent);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      transition: var(--transition);
+    }
+
+    .upload-area:hover .upload-icon {
+      transform: translateY(-5px);
+    }
+
+    .upload-text {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    .upload-subtext {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* 파일 인풋 숨기기 */
+    #imageInput {
+      display: none;
+    }
+
+    /* 미리보기 영역 */
+    .preview-container {
+      margin-top: 1.5rem;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      align-self: flex-start;
+      border-left: 4px solid var(--primary);
+      padding-left: 8px;
+    }
+
+    .image-wrapper {
+      width: 100%;
+      max-height: 300px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      background: #090d16;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .image-wrapper img {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+    }
+
+    /* AI 분석 결과 영역 */
+    .analysis-container {
+      margin-top: 1.5rem;
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      text-align: left;
+      background: rgba(59, 130, 246, 0.07);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      padding: 1.25rem;
+      border-radius: 12px;
+      transition: var(--transition);
+    }
+
+    .analysis-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      align-self: flex-start;
+      border-left: 4px solid var(--accent);
+      padding-left: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .analysis-content {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      width: 100%;
+    }
+
+    .analysis-item {
+      margin-bottom: 0.5rem;
+    }
+
+    .analysis-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-right: 6px;
+    }
+
+    .value {
+      color: var(--text-main);
+    }
+
+    .highlight-value {
+      color: #34d399;
+      font-weight: 700;
+    }
+
+    /* OCR 결과 영역 */
+    .ocr-container {
+      margin-top: 1.5rem;
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      text-align: left;
+    }
+
+    .ocr-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 0.75rem;
+    }
+
+    .ocr-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ocr-textbox {
+      width: 100%;
+      height: 180px;
+      padding: 1rem;
+      border-radius: 12px;
+      background: #090d16;
+      color: #e2e8f0;
+      border: 1px solid var(--border-color);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      line-height: 1.6;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .ocr-textbox:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    /* 버튼 스타일 */
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary:disabled {
+      background: #475569;
+      color: #94a3b8;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* 상단 우측 버튼 공통 스타일 */
+    .btn-action {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: rgba(30, 41, 59, 0.8);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-action:hover {
+      background: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .btn-action:active {
+      transform: translateY(0);
+    }
+
+    /* TXT 저장 버튼 특화 스타일 */
+    #saveBtn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* 상태 메시지 */
+    .status-msg {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      display: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .status-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-error {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    /* 푸터 */
+    footer {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>AI 문서 스캐너</h1>
+    <p class="subtitle">이미지를 업로드하면 자동으로 글자를 판독하고 문서 종류를 분류합니다.</p>
+
+    <!-- 이미지 선택 영역 -->
+    <div class="upload-area" id="dropZone" onclick="document.getElementById('imageInput').click()">
+      <span class="upload-icon">📁</span>
+      <p class="upload-text">이미지 선택 또는 여기에 드래그</p>
+      <p class="upload-subtext">지원 파일: PNG, JPG, JPEG, WEBP, JFIF</p>
+      <input type="file" id="imageInput" accept="image/*">
+    </div>
+
+    <!-- 선택한 이미지 미리보기 -->
+    <div class="preview-container" id="previewContainer">
+      <div class="section-title">선택한 이미지 미리보기</div>
+      <div class="image-wrapper">
+        <img id="imagePreview" src="" alt="미리보기 이미지">
+      </div>
+      
+      <!-- 업로드 및 분석 버튼 -->
+      <button type="button" class="btn btn-primary" id="uploadBtn" disabled>
+        <span>📤 서버에 업로드 및 분석하기</span>
+      </button>
+    </div>
+
+    <!-- 성공/실패 메시지 -->
+    <div class="status-msg" id="statusMessage"></div>
+
+    <!-- AI 문서 분석 결과 -->
+    <div class="analysis-container" id="analysisContainer">
+      <div class="analysis-title">🤖 AI 문서 분석 결과 (규칙 기반)</div>
+      <div class="analysis-content">
+        <div class="analysis-item">
+          <span class="label">📄 문서 종류:</span>
+          <span id="docTypeVal" class="highlight-value">-</span>
+        </div>
+        <div class="analysis-item" style="margin-top: 0.5rem;">
+          <span class="label">💡 한 줄 요약:</span>
+          <span id="summaryVal" class="value">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OCR 결과 텍스트 박스 -->
+    <div class="ocr-container" id="ocrContainer">
+      <div class="ocr-header">
+        <div class="section-title">📄 추출된 글자 (OCR 결과)</div>
+        <div class="ocr-buttons">
+          <button type="button" class="btn-action" id="saveBtn">
+            <span>💾 TXT로 저장</span>
+          </button>
+          <button type="button" class="btn-action" id="copyBtn">
+            <span>📋 복사하기</span>
+          </button>
+        </div>
+      </div>
+      <textarea id="ocrResult" class="ocr-textbox" placeholder="추출된 텍스트가 여기에 표시됩니다." readonly></textarea>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 AI 문서 스캐너 프로젝트 - 7주차 저장 기능 추가 단계
+  </footer>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const dropZone = document.getElementById('dropZone');
+    const previewContainer = document.getElementById('previewContainer');
+    const imagePreview = document.getElementById('imagePreview');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const ocrContainer = document.getElementById('ocrContainer');
+    const ocrResult = document.getElementById('ocrResult');
+    const copyBtn = document.getElementById('copyBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const analysisContainer = document.getElementById('analysisContainer');
+    const docTypeVal = document.getElementById('docTypeVal');
+    const summaryVal = document.getElementById('summaryVal');
+
+    let selectedFile = null;
+    let currentAnalysis = null;
+
+    // 파일 선택 이벤트
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      handleFileSelection(file);
+    });
+
+    // 드래그 앤 드롭 이벤트
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      handleFileSelection(file);
+    });
+
+    // 파일 선택 처리 함수
+    function handleFileSelection(file) {
+      if (!file) return;
+
+      // 이미지 파일 검증
+      if (!file.type.startsWith('image/')) {
+        showStatus('이미지 파일만 선택할 수 있습니다.', 'error');
+        return;
+      }
+
+      selectedFile = file;
+      currentAnalysis = null;
+      
+      // 브라우저 로컬 미리보기 생성
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreview.src = e.target.result;
+        previewContainer.style.display = 'flex';
+        uploadBtn.disabled = false;
+        
+        // 이전 상태 초기화
+        ocrContainer.style.display = 'none';
+        analysisContainer.style.display = 'none';
+        ocrResult.value = '';
+        docTypeVal.textContent = '-';
+        summaryVal.textContent = '-';
+        resetUploadButton();
+        hideStatus();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 업로드 버튼 클릭 이벤트
+    uploadBtn.addEventListener('click', async () => {
+      if (!selectedFile) return;
+
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      // OCR 분석 상태 표시
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML = '<span>⏳ 글자를 읽는 중입니다...</span>';
+      ocrContainer.style.display = 'none';
+      analysisContainer.style.display = 'none';
+      showStatus('이미지를 업로드하고 분석하는 중입니다. 잠시만 기다려 주세요...', 'success');
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showStatus('이미지 분석이 완료되었습니다!', 'success');
+          imagePreview.src = result.imageUrl;
+          uploadBtn.innerHTML = '<span>✅ 분석 및 업로드 완료</span>';
+          
+          // OCR 결과 표시
+          ocrResult.value = result.text.trim() || '추출된 글자가 없습니다. 선명한 글자가 포함된 이미지를 사용해 주세요.';
+          ocrContainer.style.display = 'flex';
+
+          // 분석 결과 표시
+          if (result.analysis) {
+            currentAnalysis = result.analysis;
+            docTypeVal.textContent = `${result.analysis.docType}로 보입니다.`;
+            summaryVal.textContent = result.analysis.summary;
+            analysisContainer.style.display = 'flex';
+          }
+        } else {
+          showStatus(result.message || '업로드 또는 분석에 실패했습니다.', 'error');
+          resetUploadButton();
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showStatus('서버와 통신 중 에러가 발생했습니다.', 'error');
+        resetUploadButton();
+      }
+    });
+
+    // 복사 버튼 클릭 이벤트
+    copyBtn.addEventListener('click', async () => {
+      const textToCopy = ocrResult.value;
+      if (!textToCopy) return;
+
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<span>✅ 복사 완료!</span>';
+        
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('복사 실패:', err);
+        showStatus('텍스트 복사에 실패했습니다.', 'error');
+      }
+    });
+
+    // TXT 저장 버튼 클릭 이벤트
+    saveBtn.addEventListener('click', () => {
+      const ocrText = ocrResult.value;
+      if (!ocrText || !selectedFile) return;
+
+      const docType = currentAnalysis ? `${currentAnalysis.docType}로 보입니다.` : '미분류';
+      const summary = currentAnalysis ? currentAnalysis.summary : '요약 정보 없음';
+
+      // 저장할 텍스트 포맷팅
+      const fileContent = `==================================================
+AI 문서 스캐너 분석 결과 보고서
+==================================================
+
+[1. 문서 기본 정보]
+- 원본 이미지 파일명: ${selectedFile.name}
+- 분석 일시: ${new Date().toLocaleString('ko-KR')}
+
+[2. AI 문서 분석 요약]
+- 문서 종류 추정: ${docType}
+- 한 줄 요약: ${summary}
+
+==================================================
+[3. OCR 추출 글자 내용]
+==================================================
+${ocrText}
+==================================================`;
+
+      // 파일 다운로드 처리 (Blob 사용)
+      const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8;' });
+      
+      // 날짜시간 포맷팅 (YYYYMMDD_HHMMSS)
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const date = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      const formattedDate = `${year}${month}${date}_${hours}${minutes}${seconds}`;
+      const fileName = `scan_result_${formattedDate}.txt`;
+
+      // 다운로드 링크를 생성하여 클릭
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', fileName);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // 초보자가 이해하기 쉬운 저장 성공 메시지 노출 (조건 4)
+        showStatus(`💾 분석 결과 파일(${fileName})이 내 컴퓨터의 '다운로드' 폴더에 성공적으로 저장되었습니다!`, 'success');
+      }
+    });
+
+    function resetUploadButton() {
+      uploadBtn.disabled = false;
+      uploadBtn.innerHTML = '<span>📤 서버에 업로드 및 분석하기</span>';
+    }
+
+    // 상태 메시지 표시 함수
+    function showStatus(message, type) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-msg status-${type}`;
+      statusMessage.style.display = 'block';
+    }
+
+    function hideStatus() {
+      statusMessage.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
