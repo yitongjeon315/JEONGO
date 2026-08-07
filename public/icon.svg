@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <rect width="512" height="512" rx="128" fill="#07090e" />
+  
+  <!-- Glowing Outer Ring -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="rgba(244, 63, 94, 0.2)" stroke-width="24" />
+  <circle cx="256" cy="256" r="180" fill="none" stroke="rgba(6, 182, 212, 0.15)" stroke-width="12" />
+  
+  <!-- War Drum/Shield Symbol -->
+  <!-- Outer Rim of Drum -->
+  <ellipse cx="256" cy="180" rx="110" ry="30" fill="#1e2432" stroke="#f43f5e" stroke-width="12" />
+  
+  <!-- Drum Body -->
+  <path d="M146 180 C146 280, 366 280, 366 180" fill="none" stroke="#f43f5e" stroke-width="12" stroke-linecap="round" />
+  <path d="M146 180 L146 250 C146 320, 366 320, 366 250 L366 180" fill="none" stroke="#06b6d4" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Drum Sticks / Swords (Crossed) -->
+  <line x1="140" y1="360" x2="372" y2="128" stroke="#10b981" stroke-width="14" stroke-linecap="round" />
+  <line x1="372" y1="360" x2="140" y2="128" stroke="#10b981" stroke-width="14" stroke-linecap="round" />
+  
+  <!-- Inner Detail -->
+  <ellipse cx="256" cy="180" rx="80" ry="20" fill="none" stroke="#ea3b53" stroke-width="4" />
+  
+  <!-- Text Logo (JEONGO) -->
+  <text x="256" y="440" font-family="'Outfit', 'Inter', sans-serif" font-size="64" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="4">
+    JEONGO
+  </text>
+  <text x="256" y="440" font-family="'Outfit', 'Inter', sans-serif" font-size="64" font-weight="900" fill="none" stroke="#06b6d4" stroke-width="2" text-anchor="middle" letter-spacing="4">
+    JEONGO
+  </text>
+</svg>

@@ -17,7 +17,7 @@ const BottomNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 max-w-md mx-auto glass-panel border-t border-white/10 px-4 py-2 flex justify-around items-center rounded-t-2xl shadow-xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 max-w-md md:max-w-2xl w-full mx-auto glass-panel border-t border-white/10 px-4 py-2 flex justify-around items-center rounded-t-2xl shadow-xl">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.path || (item.path !== '/home' && pathname?.startsWith(item.path));
@@ -33,12 +33,12 @@ const BottomNav = () => {
             }`}
           >
             <Icon
-              size={20}
+              size={22}
               className={`transition-colors duration-300 ${
                 isActive ? item.color : 'text-gray-400'
               }`}
             />
-            <span className="text-[10px] tracking-wide">{item.label}</span>
+            <span className="text-[11px] tracking-wide">{item.label}</span>
           </Link>
         );
       })}

@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useApp } from '@/context/AppContext';
-import { ShieldAlert, Award, Star, Flame, Dumbbell, Zap, Brain, Heart, ChevronRight, Check } from 'lucide-react';
+import { ShieldAlert, Award, Star, Flame, Dumbbell, Zap, Brain, Heart, ChevronRight, Check, BookOpen } from 'lucide-react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function HomePage() {
@@ -67,6 +68,15 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col gap-4">
+      {/* Top action row */}
+      <div className="flex justify-between items-center px-1">
+        <span className="text-xs font-bold text-gray-400">내 학습 대시보드</span>
+        <Link href="/vocab-book" className="flex items-center gap-1.5 text-xs font-bold text-neon-cyan hover:underline transition-all">
+          <BookOpen size={14} />
+          어휘 도감 📖
+        </Link>
+      </div>
+
       {/* Tab Switcher */}
       <div className="flex bg-white/5 border border-white/10 rounded-xl p-1">
         <button
@@ -101,36 +111,36 @@ export default function HomePage() {
             className="flex flex-col gap-4"
           >
             {/* Character Showcase */}
-            <div className={`glass-panel border rounded-2xl p-4 flex flex-col items-center bg-gradient-to-b ${avatarInfo.bgColor} shadow-lg relative overflow-hidden`}>
-              <div className="absolute top-2 right-2 text-[10px] bg-white/10 px-2 py-0.5 rounded-full font-bold border border-white/5 text-gray-300">
+            <div className={`glass-panel border rounded-2xl p-5 flex flex-col items-center bg-gradient-to-b ${avatarInfo.bgColor} shadow-lg relative overflow-hidden`}>
+              <div className="absolute top-2 right-2 text-xs bg-white/10 px-2.5 py-0.5 rounded-full font-bold border border-white/5 text-gray-300">
                 칭호: 초보 모험가
               </div>
               
               {/* Avatar Animation */}
-              <div className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-6xl shadow-2xl animate-float mt-2 relative">
+              <div className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-6xl shadow-2xl animate-float mt-4 relative">
                 <div className="absolute inset-0 rounded-full border border-white/10 opacity-30 animate-pulse-glow" />
                 {avatarInfo.emoji}
               </div>
               
-              <h3 className="text-base font-bold text-white mt-3">{avatarInfo.skinName}</h3>
-              <p className="text-[11px] text-gray-300/80 text-center px-4 mt-1 font-medium leading-relaxed">
+              <h3 className="text-lg font-bold text-white mt-3">{avatarInfo.skinName}</h3>
+              <p className="text-xs md:text-sm text-gray-300/80 text-center px-4 mt-1 font-medium leading-relaxed">
                 {avatarInfo.description}
               </p>
             </div>
 
             {/* RPG Stats Card */}
-            <div className="glass-panel rounded-2xl p-4 flex flex-col gap-3">
+            <div className="glass-panel rounded-2xl p-5 flex flex-col gap-3">
               <div className="flex justify-between items-center">
-                <h3 className="text-sm font-bold flex items-center gap-1.5 text-white">
+                <h3 className="text-sm md:text-base font-bold flex items-center gap-1.5 text-white">
                   <Star size={16} className="text-cyber-yellow" />
                   스탯 분배 인터페이스
                 </h3>
                 {stats.points > 0 ? (
-                  <span className="text-[10px] font-bold bg-neon-rose/20 text-neon-rose border border-neon-rose/30 px-2.5 py-0.5 rounded-full animate-bounce glow-rose">
+                  <span className="text-xs font-bold bg-neon-rose/20 text-neon-rose border border-neon-rose/30 px-2.5 py-0.5 rounded-full animate-bounce glow-rose">
                     + {stats.points} 스탯 포인트 보유
                   </span>
                 ) : (
-                  <span className="text-[10px] text-gray-400">레벨업 시 스탯 +3 획득</span>
+                  <span className="text-xs text-gray-400">레벨업 시 스탯 +3 획득</span>
                 )}
               </div>
 
@@ -143,12 +153,12 @@ export default function HomePage() {
                   return (
                     <div key={stat.key} className="flex flex-col gap-1.5">
                       <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-1.5 text-xs font-semibold text-gray-300">
+                        <div className="flex items-center gap-1.5 text-xs md:text-sm font-semibold text-gray-300">
                           <Icon size={14} className={stat.color} />
                           <span>{stat.label}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-white relative">
+                          <span className="text-xs md:text-sm font-bold text-white relative">
                             {stat.value}
                             {floatingPointsEffect[stat.key] && (
                               <motion.span
@@ -164,7 +174,7 @@ export default function HomePage() {
                           {isAllocatable && (
                             <button
                               onClick={() => handleStatAllocation(stat.key)}
-                              className="w-5 h-5 rounded-md bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center font-bold text-xs text-white hover:scale-105 active:scale-95 transition-all"
+                              className="w-6 h-6 rounded-md bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center font-bold text-sm text-white hover:scale-105 active:scale-95 transition-all"
                             >
                               +
                             </button>
@@ -195,8 +205,8 @@ export default function HomePage() {
             className="flex flex-col gap-3"
           >
             <div className="flex justify-between items-center px-1">
-              <h3 className="text-xs font-bold text-gray-400">일일 모험 미션 (매일 오전 6시 초기화)</h3>
-              <Award size={14} className="text-cyber-yellow" />
+              <h3 className="text-sm font-bold text-gray-300">일일 모험 미션 (매일 오전 6시 초기화)</h3>
+              <Award size={15} className="text-cyber-yellow" />
             </div>
 
             {dailyQuests.map((quest) => {
@@ -205,27 +215,27 @@ export default function HomePage() {
               return (
                 <div
                   key={quest.id}
-                  className={`glass-panel border rounded-2xl p-4 flex justify-between items-center transition-all ${
+                  className={`glass-panel border rounded-2xl p-5 flex justify-between items-center transition-all ${
                     quest.completed ? 'opacity-65 border-white/5' : isClaimable ? 'border-cyber-yellow/40 bg-cyber-yellow/5' : 'border-white/10'
                   }`}
                 >
                   <div className="flex flex-col gap-1 flex-1 pr-4">
-                    <h4 className={`text-xs font-bold ${quest.completed ? 'line-through text-gray-500' : 'text-white'}`}>
+                    <h4 className={`text-sm font-bold ${quest.completed ? 'line-through text-gray-500' : 'text-white'}`}>
                       {quest.title}
                     </h4>
-                    <p className="text-[10px] text-gray-400 font-medium">
+                    <p className="text-xs text-gray-400 font-medium">
                       {quest.desc}
                     </p>
                     
                     {/* Progress Slider */}
                     <div className="flex items-center gap-2 mt-2">
-                      <div className="flex-1 h-1 rounded-full bg-white/5 overflow-hidden">
+                      <div className="flex-1 h-1.5 rounded-full bg-white/5 overflow-hidden">
                         <div
                           className={`h-full ${quest.completed ? 'bg-gray-500' : 'bg-cyber-yellow'} transition-all`}
                           style={{ width: `${(quest.current / quest.target) * 100}%` }}
                         />
                       </div>
-                      <span className="text-[9px] font-bold text-gray-400">
+                      <span className="text-xs font-bold text-gray-400">
                         {quest.current}/{quest.target}
                       </span>
                     </div>
@@ -234,8 +244,8 @@ export default function HomePage() {
                   <div className="flex flex-col items-end gap-2">
                     {/* Rewards Preview */}
                     <div className="flex flex-col text-right">
-                      <span className="text-[9px] font-bold text-cyber-yellow">+{quest.gold} Gold</span>
-                      <span className="text-[9px] font-bold text-neon-cyan">+{quest.xp} XP</span>
+                      <span className="text-xs font-bold text-cyber-yellow">+{quest.gold} Gold</span>
+                      <span className="text-xs font-bold text-neon-cyan">+{quest.xp} XP</span>
                     </div>
 
                     {/* Claim Button */}
@@ -246,12 +256,12 @@ export default function HomePage() {
                     ) : isClaimable ? (
                       <button
                         onClick={() => completeDailyQuest(quest.id, quest.gold, quest.xp)}
-                        className="px-3 py-1 bg-cyber-yellow hover:bg-yellow-500 text-dark-bg font-bold rounded-lg text-[10px] shadow-lg shadow-cyber-yellow/20 hover:scale-105 active:scale-95 transition-all"
+                        className="px-3.5 py-1.5 bg-cyber-yellow hover:bg-yellow-500 text-dark-bg font-bold rounded-lg text-xs shadow-lg shadow-cyber-yellow/20 hover:scale-105 active:scale-95 transition-all"
                       >
                         보상 받기
                       </button>
                     ) : (
-                      <div className="px-3 py-1 bg-white/5 border border-white/10 rounded-lg text-[10px] text-gray-400 font-bold">
+                      <div className="px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-lg text-xs text-gray-400 font-bold">
                         진행 중
                       </div>
                     )}

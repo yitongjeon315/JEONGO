@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useApp, VocabItem } from '@/context/AppContext';
 import { Swords, Heart, Check, X, ShieldAlert, Award, Star, BookOpen, PenTool, HelpCircle, ChevronRight, LayoutGrid } from 'lucide-react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface WritingQuest {
@@ -307,19 +308,22 @@ export default function LearnPage() {
             className="flex flex-col gap-4"
           >
             {/* Lobby Title Header */}
-            <div className="glass-panel rounded-2xl p-5 flex flex-col items-center bg-gradient-to-br from-neon-green/10 to-transparent border-neon-green/20">
+            <div className="glass-panel rounded-2xl p-5 flex flex-col items-center bg-gradient-to-br from-neon-green/10 to-transparent border-neon-green/20 relative">
+              <Link href="/vocab-book" className="absolute top-3 right-3 text-[10px] md:text-xs font-bold bg-white/10 px-2 py-0.5 rounded-full border border-white/5 text-gray-300 hover:text-white hover:bg-white/15 flex items-center gap-1 transition-all">
+                어휘북 📖
+              </Link>
               <div className="w-14 h-14 rounded-full bg-neon-green/15 flex items-center justify-center text-neon-green glow-green animate-float">
                 <Swords size={28} />
               </div>
-              <h3 className="text-base font-extrabold mt-3 text-white">중국어 격전의 던전 맵</h3>
-              <p className="text-[11px] text-gray-400 text-center px-4 mt-1 font-medium">
+              <h3 className="text-lg font-extrabold mt-3 text-white">중국어 격전의 던전 맵</h3>
+              <p className="text-xs text-gray-400 text-center px-4 mt-1 font-medium leading-relaxed">
                 난이도(HSK) 등급을 선택하고, 원하는 학습 전투(유형) 모드로 몬스터를 토벌하십시오.
               </p>
             </div>
 
             {/* 1. Select HSK Level */}
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-bold text-gray-400 px-1">1단계: 던전 난이도(HSK 등급) 지정</span>
+              <span className="text-sm font-bold text-gray-300 px-1">1단계: 던전 난이도(HSK 등급) 지정</span>
               <div className="grid grid-cols-3 gap-2">
                 {[
                   { id: 'hsk12', label: '1-2급 (초급)', name: '만리장성' },
@@ -335,8 +339,8 @@ export default function LearnPage() {
                         : 'border-white/10 text-gray-400 hover:bg-white/5 hover:text-white'
                     }`}
                   >
-                    <div className="text-[11px] font-extrabold">{level.label}</div>
-                    <div className="text-[9px] mt-0.5 opacity-80">{level.name}</div>
+                    <div className="text-xs font-extrabold">{level.label}</div>
+                    <div className="text-[10px] mt-0.5 opacity-80">{level.name}</div>
                   </button>
                 ))}
               </div>
@@ -344,7 +348,7 @@ export default function LearnPage() {
 
             {/* 2. Select Mode */}
             <div className="flex flex-col gap-2">
-              <span className="text-xs font-bold text-gray-400 px-1">2단계: 학습 전투 모드(유형) 선택</span>
+              <span className="text-sm font-bold text-gray-300 px-1">2단계: 학습 전투 모드(유형) 선택</span>
               <div className="flex flex-col gap-2">
                 {/* Vocab Mode */}
                 <button
@@ -357,11 +361,11 @@ export default function LearnPage() {
                     <BookOpen size={20} />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span className="text-sm font-bold text-white flex items-center gap-1.5">
                       ⚔️ 어휘 전투 모드 (읽기 유형)
                       {selectedMode === 'vocab' && <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan shadow-[0_0_6px_#06b6d4]" />}
                     </span>
-                    <span className="text-[10px] text-gray-400 mt-0.5">단어의 한자와 병음을 보고 한글 뜻을 맞추어 보스를 타격합니다.</span>
+                    <span className="text-xs text-gray-400 mt-0.5">단어의 한자와 병음을 보고 한글 뜻을 맞추어 보스를 타격합니다.</span>
                   </div>
                 </button>
 
@@ -376,11 +380,11 @@ export default function LearnPage() {
                     <PenTool size={20} />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span className="text-sm font-bold text-white flex items-center gap-1.5">
                       ✍️ 문장 쓰기 모드 (쓰기 유형)
                       {selectedMode === 'writing' && <span className="w-1.5 h-1.5 rounded-full bg-violet-400 shadow-[0_0_6px_#a78bfa]" />}
                     </span>
-                    <span className="text-[10px] text-gray-400 mt-0.5">제시된 한글 번역에 맞게 중국어 단어 블록을 바르게 나열해 문장을 조립합니다.</span>
+                    <span className="text-xs text-gray-400 mt-0.5">제시된 한글 번역에 맞게 중국어 단어 블록을 바르게 나열해 문장을 조립합니다.</span>
                   </div>
                 </button>
               </div>
@@ -388,7 +392,7 @@ export default function LearnPage() {
 
             <button
               onClick={startDungeon}
-              className="w-full mt-2 py-3.5 bg-neon-green hover:bg-emerald-500 text-dark-bg font-extrabold rounded-xl text-xs shadow-lg shadow-neon-green/20 hover:scale-105 active:scale-95 transition-all"
+              className="w-full mt-2 py-3.5 bg-neon-green hover:bg-emerald-500 text-dark-bg font-extrabold rounded-xl text-sm shadow-lg shadow-neon-green/20 hover:scale-105 active:scale-95 transition-all"
             >
               던전 침공 개시 (전투 시작)
             </button>

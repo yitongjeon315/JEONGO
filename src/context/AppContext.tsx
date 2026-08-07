@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import rawVocabData from '@/data/hsk_vocabulary.json';
 
 // Vocabulary Item Type
 export interface VocabItem {
@@ -9,6 +10,7 @@ export interface VocabItem {
   pinyin: string;
   meaning: string;
   hsk: string;
+  partOfSpeech?: string;
   exampleHanzi?: string;
   examplePinyin?: string;
   exampleMeaning?: string;
@@ -84,19 +86,22 @@ interface GuildInfo {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-// Initial Vocab Data (HSK 1-3)
-const INITIAL_VOCAB: VocabItem[] = [
-  { id: 1, hanzi: '苹果', pinyin: 'píngguǒ', meaning: '사과', hsk: 'HSK 1', exampleHanzi: '我喜欢吃苹果。', examplePinyin: 'Wǒ xǐhuan chī píngguǒ.', exampleMeaning: '나는 사과를 먹는 것을 좋아한다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 2, hanzi: '汉堡包', pinyin: 'hànbǎobāo', meaning: '햄버거', hsk: 'HSK 3', exampleHanzi: '这个汉堡包很好吃。', examplePinyin: 'Zhège hànbǎobāo hěn hǎochī.', exampleMeaning: '이 햄버거는 정말 맛있다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 3, hanzi: '电脑', pinyin: 'diànnǎo', meaning: '컴퓨터', hsk: 'HSK 1', exampleHanzi: '我的电脑坏了。', examplePinyin: 'Wǒ de diànnǎo huài le.', exampleMeaning: '내 컴퓨터가 고장 났다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 4, hanzi: '谢谢', pinyin: 'xièxie', meaning: '감사합니다', hsk: 'HSK 1', exampleHanzi: '谢谢你的帮助。', examplePinyin: 'Xièxie nǐ de bāngzhù.', exampleMeaning: '도와줘서 고마워.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 5, hanzi: '学习', pinyin: 'xuéxí', meaning: '공부하다', hsk: 'HSK 2', exampleHanzi: '我们在学校学习中文。', examplePinyin: 'Wǒmen zài xuéxiào xuéxí Zhōngwén.', exampleMeaning: '우리는 학교에서 중국어를 공부한다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 6, hanzi: '咖啡', pinyin: 'kāfēi', meaning: '커피', hsk: 'HSK 1', exampleHanzi: '我要一杯热咖啡。', examplePinyin: 'Wǒ yào yī bēi rè kāfēi.', exampleMeaning: '뜨거운 커피 한 잔 주세요.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 7, hanzi: '手机', pinyin: 'shǒujī', meaning: '휴대폰', hsk: 'HSK 2', exampleHanzi: '你想买新手机吗？', examplePinyin: 'Nǐ xiǎng mǎi xīn shǒujī ma?', exampleMeaning: '새 휴대폰 사고 싶니?', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-  { id: 8, hanzi: '朋友', pinyin: 'péngyou', meaning: '친구', hsk: 'HSK 1', exampleHanzi: '他是我的好朋友。', examplePinyin: 'Tā shì wǒ de hǎo péngyou.', exampleMeaning: '그는 내 좋은 친구이다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date(Date.now() - 3600000 * 24).toISOString() }, // Yesterday (Review ready)
-  { id: 9, hanzi: '漂亮', pinyin: 'piàoliang', meaning: '예쁘다', hsk: 'HSK 2', exampleHanzi: '这里的景色很漂亮。', examplePinyin: 'Zhèlǐ de jǐngsè hěn piàoliang.', exampleMeaning: '이곳의 풍경이 아주 예쁘다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date(Date.now() - 3600000 * 12).toISOString() }, // 12 hours ago (Review ready)
-  { id: 10, hanzi: '饺子', pinyin: 'jiǎozi', meaning: '만두', hsk: 'HSK 3', exampleHanzi: '中国人过年吃饺子。', examplePinyin: 'Zhōngguórén guònián chī jiǎozi.', exampleMeaning: '중국인은 새해에 만두를 먹는다.', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: new Date().toISOString() },
-];
+// Initial Vocab Data (Mapped from raw HSK JSON)
+const INITIAL_VOCAB: VocabItem[] = rawVocabData.map((item: any) => ({
+  id: item.id,
+  hanzi: item.hanzi,
+  pinyin: item.pinyin,
+  meaning: item.meaning,
+  hsk: item.hsk,
+  partOfSpeech: item.partOfSpeech || '명사',
+  exampleHanzi: item.exampleHanzi,
+  examplePinyin: item.examplePinyin,
+  exampleMeaning: item.exampleMeaning,
+  easiness: 2.5,
+  repetitions: 0,
+  intervalDays: 0,
+  nextReviewAt: new Date().toISOString(),
+}));
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load initial states from localStorage if available, otherwise use defaults
@@ -148,6 +153,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (savedStats) setStats(JSON.parse(savedStats));
       if (savedVocab) setVocabList(JSON.parse(savedVocab));
       if (savedSkins) setSkins(JSON.parse(savedSkins));
+
+      // Register PWA Service Worker
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {
+              console.log('PWA ServiceWorker registered with scope: ', registration.scope);
+            })
+            .catch((err) => {
+              console.log('PWA ServiceWorker registration failed: ', err);
+            });
+        });
+      }
     }
   }, []);
 
