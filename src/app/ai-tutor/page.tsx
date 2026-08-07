@@ -27,6 +27,7 @@ export default function AiTutorPage() {
   const [isRecording, setIsRecording] = useState(false);
   const [showPitchChart, setShowPitchChart] = useState(false);
   const [evaluationReport, setEvaluationReport] = useState<any>(null);
+  const [showHistory, setShowHistory] = useState(false);
   
   // Simulated speech input text they are supposed to read
   const [targetSentence, setTargetSentence] = useState({
@@ -313,62 +314,144 @@ export default function AiTutorPage() {
             exit={{ opacity: 0 }}
             className="flex flex-col gap-4 min-h-[500px]"
           >
-            {/* Conversation Header */}
+            {/* Conversation Header & Control Bar */}
             <div className="glass-panel border-white/10 rounded-2xl px-4 py-3 flex justify-between items-center bg-white/2 shadow">
               <div className="flex items-center gap-2">
-                <div className="relative w-8 h-8 rounded-lg border border-white/10 overflow-hidden shrink-0 bg-white/5 flex items-center justify-center">
-                  {(tutors as any)[selectedTutor].image ? (
-                    <img 
-                      src={(tutors as any)[selectedTutor].image} 
-                      alt={(tutors as any)[selectedTutor].name} 
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-lg">{(tutors as any)[selectedTutor].emoji}</span>
-                  )}
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">{(tutors as any)[selectedTutor].name}</h4>
-                  <p className="text-[8px] text-neon-cyan uppercase font-bold">{(tutors as any)[selectedTutor].personality}</p>
-                </div>
+                <span className="w-2 h-2 rounded-full bg-neon-cyan animate-pulse glow-cyan" />
+                <h4 className="text-xs font-bold text-white">원어민 회화 실시간 통화</h4>
               </div>
-              <button
-                onClick={() => setSessionState('lobby')}
-                className="text-[10px] text-gray-400 border border-white/10 hover:border-white/20 px-2.5 py-1 rounded-lg"
-              >
-                강제 이탈
-              </button>
-            </div>
-
-            {/* Chat Messages Log */}
-            <div className="flex-1 min-h-[220px] bg-white/3 border border-white/5 rounded-2xl p-4 flex flex-col gap-3 overflow-y-auto max-h-[300px]">
-              {messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex flex-col gap-1 max-w-[85%] ${
-                    msg.sender === 'ai' ? 'self-start items-start' : 'self-end items-end'
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowHistory(prev => !prev)}
+                  className={`text-[10px] border px-2.5 py-1 rounded-lg transition-all ${
+                    showHistory 
+                      ? 'bg-neon-cyan/20 border-neon-cyan/40 text-neon-cyan' 
+                      : 'border-white/10 text-gray-400 hover:border-white/20'
                   }`}
                 >
-                  {/* Sender Bubble */}
-                  <div
-                    className={`rounded-2xl px-4 py-2.5 text-xs font-medium leading-relaxed shadow-sm ${
-                      msg.sender === 'ai'
-                        ? 'bg-white/10 border border-white/10 text-white rounded-tl-sm'
-                        : 'bg-neon-cyan/20 border border-neon-cyan/20 text-neon-cyan rounded-tr-sm'
-                    }`}
-                  >
-                    <div>{msg.text}</div>
-                    {msg.pinyin && <div className="text-[10px] text-gray-300/80 font-mono mt-0.5">{msg.pinyin}</div>}
-                  </div>
-                  {/* Translation */}
-                  {msg.translation && (
-                    <span className="text-[9px] text-gray-500 font-medium px-1">
-                      {msg.translation}
-                    </span>
-                  )}
-                </div>
-              ))}
+                  {showHistory ? '로그 닫기' : '이전 대화 로그'}
+                </button>
+                <button
+                  onClick={() => setSessionState('lobby')}
+                  className="text-[10px] text-gray-400 border border-white/10 hover:border-white/20 px-2.5 py-1 rounded-lg transition-all"
+                >
+                  통화 종료
+                </button>
+              </div>
             </div>
+
+            {/* Immersive AI Tutor Video Call Screen */}
+            <div className="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-dark-bg shadow-2xl flex items-center justify-center">
+              {/* Tutor Full Portrait Image */}
+              <img 
+                src={(tutors as any)[selectedTutor].image} 
+                alt={(tutors as any)[selectedTutor].name} 
+                className={`w-full h-full object-cover transition-all duration-700 ${
+                  isRecording ? 'scale-105 filter brightness-75 blur-[1px]' : 'scale-100'
+                }`}
+              />
+              
+              {/* Ambient Overlay Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-dark-bg/95 via-transparent to-black/50" />
+
+              {/* Status Badge: LIVE CALL */}
+              <div className="absolute top-3 right-3 bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30 px-2.5 py-1 rounded-full text-[9px] font-extrabold shadow-[0_0_10px_rgba(6,182,212,0.15)] flex items-center gap-1 z-10">
+                <span className="w-1.5 h-1.5 rounded-full bg-neon-cyan animate-pulse glow-cyan" />
+                LIVE CALL
+              </div>
+
+              {/* Top Left: Tutor Quick Info */}
+              <div className="absolute top-3 left-3 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 z-10">
+                <span className="text-base">{(tutors as any)[selectedTutor].emoji}</span>
+                <div className="flex flex-col">
+                  <span className="text-[11px] font-extrabold text-white">{(tutors as any)[selectedTutor].name}</span>
+                  <span className="text-[8px] font-bold text-neon-cyan tracking-wider">{(tutors as any)[selectedTutor].personality}</span>
+                </div>
+              </div>
+
+              {/* Center Overlay: Recording / Voice analyzing pulse */}
+              {isRecording && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-xs z-10">
+                  <div className="relative flex items-center justify-center">
+                    <div className="absolute w-24 h-24 rounded-full border border-neon-rose/40 animate-ping opacity-75" />
+                    <div className="absolute w-16 h-16 rounded-full border border-neon-rose/60 animate-pulse glow-rose" />
+                    <div className="w-12 h-12 rounded-full bg-neon-rose flex items-center justify-center text-white shrink-0 shadow-lg glow-rose z-20">
+                      <Mic size={20} className="animate-pulse" />
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-neon-rose tracking-wide mt-3 animate-pulse">실시간 목소리 수신 및 성조 분석 중...</span>
+                </div>
+              )}
+
+              {/* Subtitles: What the tutor just said */}
+              {!isRecording && (
+                <div className="absolute bottom-4 left-4 right-16 flex flex-col gap-1 pr-4 z-10 animate-fade-in">
+                  <span className="text-[9px] font-bold text-neon-cyan uppercase tracking-wider">AI 대화 자막</span>
+                  <p className="text-sm md:text-base font-extrabold text-white drop-shadow-md leading-normal">
+                    {messages[messages.length - 1]?.sender === 'ai' 
+                      ? messages[messages.length - 1]?.text 
+                      : (messages[messages.length - 2]?.text || '...')
+                    }
+                  </p>
+                  <p className="text-[10px] md:text-xs text-gray-300 font-semibold drop-shadow-md leading-relaxed">
+                    {messages[messages.length - 1]?.sender === 'ai' 
+                      ? messages[messages.length - 1]?.translation 
+                      : (messages[messages.length - 2]?.translation || '')
+                    }
+                  </p>
+                </div>
+              )}
+
+              {/* AI Speaking Sound wave indicator */}
+              {!isRecording && !showPitchChart && (
+                <div className="absolute bottom-4 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 z-10">
+                  <div className="flex items-end gap-0.5 h-3">
+                    <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '60%', animationDelay: '0.1s' }} />
+                    <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '100%', animationDelay: '0.3s' }} />
+                    <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '40%', animationDelay: '0.5s' }} />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Optional Collapsible History Log */}
+            <AnimatePresence>
+              {showHistory && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="overflow-hidden"
+                >
+                  <div className="min-h-[120px] max-h-[200px] bg-white/3 border border-white/5 rounded-2xl p-4 flex flex-col gap-3 overflow-y-auto">
+                    {messages.map((msg, idx) => (
+                      <div
+                        key={idx}
+                        className={`flex flex-col gap-1 max-w-[85%] ${
+                          msg.sender === 'ai' ? 'self-start items-start' : 'self-end items-end'
+                        }`}
+                      >
+                        <div
+                          className={`rounded-xl px-3 py-2 text-xs font-medium leading-relaxed shadow-sm ${
+                            msg.sender === 'ai'
+                              ? 'bg-white/10 border border-white/10 text-white rounded-tl-sm'
+                              : 'bg-neon-cyan/20 border border-neon-cyan/20 text-neon-cyan rounded-tr-sm'
+                          }`}
+                        >
+                          <div>{msg.text}</div>
+                          {msg.pinyin && <div className="text-[9px] text-gray-300/80 font-mono mt-0.5">{msg.pinyin}</div>}
+                        </div>
+                        {msg.translation && (
+                          <span className="text-[8px] text-gray-500 font-medium px-1">
+                            {msg.translation}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Target Shadowing Guide Panel */}
             <AnimatePresence>
@@ -377,18 +460,18 @@ export default function AiTutorPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="glass-panel border-neon-cyan/20 rounded-2xl p-4 flex flex-col gap-2 bg-gradient-to-r from-neon-cyan/5 to-transparent"
+                  className="glass-panel border-neon-cyan/20 rounded-2xl p-5 flex flex-col gap-2.5 bg-gradient-to-r from-neon-cyan/5 to-transparent shadow-lg"
                 >
                   <span className="text-[8px] font-bold text-neon-cyan uppercase tracking-wider">🎙️ 섀도잉 제시 구절</span>
-                  <h2 className="text-xl font-extrabold text-white leading-snug">{targetSentence.hanzi}</h2>
+                  <h2 className="text-xl font-extrabold text-white leading-snug tracking-wide">{targetSentence.hanzi}</h2>
                   <p className="text-xs text-gray-400 font-mono font-medium">{targetSentence.pinyin}</p>
-                  <p className="text-[10px] text-gray-500 font-semibold mt-0.5">뜻: {targetSentence.meaning}</p>
+                  <p className="text-[11px] text-gray-400 font-semibold mt-0.5">뜻: {targetSentence.meaning}</p>
                   
-                  {/* Microphone Button */}
+                  {/* Microphone Button with ambient glow */}
                   <button
                     onClick={triggerSimulatedRecording}
                     disabled={isRecording}
-                    className={`mt-2 py-3 bg-neon-cyan hover:bg-cyan-500 text-dark-bg font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-neon-cyan/20 ${
+                    className={`mt-2 py-3.5 bg-neon-cyan hover:bg-cyan-500 text-dark-bg font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-neon-cyan/20 hover:scale-102 active:scale-98 transition-all ${
                       isRecording ? 'animate-pulse bg-neon-rose text-white glow-rose' : ''
                     }`}
                   >
