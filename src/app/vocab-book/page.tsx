@@ -3,16 +3,17 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApp, VocabItem } from '@/context/AppContext';
-import { ArrowLeft, Search, BookOpen, ChevronDown, ChevronUp, RefreshCw, Calendar, Award } from 'lucide-react';
+import { ArrowLeft, Search, BookOpen, ChevronDown, ChevronUp, RefreshCw, Calendar, Award, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function VocabBookPage() {
   const router = useRouter();
-  const { vocabList, updateSrsWord } = useApp();
+  const { vocabList, updateSrsWord, toggleLearnWord } = useApp();
   
   // Filtering states
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedHsk, setSelectedHsk] = useState<'all' | 'HSK 1' | 'HSK 2' | 'HSK 3'>('all');
+  const [selectedHsk, setSelectedHsk] = useState<'all' | 'HSK 1' | 'HSK 2' | 'HSK 3' | 'HSK 4' | 'HSK 5' | 'HSK 6'>('all');
+  const [studyFilter, setStudyFilter] = useState<'all' | 'learned' | 'unlearned'>('all');
   
   // Expanded cards state tracking
   const [expandedWordId, setExpandedWordId] = useState<number | null>(null);
@@ -26,7 +27,14 @@ export default function VocabBookPage() {
       
     const matchesHsk = selectedHsk === 'all' || word.hsk === selectedHsk;
     
-    return matchesSearch && matchesHsk;
+    let matchesStudy = true;
+    if (studyFilter === 'learned') {
+      matchesStudy = word.isLearned;
+    } else if (studyFilter === 'unlearned') {
+      matchesStudy = !word.isLearned;
+    }
+    
+    return matchesSearch && matchesHsk && matchesStudy;
   });
 
   const toggleExpand = (id: number) => {
@@ -72,23 +80,47 @@ export default function VocabBookPage() {
       </div>
 
       {/* HSK Tab Filters */}
-      <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 gap-1">
+      <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 gap-1 overflow-x-auto scrollbar-none whitespace-nowrap">
         {[
           { id: 'all', label: '전체' },
-          { id: 'HSK 1', label: 'HSK 1급' },
-          { id: 'HSK 2', label: 'HSK 2급' },
-          { id: 'HSK 3', label: 'HSK 3급' }
+          { id: 'HSK 1', label: 'HSK 1' },
+          { id: 'HSK 2', label: 'HSK 2' },
+          { id: 'HSK 3', label: 'HSK 3' },
+          { id: 'HSK 4', label: 'HSK 4' },
+          { id: 'HSK 5', label: 'HSK 5' },
+          { id: 'HSK 6', label: 'HSK 6' },
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setSelectedHsk(tab.id as any)}
-            className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all ${
+            className={`px-4 py-1.5 text-[11px] font-bold rounded-lg transition-all inline-block ${
               selectedHsk === tab.id
                 ? 'bg-neon-cyan/20 border border-neon-cyan/30 text-neon-cyan shadow-[0_0_10px_rgba(6,182,212,0.15)]'
                 : 'text-gray-400 hover:text-white border border-transparent'
             }`}
           >
             {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Study State Filter Selector */}
+      <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 gap-1">
+        {[
+          { id: 'all', label: '전체 보기' },
+          { id: 'learned', label: '학습 중인 단어' },
+          { id: 'unlearned', label: '미학습 단어' }
+        ].map((chip) => (
+          <button
+            key={chip.id}
+            onClick={() => setStudyFilter(chip.id as any)}
+            className={`flex-1 py-1.5 text-[10px] font-bold rounded-lg border transition-all ${
+              studyFilter === chip.id
+                ? 'bg-white/10 border-white/20 text-white'
+                : 'bg-transparent border-transparent text-gray-500 hover:text-gray-300'
+            }`}
+          >
+            {chip.label}
           </button>
         ))}
       </div>
@@ -106,7 +138,7 @@ export default function VocabBookPage() {
             
             // Check SRS review ready status (nextReviewAt is in the past)
             const isReviewReady = new Date(word.nextReviewAt).getTime() <= Date.now();
-            const hasLearned = word.repetitions > 0;
+            const hasLearned = word.isLearned;
             
             return (
               <div
@@ -132,29 +164,52 @@ export default function VocabBookPage() {
                     </div>
                   </div>
 
-                  {/* Badges & Expanding Arrow */}
-                  <div className="flex items-center gap-3">
-                    <div className="flex flex-col gap-1 items-end">
-                      <span className="text-[9px] font-extrabold bg-white/10 px-2 py-0.5 rounded-full border border-white/5 text-gray-300">
+                  {/* Badges & Bookmark & Expanding Arrow */}
+                  <div className="flex items-center gap-2">
+                    {/* Toggle Bookmark / Learn State */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleLearnWord(word.id);
+                      }}
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all ${
+                        word.isLearned
+                          ? 'bg-neon-cyan/20 border-neon-cyan/30 text-neon-cyan hover:bg-neon-cyan/30 shadow-[0_0_8px_rgba(6,182,212,0.15)]'
+                          : 'bg-white/5 border-white/10 text-gray-500 hover:text-white'
+                      }`}
+                      title={word.isLearned ? '학습 목록에서 제외' : '학습 목록에 추가'}
+                    >
+                      <Bookmark size={14} className={word.isLearned ? 'fill-neon-cyan' : ''} />
+                    </button>
+
+                    <div className="flex flex-col gap-1 items-end min-w-[52px]">
+                      <span className="text-[9px] font-extrabold bg-white/10 px-1.5 py-0.5 rounded-full border border-white/5 text-gray-300">
                         {word.hsk}
                       </span>
-                      {hasLearned ? (
-                        isReviewReady ? (
-                          <span className="text-[9px] font-extrabold bg-neon-rose/20 text-neon-rose border border-neon-rose/30 px-2 py-0.5 rounded-full glow-rose animate-pulse">
-                            복습 대기
-                          </span>
+                      {word.isLearned ? (
+                        word.repetitions > 0 ? (
+                          isReviewReady ? (
+                            <span className="text-[9px] font-extrabold bg-neon-rose/20 text-neon-rose border border-neon-rose/30 px-1.5 py-0.5 rounded-full glow-rose animate-pulse">
+                              복습 대기
+                            </span>
+                          ) : (
+                            <span className="text-[9px] font-extrabold bg-neon-green/20 text-neon-green border border-neon-green/30 px-1.5 py-0.5 rounded-full">
+                              기억됨
+                            </span>
+                          )
                         ) : (
-                          <span className="text-[9px] font-extrabold bg-neon-green/20 text-neon-green border border-neon-green/30 px-2 py-0.5 rounded-full">
-                            기억됨
+                          <span className="text-[9px] font-extrabold bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30 px-1.5 py-0.5 rounded-full">
+                            학습중
                           </span>
                         )
                       ) : (
-                        <span className="text-[9px] font-extrabold bg-white/5 text-gray-500 border border-white/5 px-2 py-0.5 rounded-full">
+                        <span className="text-[9px] font-extrabold bg-white/5 text-gray-500 border border-white/5 px-1.5 py-0.5 rounded-full">
                           미학습
                         </span>
                       )}
                     </div>
-                    <div className="text-gray-400">
+
+                    <div className="text-gray-400 pl-1">
                       {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                     </div>
                   </div>

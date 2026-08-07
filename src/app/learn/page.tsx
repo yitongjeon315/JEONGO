@@ -48,15 +48,6 @@ export default function LearnPage() {
   // Floating text feedback for attacks
   const [damageEffect, setDamageEffect] = useState<{ active: boolean; text: string; isCrit: boolean }>({ active: false, text: '', isCrit: false });
 
-  // Mock HSK 5-6 words (Since initial database has 1-3)
-  const HSK56_WORDS: VocabItem[] = [
-    { id: 101, hanzi: '关键', pinyin: 'guānjiàn', meaning: '관건/핵심', hsk: 'HSK 5', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: '' },
-    { id: 102, hanzi: '招聘', pinyin: 'zhāopìn', meaning: '채용/모집', hsk: 'HSK 5', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: '' },
-    { id: 103, hanzi: ' 繁荣', pinyin: 'fánróng', meaning: '번영하다', hsk: 'HSK 6', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: '' },
-    { id: 104, hanzi: ' 抽象', pinyin: 'chōuxiàng', meaning: '추상적이다', hsk: 'HSK 6', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: '' },
-    { id: 105, hanzi: ' 逻辑', pinyin: 'luójí', meaning: '논리/이치', hsk: 'HSK 6', easiness: 2.5, repetitions: 0, intervalDays: 0, nextReviewAt: '' },
-  ];
-
   // Writing quests mapping by HSK level
   const WRITING_QUESTS = {
     hsk12: [
@@ -83,18 +74,21 @@ export default function LearnPage() {
     setIsAnswered(false);
     
     if (selectedMode === 'vocab') {
-      // Filter words based on selected HSK level
+      // Filter words based on selected HSK level, prioritizing learned words
       let pool: VocabItem[] = [];
       if (selectedHsk === 'hsk12') {
-        pool = vocabList.filter(item => item.hsk === 'HSK 1' || item.hsk === 'HSK 2');
+        pool = vocabList.filter(item => item.isLearned && (item.hsk === 'HSK 1' || item.hsk === 'HSK 2'));
+        if (pool.length === 0) pool = vocabList.filter(item => item.hsk === 'HSK 1' || item.hsk === 'HSK 2');
       } else if (selectedHsk === 'hsk34') {
-        pool = vocabList.filter(item => item.hsk === 'HSK 3' || item.hsk === 'HSK 4');
+        pool = vocabList.filter(item => item.isLearned && (item.hsk === 'HSK 3' || item.hsk === 'HSK 4'));
+        if (pool.length === 0) pool = vocabList.filter(item => item.hsk === 'HSK 3' || item.hsk === 'HSK 4');
       } else {
-        pool = HSK56_WORDS;
+        pool = vocabList.filter(item => item.isLearned && (item.hsk === 'HSK 5' || item.hsk === 'HSK 6'));
+        if (pool.length === 0) pool = vocabList.filter(item => item.hsk === 'HSK 5' || item.hsk === 'HSK 6');
       }
       
       // Shuffle and take max 4 words
-      const queue = [...pool].sort(() => 0.5 - Math.random()).slice(0, 4);
+      const queue = [...pool].sort(() => 0.5 - Math.random()).slice(0, Math.min(pool.length, 4));
       setCurrentVocabQueue(queue);
       
       const calculatedHp = queue.length * 25;
@@ -102,7 +96,9 @@ export default function LearnPage() {
       setMonsterMaxHp(calculatedHp);
       
       setGameState('playing');
-      generateVocabOptions(queue[0], [...vocabList, ...HSK56_WORDS]);
+      if (queue.length > 0) {
+        generateVocabOptions(queue[0], vocabList);
+      }
     } else {
       // Sentence Writing Mode
       const quests = WRITING_QUESTS[selectedHsk];
@@ -275,7 +271,7 @@ export default function LearnPage() {
     } else {
       setCurrentIndex(nextIdx);
       if (selectedMode === 'vocab') {
-        generateVocabOptions(currentVocabQueue[nextIdx], [...vocabList, ...HSK56_WORDS]);
+        generateVocabOptions(currentVocabQueue[nextIdx], vocabList);
       } else {
         setupWritingQuest(currentWritingQueue[nextIdx]);
       }

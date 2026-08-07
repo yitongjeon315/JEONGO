@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import rawVocabData from '@/data/hsk_vocabulary.json';
+import rawVocabData from '@/data/hsk_1to6.json';
 
 // Vocabulary Item Type
 export interface VocabItem {
@@ -14,6 +14,7 @@ export interface VocabItem {
   exampleHanzi?: string;
   examplePinyin?: string;
   exampleMeaning?: string;
+  isLearned: boolean;
   
   // SRS parameters
   easiness: number;
@@ -54,6 +55,7 @@ interface AppContextType {
   spendGold: (amount: number) => boolean;
   allocateStat: (stat: 'str' | 'dex' | 'int' | 'vit') => void;
   updateSrsWord: (wordId: number, quality: number) => void;
+  toggleLearnWord: (wordId: number) => void;
   equipSkin: (skinId: string) => void;
   buySkin: (skinId: string, cost: number) => boolean;
   completeDailyQuest: (questId: string, goldReward: number, xpReward: number) => void;
@@ -97,6 +99,7 @@ const INITIAL_VOCAB: VocabItem[] = rawVocabData.map((item: any) => ({
   exampleHanzi: item.exampleHanzi,
   examplePinyin: item.examplePinyin,
   exampleMeaning: item.exampleMeaning,
+  isLearned: item.isLearned ?? false,
   easiness: 2.5,
   repetitions: 0,
   intervalDays: 0,
@@ -370,6 +373,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
+  const toggleLearnWord = (wordId: number) => {
+    setVocabList((prevVocab) => {
+      const updatedVocab = prevVocab.map((item) => {
+        if (item.id === wordId) {
+          const newLearned = !item.isLearned;
+          return {
+            ...item,
+            isLearned: newLearned,
+            easiness: 2.5,
+            repetitions: 0,
+            intervalDays: 0,
+            nextReviewAt: new Date().toISOString(),
+          };
+        }
+        return item;
+      });
+      saveToLocalStorage(stats, updatedVocab, skins);
+      return updatedVocab;
+    });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -381,6 +405,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         spendGold,
         allocateStat,
         updateSrsWord,
+        toggleLearnWord,
         equipSkin,
         buySkin,
         completeDailyQuest,
