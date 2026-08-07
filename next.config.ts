@@ -1,4 +1,4 @@
-// Trigger GitHub Actions build
+// Trigger GitHub Actions build - 2
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
