@@ -36,9 +36,9 @@ export default function AiTutorPage() {
   });
 
   const tutors = {
-    lily: { name: '릴리 (현지인 친구)', emoji: '🎧', personality: '상하이 트렌디 피플', desc: '유행어와 자연스러운 구어체 위주의 핑퐁 회화.' },
-    wang: { name: '왕 선생님 (친절한 멘토)', emoji: '🎒', personality: '표준어 교육공학가', desc: '초보자 맞춤형 천천히 말하기와 기초 문법 피드백.' },
-    lee: { name: '교관 리 (독설형 교관)', emoji: '🦁', personality: '스파르타 스피킹 코치', desc: '성조가 1도 틀려도 칼같이 지적하고 교정을 압박.' }
+    lily: { name: '릴리 (현지인 친구)', emoji: '🎧', image: '/jeongo/tutor_lily.jpg', personality: '상하이 트렌디 피플', desc: '유행어와 자연스러운 구어체 위주의 핑퐁 회화.' },
+    wang: { name: '왕 선생님 (친절한 멘토)', emoji: '🎒', image: '/jeongo/tutor_wang.jpg', personality: '표준어 교육공학가', desc: '초보자 맞춤형 천천히 말하기와 기초 문법 피드백.' },
+    lee: { name: '교관 리 (독설형 교관)', emoji: '🦁', image: '/jeongo/tutor_lee.jpg', personality: '스파르타 스피킹 코치', desc: '성조가 1도 틀려도 칼같이 지적하고 교정을 압박.' }
   };
 
   const scenarios = {
@@ -243,8 +243,16 @@ export default function AiTutorPage() {
                       selectedTutor === key ? 'border-neon-cyan/40 bg-neon-cyan/5' : 'border-white/10 hover:bg-white/5'
                     }`}
                   >
-                    <div className="text-3xl bg-white/5 w-12 h-12 rounded-xl flex items-center justify-center border border-white/10 shrink-0">
-                      {tutor.emoji}
+                    <div className="relative w-12 h-12 rounded-xl border border-white/10 overflow-hidden shrink-0 bg-white/5 flex items-center justify-center">
+                      {tutor.image ? (
+                        <img 
+                          src={tutor.image} 
+                          alt={tutor.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-3xl">{tutor.emoji}</span>
+                      )}
                     </div>
                     <div className="flex flex-col gap-0.5">
                       <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
@@ -308,8 +316,16 @@ export default function AiTutorPage() {
             {/* Conversation Header */}
             <div className="glass-panel border-white/10 rounded-2xl px-4 py-3 flex justify-between items-center bg-white/2 shadow">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-lg">
-                  {(tutors as any)[selectedTutor].emoji}
+                <div className="relative w-8 h-8 rounded-lg border border-white/10 overflow-hidden shrink-0 bg-white/5 flex items-center justify-center">
+                  {(tutors as any)[selectedTutor].image ? (
+                    <img 
+                      src={(tutors as any)[selectedTutor].image} 
+                      alt={(tutors as any)[selectedTutor].name} 
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-lg">{(tutors as any)[selectedTutor].emoji}</span>
+                  )}
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">{(tutors as any)[selectedTutor].name}</h4>
