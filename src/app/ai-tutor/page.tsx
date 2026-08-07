@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '@/context/AppContext';
 import { Sparkles, MessageSquare, Mic, Volume2, Check, X, ShieldAlert, Award, Star, RefreshCw, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -25,9 +25,25 @@ export default function AiTutorPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [turnIndex, setTurnIndex] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [recordDuration, setRecordDuration] = useState(0);
   const [showPitchChart, setShowPitchChart] = useState(false);
   const [evaluationReport, setEvaluationReport] = useState<any>(null);
   const [showHistory, setShowHistory] = useState(false);
+
+  // Track recording duration
+  useEffect(() => {
+    let interval: any;
+    if (isRecording) {
+      setRecordDuration(0);
+      interval = setInterval(() => {
+        setRecordDuration(prev => prev + 1);
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
   
   // Simulated speech input text they are supposed to read
   const [targetSentence, setTargetSentence] = useState({
@@ -136,47 +152,54 @@ export default function AiTutorPage() {
     setEvaluationReport(null);
   };
 
-  // Simulating Voice Recording and Pitch Analysis
+  // Simulating Voice Recording and Pitch Analysis (User-Controlled Toggle)
   const triggerSimulatedRecording = () => {
-    setIsRecording(true);
-    
-    setTimeout(() => {
+    if (!isRecording) {
+      // Start Recording
+      setIsRecording(true);
+    } else {
+      // Stop Recording & Start Analysis
       setIsRecording(false);
+      setIsAnalyzing(true);
       
-      const selectedScenarioData = (scenarios as any)[selectedScenario];
-      const activeTurn = selectedScenarioData.turns[turnIndex];
-      
-      // Calculate random high-fidelity score
-      const hasErrors = activeTurn.vocabScores.some((w: any) => w.status === 'bad');
-      const score = hasErrors ? Math.floor(Math.random() * 10) + 72 : Math.floor(Math.random() * 10) + 88;
-      
-      setEvaluationReport({
-        score,
-        vocabScores: activeTurn.vocabScores,
-        userPitch: activeTurn.simulatedUserPitch,
-        nativePitch: activeTurn.simulatedNativePitch,
-        pinyinWords: activeTurn.userPinyin.split(' ')
-      });
-      
-      setShowPitchChart(true);
-      
-      // Update message listing
-      setMessages(prev => [
-        ...prev,
-        {
-          sender: 'user',
-          text: activeTurn.userPrompt,
-          pinyin: activeTurn.userPinyin,
-          translation: activeTurn.userTrans,
-          score
-        }
-      ]);
-      
-      // Add XP & Gold on spoking success
-      addXP(20);
-      addGold(15);
-      
-    }, 2500); // 2.5s recording & processing duration
+      setTimeout(() => {
+        setIsAnalyzing(false);
+        
+        const selectedScenarioData = (scenarios as any)[selectedScenario];
+        const activeTurn = selectedScenarioData.turns[turnIndex];
+        
+        // Calculate random high-fidelity score
+        const hasErrors = activeTurn.vocabScores.some((w: any) => w.status === 'bad');
+        const score = hasErrors ? Math.floor(Math.random() * 10) + 72 : Math.floor(Math.random() * 10) + 88;
+        
+        setEvaluationReport({
+          score,
+          vocabScores: activeTurn.vocabScores,
+          userPitch: activeTurn.simulatedUserPitch,
+          nativePitch: activeTurn.simulatedNativePitch,
+          pinyinWords: activeTurn.userPinyin.split(' ')
+        });
+        
+        setShowPitchChart(true);
+        
+        // Update message listing
+        setMessages(prev => [
+          ...prev,
+          {
+            sender: 'user',
+            text: activeTurn.userPrompt,
+            pinyin: activeTurn.userPinyin,
+            translation: activeTurn.userTrans,
+            score
+          }
+        ]);
+        
+        // Add XP & Gold on speaking success
+        addXP(20);
+        addGold(15);
+        
+      }, 1500); // 1.5s simulated processing delay
+    }
   };
 
   const advanceConversation = () => {
@@ -341,12 +364,12 @@ export default function AiTutorPage() {
             </div>
 
             {/* Immersive AI Tutor Video Call Screen */}
-            <div className="relative w-full aspect-video rounded-3xl overflow-hidden border border-white/10 bg-dark-bg shadow-2xl flex items-center justify-center">
+            <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-white/10 bg-dark-bg shadow-2xl flex items-center justify-center">
               {/* Tutor Full Portrait Image */}
               <img 
                 src={(tutors as any)[selectedTutor].image} 
                 alt={(tutors as any)[selectedTutor].name} 
-                className={`w-full h-full object-cover transition-all duration-700 ${
+                className={`w-full h-full object-cover object-top transition-all duration-700 ${
                   isRecording ? 'scale-105 filter brightness-75 blur-[1px]' : 'scale-100'
                 }`}
               />
@@ -379,12 +402,21 @@ export default function AiTutorPage() {
                       <Mic size={20} className="animate-pulse" />
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-neon-rose tracking-wide mt-3 animate-pulse">실시간 목소리 수신 및 성조 분석 중...</span>
+                  <span className="text-xs font-bold text-neon-rose tracking-wide mt-3 animate-pulse">실시간 목소리 수신 중... [00:{recordDuration < 10 ? '0' : ''}{recordDuration}]</span>
+                  <span className="text-[9px] text-gray-400 mt-1">완료하려면 아래 버튼을 눌러주세요</span>
+                </div>
+              )}
+
+              {/* Center Overlay: Analyzing Loader */}
+              {isAnalyzing && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm z-10">
+                  <RefreshCw size={36} className="text-neon-cyan animate-spin glow-cyan" />
+                  <span className="text-xs font-bold text-neon-cyan tracking-wide mt-3 animate-pulse">성조 주파수 대조 분석 중...</span>
                 </div>
               )}
 
               {/* Subtitles: What the tutor just said */}
-              {!isRecording && (
+              {!isRecording && !isAnalyzing && (
                 <div className="absolute bottom-4 left-4 right-16 flex flex-col gap-1 pr-4 z-10 animate-fade-in">
                   <span className="text-[9px] font-bold text-neon-cyan uppercase tracking-wider">AI 대화 자막</span>
                   <p className="text-sm md:text-base font-extrabold text-white drop-shadow-md leading-normal">
@@ -403,7 +435,7 @@ export default function AiTutorPage() {
               )}
 
               {/* AI Speaking Sound wave indicator */}
-              {!isRecording && !showPitchChart && (
+              {!isRecording && !isAnalyzing && !showPitchChart && (
                 <div className="absolute bottom-4 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 z-10">
                   <div className="flex items-end gap-0.5 h-3">
                     <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '60%', animationDelay: '0.1s' }} />
@@ -470,13 +502,31 @@ export default function AiTutorPage() {
                   {/* Microphone Button with ambient glow */}
                   <button
                     onClick={triggerSimulatedRecording}
-                    disabled={isRecording}
-                    className={`mt-2 py-3.5 bg-neon-cyan hover:bg-cyan-500 text-dark-bg font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg shadow-neon-cyan/20 hover:scale-102 active:scale-98 transition-all ${
-                      isRecording ? 'animate-pulse bg-neon-rose text-white glow-rose' : ''
+                    disabled={isAnalyzing}
+                    className={`mt-2 py-3.5 font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-102 active:scale-98 transition-all w-full ${
+                      isRecording 
+                        ? 'bg-neon-rose text-white glow-rose animate-pulse hover:bg-rose-500 shadow-neon-rose/20' 
+                        : isAnalyzing
+                        ? 'bg-white/10 text-gray-500 border border-white/5 cursor-not-allowed'
+                        : 'bg-neon-cyan hover:bg-cyan-500 text-dark-bg shadow-neon-cyan/20'
                     }`}
                   >
-                    <Mic size={16} />
-                    {isRecording ? '내 음성을 실시간 분석 중입니다...' : '발화 개시 (마이크 녹음)'}
+                    {isRecording ? (
+                      <>
+                        <Mic size={16} />
+                        <span>말하기 완료 (녹음 종료 및 성조 분석) [00:{recordDuration < 10 ? '0' : ''}{recordDuration}]</span>
+                      </>
+                    ) : isAnalyzing ? (
+                      <>
+                        <RefreshCw size={16} className="animate-spin" />
+                        <span>성조 주파수 분석 중...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Mic size={16} />
+                        <span>발화 개시 (마이크 녹음 시작)</span>
+                      </>
+                    )}
                   </button>
                 </motion.div>
               )}
