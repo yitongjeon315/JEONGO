@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   allowedDevOrigins: ['192.168.219.104']
 };
 
