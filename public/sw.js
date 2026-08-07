@@ -1,8 +1,8 @@
 const CACHE_NAME = 'jeongo-cache-v1';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/manifest.json',
-  '/icon.svg',
+  '/jeongo',
+  '/jeongo/manifest.json',
+  '/jeongo/icon.svg',
 ];
 
 self.addEventListener('install', (event) => {
