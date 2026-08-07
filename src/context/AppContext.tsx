@@ -158,7 +158,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker
-            .register('/jeongo/sw.js')
+            .register('/sw.js')
             .then((registration) => {
               console.log('PWA ServiceWorker registered with scope: ', registration.scope);
             })

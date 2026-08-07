@@ -53,9 +53,9 @@ export default function AiTutorPage() {
   });
 
   const tutors = {
-    lily: { name: '릴리 (현지인 친구)', emoji: '🎧', image: '/jeongo/tutor_lily.jpg', personality: '상하이 트렌디 피플', desc: '유행어와 자연스러운 구어체 위주의 핑퐁 회화.' },
-    wang: { name: '왕 선생님 (친절한 멘토)', emoji: '🎒', image: '/jeongo/tutor_wang.jpg', personality: '표준어 교육공학가', desc: '초보자 맞춤형 천천히 말하기와 기초 문법 피드백.' },
-    lee: { name: '교관 리 (독설형 교관)', emoji: '🦁', image: '/jeongo/tutor_lee.jpg', personality: '스파르타 스피킹 코치', desc: '성조가 1도 틀려도 칼같이 지적하고 교정을 압박.' }
+    lily: { name: '릴리 (현지인 친구)', emoji: '🎧', image: '/tutor_lily.jpg', personality: '상하이 트렌디 피플', desc: '유행어와 자연스러운 구어체 위주의 핑퐁 회화.' },
+    wang: { name: '왕 선생님 (친절한 멘토)', emoji: '🎒', image: '/tutor_wang.jpg', personality: '표준어 교육공학가', desc: '초보자 맞춤형 천천히 말하기와 기초 문법 피드백.' },
+    lee: { name: '교관 리 (독설형 교관)', emoji: '🦁', image: '/tutor_lee.jpg', personality: '스파르타 스피킹 코치', desc: '성조가 1도 틀려도 칼같이 지적하고 교정을 압박.' }
   };
 
   const scenarios = {

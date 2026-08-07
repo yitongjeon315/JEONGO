@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  allowedDevOrigins: ['192.168.219.104'],
-  basePath: '/jeongo'
+  allowedDevOrigins: ['192.168.219.104']
 };
 
 export default nextConfig;
