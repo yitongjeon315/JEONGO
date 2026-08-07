@@ -157,18 +157,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (savedVocab) setVocabList(JSON.parse(savedVocab));
       if (savedSkins) setSkins(JSON.parse(savedSkins));
 
-      // Register PWA Service Worker
+      // Register PWA Service Worker (only in production / not on localhost)
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker
-            .register('/sw.js')
-            .then((registration) => {
-              console.log('PWA ServiceWorker registered with scope: ', registration.scope);
-            })
-            .catch((err) => {
-              console.log('PWA ServiceWorker registration failed: ', err);
-            });
-        });
+        if (window.location.hostname === 'localhost') {
+          // Unregister any active service worker on localhost to avoid dev caching issues
+          navigator.serviceWorker.getRegistrations().then((registrations) => {
+            for (let registration of registrations) {
+              registration.unregister();
+              console.log('Unregistered service worker on localhost');
+            }
+          });
+        } else {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker
+              .register('/sw.js')
+              .then((registration) => {
+                console.log('PWA ServiceWorker registered with scope: ', registration.scope);
+              })
+              .catch((err) => {
+                console.log('PWA ServiceWorker registration failed: ', err);
+              });
+          });
+        }
       }
     }
   }, []);
