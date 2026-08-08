@@ -154,7 +154,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const savedSkins = localStorage.getItem('jeongo_skins');
       
       if (savedStats) setStats(JSON.parse(savedStats));
-      if (savedVocab) setVocabList(JSON.parse(savedVocab));
+      if (savedVocab) {
+        try {
+          const parsedSaved = JSON.parse(savedVocab);
+          if (parsedSaved.length < INITIAL_VOCAB.length) {
+            const savedMap = new Map(parsedSaved.map((item: any) => [item.hanzi, item]));
+            const migratedVocab = INITIAL_VOCAB.map(item => {
+              const savedItem = savedMap.get(item.hanzi);
+              if (savedItem) {
+                return {
+                  ...item,
+                  isLearned: savedItem.isLearned,
+                  easiness: savedItem.easiness,
+                  repetitions: savedItem.repetitions,
+                  intervalDays: savedItem.intervalDays,
+                  nextReviewAt: savedItem.nextReviewAt
+                };
+              }
+              return item;
+            });
+            setVocabList(migratedVocab);
+            localStorage.setItem('jeongo_vocab', JSON.stringify(migratedVocab));
+          } else {
+            setVocabList(parsedSaved);
+          }
+        } catch (e) {
+          console.error('Error migrating vocab list:', e);
+          setVocabList(INITIAL_VOCAB);
+        }
+      } else {
+        setVocabList(INITIAL_VOCAB);
+      }
       if (savedSkins) setSkins(JSON.parse(savedSkins));
 
       // Register PWA Service Worker (only in production / not on localhost)
