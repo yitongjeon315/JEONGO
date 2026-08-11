@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Swords, Sparkles, Users, Gift } from 'lucide-react';
+import { Home, Swords, Sparkles, Users, Gift, BarChart3 } from 'lucide-react';
 
 const BottomNav = () => {
   const pathname = usePathname();
@@ -14,10 +14,11 @@ const BottomNav = () => {
     { label: 'AI튜터', path: '/ai-tutor', icon: Sparkles, color: 'text-neon-cyan' },
     { label: '소셜', path: '/social', icon: Users, color: 'text-sky-400' },
     { label: '상점', path: '/shop', icon: Gift, color: 'text-cyber-yellow' },
+    { label: '통계', path: '/analytics', icon: BarChart3, color: 'text-violet-400' },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 max-w-md md:max-w-2xl w-full mx-auto glass-panel border-t border-white/10 px-4 py-2 flex justify-around items-center rounded-t-2xl shadow-xl">
+    <nav className="relative z-50 shrink-0 w-full glass-panel border-t border-white/10 px-1.5 sm:px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] grid grid-cols-6 items-center rounded-t-2xl shadow-xl">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.path || (item.path !== '/home' && pathname?.startsWith(item.path));
@@ -26,19 +27,19 @@ const BottomNav = () => {
           <Link
             key={item.path}
             href={item.path}
-            className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-300 ${
+            className={`min-w-0 min-h-12 flex flex-col items-center justify-center gap-1 py-1 px-0.5 sm:px-2 rounded-xl transition-all duration-300 ${
               isActive
-                ? 'scale-110 font-bold bg-white/5 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]'
+                ? 'font-bold bg-white/5 text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]'
                 : 'text-gray-400 hover:text-white hover:bg-white/5'
             }`}
           >
             <Icon
-              size={22}
+              size={20}
               className={`transition-colors duration-300 ${
                 isActive ? item.color : 'text-gray-400'
               }`}
             />
-            <span className="text-[11px] tracking-wide">{item.label}</span>
+            <span className="max-w-full truncate text-[10px] min-[370px]:text-[11px] tracking-tight sm:tracking-wide">{item.label}</span>
           </Link>
         );
       })}

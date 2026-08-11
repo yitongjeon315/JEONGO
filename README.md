@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JEONGO
 
-## Getting Started
+[简体中文](README.zh-CN.md)
 
-First, run the development server:
+JEONGO는 중국어 학습을 RPG의 성장과 전투 경험으로 풀어낸 모바일 중심 학습 웹서비스입니다. 학습자는 HSK 어휘와 문장을 공부하면서 캐릭터를 성장시키고, 반복 학습을 퀘스트와 보상으로 이어갈 수 있습니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- JEONGO 서비스: <https://www.aina365.com/>
+- TOPIK-Edu 서비스: <https://www.aina365.com/topic/>
+
+## 프로젝트가 지향하는 경험
+
+외국어 공부는 꾸준함이 가장 중요하지만 단순 암기만으로는 학습 동기를 유지하기 어렵습니다. JEONGO는 문제 풀이를 전투로, 학습 기록을 캐릭터 성장으로, 반복 목표를 일일 퀘스트로 바꾸어 사용자가 자신의 진전을 눈으로 확인하도록 설계했습니다.
+
+학습 성과는 경험치, 레벨, 골드, 스트릭과 성장 스탯으로 표현됩니다. 정답을 맞히는 순간의 피드백뿐 아니라 장기간 축적되는 성장 기록까지 하나의 게임 세계 안에서 이어집니다.
+
+## 핵심 학습 콘텐츠
+
+### 어휘 전투
+
+한자와 병음을 보고 한국어 뜻을 맞히는 읽기 중심 학습입니다. 정답은 공격으로, 연속 정답은 더 강한 전투 피드백으로 연결됩니다.
+
+### 문장 조립
+
+한국어 문장의 의미에 맞게 중국어 단어 블록을 배열합니다. 단어 암기를 넘어 중국어 어순과 문장 구조를 직접 구성하며 익히는 과정입니다.
+
+### HSK 어휘와 단어장
+
+HSK 1급부터 6급까지의 어휘를 단계별로 학습할 수 있습니다. 학습 중 다시 보고 싶은 단어와 틀린 단어는 단어장과 복습 흐름으로 이어집니다.
+
+### AI 튜터와 성장 시스템
+
+AI 튜터, 캐릭터 능력치, 일일 퀘스트, 학습 통계가 학습 행동을 하나의 성장 루프로 연결합니다. 사용자는 오늘의 목표와 누적 성과를 함께 확인할 수 있습니다.
+
+## 사용자 경험
+
+- 휴대전화 화면을 우선으로 설계한 반응형 인터페이스
+- 로그인 없이 바로 시작할 수 있는 게스트 학습
+- 계정 사용자의 학습 상태와 캐릭터 성장 기록 동기화
+- 학습 통계와 일일 퀘스트를 통한 반복 동기 제공
+- 관리자 콘텐츠 화면을 통한 학습 자료 관리
+- JEONGO 화면에서 TOPIK-Edu로 바로 이동하는 통합 학습 동선
+
+## TOPIK-Edu와의 관계
+
+JEONGO 저장소에는 한국어능력시험 학습 프로젝트인 TOPIK-Edu가 `services/topic1`로 함께 구성되어 있습니다. 두 서비스는 같은 도메인을 사용하지만 학습 대상과 화면 경험은 독립적으로 유지됩니다.
+
+```text
+www.aina365.com/         중국어 RPG 학습 JEONGO
+www.aina365.com/topic/  한국어 TOPIK 학습 TOPIK-Edu
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+JEONGO 상단의 TOPIK 버튼과 TOPIK 페이지의 돌아가기 버튼을 통해 두 학습 서비스 사이를 자연스럽게 이동할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 서비스 구성
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Next.js와 React 기반의 JEONGO 학습 애플리케이션
+- MySQL 기반 회원, 세션, 학습 스냅샷
+- Vite 기반 TOPIK-Edu 정적 학습 애플리케이션
+- Caddy 기반 HTTPS, 도메인 리디렉션과 경로 분기
+- Vitest와 Playwright 기반 핵심 학습 흐름 검증
 
-## Learn More
+## 프로젝트 성격
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+JEONGO는 중국어를 처음 시작하는 학습자부터 HSK 고급 어휘를 반복하려는 학습자까지, 학습의 지속성과 성취감을 높이는 것을 목표로 합니다. 정적인 문제집을 그대로 옮기는 대신 학습 행동 자체가 캐릭터의 모험이 되도록 만드는 것이 이 프로젝트의 중심 아이디어입니다.

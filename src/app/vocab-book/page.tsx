@@ -2,40 +2,67 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useApp, VocabItem } from '@/context/AppContext';
+import { useApp } from '@/context/AppContext';
 import { ArrowLeft, Search, BookOpen, ChevronDown, ChevronUp, RefreshCw, Calendar, Award, Bookmark } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  getLocalizedMeaning,
+  getStudyFilterCounts,
+  matchesStudyFilter,
+  MEANING_LANGUAGE_OPTIONS,
+  type MeaningLanguage,
+  type StudyFilter,
+} from '@/lib/vocab-i18n';
+
+const ITEMS_PER_PAGE = 12;
 
 export default function VocabBookPage() {
+  const [renderedAt] = useState(() => Date.now());
   const router = useRouter();
   const { vocabList, updateSrsWord, toggleLearnWord } = useApp();
   
   // Filtering states
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedHsk, setSelectedHsk] = useState<'all' | 'HSK 1' | 'HSK 2' | 'HSK 3' | 'HSK 4' | 'HSK 5' | 'HSK 6'>('all');
-  const [studyFilter, setStudyFilter] = useState<'all' | 'learned' | 'unlearned'>('all');
+  const [studyFilter, setStudyFilter] = useState<StudyFilter>('all');
+  const [meaningLanguage, setMeaningLanguage] = useState<MeaningLanguage>('ko');
+  const [currentPage, setCurrentPage] = useState(1);
   
   // Expanded cards state tracking
   const [expandedWordId, setExpandedWordId] = useState<number | null>(null);
 
   // Filter vocabulary list
   const filteredVocabList = vocabList.filter(word => {
+    const koreanMeaning = getLocalizedMeaning(word, 'ko').text;
+    const englishMeaning = getLocalizedMeaning(word, 'en').text;
     const matchesSearch = 
       word.hanzi.toLowerCase().includes(searchTerm.toLowerCase()) ||
       word.pinyin.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      word.meaning.toLowerCase().includes(searchTerm.toLowerCase());
+      word.meaning.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      koreanMeaning.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      englishMeaning.toLowerCase().includes(searchTerm.toLowerCase());
       
     const matchesHsk = selectedHsk === 'all' || word.hsk === selectedHsk;
     
-    let matchesStudy = true;
-    if (studyFilter === 'learned') {
-      matchesStudy = word.isLearned;
-    } else if (studyFilter === 'unlearned') {
-      matchesStudy = !word.isLearned;
-    }
-    
-    return matchesSearch && matchesHsk && matchesStudy;
+    return matchesSearch && matchesHsk && matchesStudyFilter(word, studyFilter);
   });
+
+  const studyCounts = getStudyFilterCounts(vocabList);
+
+  const totalPages = Math.max(1, Math.ceil(filteredVocabList.length / ITEMS_PER_PAGE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const paginatedVocabList = filteredVocabList.slice(
+    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
+    safeCurrentPage * ITEMS_PER_PAGE,
+  );
+  const visiblePageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1)
+    .filter((page) => page === 1 || page === totalPages || Math.abs(page - safeCurrentPage) <= 2);
+
+  const changePage = (page: number) => {
+    setCurrentPage(Math.min(totalPages, Math.max(1, page)));
+    setExpandedWordId(null);
+    requestAnimationFrame(() => document.querySelector('[data-vocab-list]')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
 
   const toggleExpand = (id: number) => {
     setExpandedWordId(prev => (prev === id ? null : id));
@@ -73,15 +100,15 @@ export default function VocabBookPage() {
         <input
           type="text"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="한자, 병음, 한국어 뜻 실시간 검색..."
+          onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); setExpandedWordId(null); }}
+          placeholder="한자, 병음, 한국어·영어 뜻 검색..."
           className="w-full pl-9 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-gray-500 focus:outline-none focus:border-neon-cyan/50 focus:bg-white/10 transition-all"
         />
       </div>
 
       {/* HSK Tab Filters */}
       <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 gap-1 overflow-x-auto scrollbar-none whitespace-nowrap">
-        {[
+        {([
           { id: 'all', label: '전체' },
           { id: 'HSK 1', label: 'HSK 1' },
           { id: 'HSK 2', label: 'HSK 2' },
@@ -89,10 +116,10 @@ export default function VocabBookPage() {
           { id: 'HSK 4', label: 'HSK 4' },
           { id: 'HSK 5', label: 'HSK 5' },
           { id: 'HSK 6', label: 'HSK 6' },
-        ].map((tab) => (
+        ] as const).map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setSelectedHsk(tab.id as any)}
+            onClick={() => { setSelectedHsk(tab.id); setCurrentPage(1); setExpandedWordId(null); }}
             className={`px-4 py-1.5 text-[11px] font-bold rounded-lg transition-all inline-block ${
               selectedHsk === tab.id
                 ? 'bg-neon-cyan/20 border border-neon-cyan/30 text-neon-cyan shadow-[0_0_10px_rgba(6,182,212,0.15)]'
@@ -104,45 +131,74 @@ export default function VocabBookPage() {
         ))}
       </div>
 
+      {/* Meaning Language Selector */}
+      <section className="glass-panel rounded-xl p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2" aria-label="단어 뜻 언어">
+        <div>
+          <p className="text-xs font-bold text-white">단어 뜻 언어</p>
+          <p className="text-[10px] text-gray-400 mt-0.5">기본 언어는 한국어입니다.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-1 rounded-lg bg-white/5 p-1">
+          {MEANING_LANGUAGE_OPTIONS.map((language) => (
+            <button
+              key={language.id}
+              type="button"
+              data-testid={`meaning-language-${language.id}`}
+              onClick={() => setMeaningLanguage(language.id)}
+              aria-pressed={meaningLanguage === language.id}
+              className={`min-w-24 h-9 px-3 rounded-md text-xs font-bold transition-colors ${
+                meaningLanguage === language.id ? 'bg-neon-cyan text-dark-bg' : 'text-gray-400 hover:text-white'
+              }`}
+            >
+              {language.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
       {/* Study State Filter Selector */}
       <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 gap-1">
-        {[
-          { id: 'all', label: '전체 보기' },
-          { id: 'learned', label: '학습 중인 단어' },
-          { id: 'unlearned', label: '미학습 단어' }
-        ].map((chip) => (
+        {([
+          { id: 'all', label: '전체 보기', count: studyCounts.all },
+          { id: 'learned', label: '학습 중인 단어', count: studyCounts.learned },
+          { id: 'unlearned', label: '미학습 단어', count: studyCounts.unlearned }
+        ] as const).map((chip) => (
           <button
             key={chip.id}
-            onClick={() => setStudyFilter(chip.id as any)}
+            data-testid={`study-filter-${chip.id}`}
+            onClick={() => { setStudyFilter(chip.id); setCurrentPage(1); setExpandedWordId(null); }}
+            aria-pressed={studyFilter === chip.id}
             className={`flex-1 py-1.5 text-[10px] font-bold rounded-lg border transition-all ${
               studyFilter === chip.id
                 ? 'bg-white/10 border-white/20 text-white'
                 : 'bg-transparent border-transparent text-gray-500 hover:text-gray-300'
             }`}
           >
-            {chip.label}
+            {chip.label} <span className="opacity-70">({chip.count})</span>
           </button>
         ))}
       </div>
 
       {/* Word Count Indicator */}
-      <div className="text-[10px] text-gray-400 px-1 font-semibold">
-        총 {filteredVocabList.length}개의 단어가 검색되었습니다.
+      <div className="flex items-center justify-between gap-3 text-xs text-gray-400 px-1 font-semibold">
+        <span data-testid="filtered-vocab-count">총 {filteredVocabList.length}개의 단어</span>
+        <span>{safeCurrentPage} / {totalPages} 페이지</span>
       </div>
 
       {/* Vocabulary Cards List */}
-      <div className="flex flex-col gap-3 pb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-3" data-vocab-list>
         {filteredVocabList.length > 0 ? (
-          filteredVocabList.map((word) => {
+          paginatedVocabList.map((word) => {
             const isExpanded = expandedWordId === word.id;
+            const localizedMeaning = getLocalizedMeaning(word, meaningLanguage);
             
             // Check SRS review ready status (nextReviewAt is in the past)
-            const isReviewReady = new Date(word.nextReviewAt).getTime() <= Date.now();
+            const isReviewReady = new Date(word.nextReviewAt).getTime() <= renderedAt;
             const hasLearned = word.isLearned;
             
             return (
               <div
                 key={word.id}
+                data-testid="vocab-card"
                 className={`glass-panel border rounded-2xl overflow-hidden transition-all ${
                   isExpanded ? 'border-neon-cyan/30 shadow-[0_0_15px_rgba(6,182,212,0.1)]' : 'border-white/10'
                 }`}
@@ -152,15 +208,20 @@ export default function VocabBookPage() {
                   onClick={() => toggleExpand(word.id)}
                   className="p-4 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-all"
                 >
-                  <div className="flex items-center gap-4">
-                    {/* Chinese Characters */}
-                    <div className="text-2xl font-extrabold text-white tracking-wide min-w-[70px]">
-                      {word.hanzi}
+                  <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                    {/* Pinyin directly above Chinese characters */}
+                    <div className="flex min-w-[82px] flex-col items-start">
+                      <div className="text-[10px] sm:text-xs font-bold text-neon-cyan leading-tight" data-testid="vocab-pinyin">{word.pinyin}</div>
+                      <div className="text-xl sm:text-2xl font-extrabold text-white tracking-wide leading-tight mt-1" data-testid="vocab-hanzi">
+                        {word.hanzi}
+                      </div>
                     </div>
-                    {/* Pinyin & Meaning */}
-                    <div className="flex flex-col gap-0.5">
-                      <div className="text-xs font-bold text-neon-cyan">{word.pinyin}</div>
-                      <div className="text-xs text-white/90 font-medium">{word.meaning}</div>
+                    {/* Localized meaning */}
+                    <div className="min-w-0 flex flex-col gap-1">
+                      <div className="text-xs sm:text-sm text-white/90 font-medium break-words" data-testid="vocab-meaning">{localizedMeaning.text}</div>
+                      {localizedMeaning.isFallback && (
+                        <span className="text-[9px] text-cyber-yellow">번역 준비 중 · 원문 표시</span>
+                      )}
                     </div>
                   </div>
 
@@ -238,7 +299,7 @@ export default function VocabBookPage() {
                             <span className="text-[10px] font-bold text-gray-400">학습 예문</span>
                             <span className="text-xs font-semibold text-white tracking-wide mt-0.5">{word.exampleHanzi}</span>
                             <span className="text-[10px] text-neon-cyan">{word.examplePinyin}</span>
-                            <span className="text-[11px] text-gray-300 font-medium">{word.exampleMeaning}</span>
+                            {meaningLanguage === 'ko' && <span className="text-[11px] text-gray-300 font-medium">{word.exampleMeaning}</span>}
                           </div>
                         )}
 
@@ -292,6 +353,47 @@ export default function VocabBookPage() {
           </div>
         )}
       </div>
+
+      {filteredVocabList.length > 0 && totalPages > 1 && (
+        <nav aria-label="어휘 페이지" className="glass-panel rounded-2xl px-3 py-3 flex flex-wrap items-center justify-center gap-1.5 mb-4">
+          <button
+            type="button"
+            onClick={() => changePage(safeCurrentPage - 1)}
+            disabled={safeCurrentPage === 1}
+            className="min-w-16 h-10 px-3 rounded-lg border border-white/10 text-xs font-bold text-gray-300 disabled:opacity-30"
+          >
+            이전
+          </button>
+          {visiblePageNumbers.map((page, index) => {
+            const previousPage = visiblePageNumbers[index - 1];
+            return (
+              <React.Fragment key={page}>
+                {previousPage && page - previousPage > 1 && <span className="px-1 text-gray-500">…</span>}
+                <button
+                  type="button"
+                  onClick={() => changePage(page)}
+                  aria-current={page === safeCurrentPage ? 'page' : undefined}
+                  className={`w-10 h-10 rounded-lg text-xs font-extrabold border transition-colors ${
+                    page === safeCurrentPage
+                      ? 'bg-neon-cyan text-dark-bg border-neon-cyan'
+                      : 'bg-white/5 text-gray-300 border-white/10 hover:bg-white/10'
+                  }`}
+                >
+                  {page}
+                </button>
+              </React.Fragment>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => changePage(safeCurrentPage + 1)}
+            disabled={safeCurrentPage === totalPages}
+            className="min-w-16 h-10 px-3 rounded-lg border border-white/10 text-xs font-bold text-gray-300 disabled:opacity-30"
+          >
+            다음
+          </button>
+        </nav>
+      )}
     </div>
   );
 }

@@ -1,34 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Outfit, Inter, Noto_Sans_KR } from 'next/font/google';
 import './globals.css';
 import { AppProvider } from '@/context/AppContext';
 import Header from '@/components/Header';
 import BottomNav from '@/components/BottomNav';
 
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-outfit',
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const notoSc = Noto_Sans_KR({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
-  variable: '--font-noto-kr',
-  display: 'swap',
-});
-
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  interactiveWidget: 'resizes-content',
   themeColor: '#07090e',
 };
 
@@ -50,16 +29,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ko"
-      className={`${outfit.variable} ${inter.variable} ${notoSc.variable} h-full antialiased dark`}
-    >
+    <html lang="ko" className="h-full antialiased dark">
       <body className="h-full bg-[#07090e] text-white flex flex-col justify-start overflow-hidden">
         <AppProvider>
-          {/* Mobile-first Mock Shell Container (Fixed viewport height & scrollable main) */}
-          <div className="w-full max-w-md md:max-w-2xl mx-auto h-[100dvh] flex flex-col bg-dark-bg border-x border-white/5 relative shadow-2xl overflow-hidden">
+          <div className="w-full max-w-md md:max-w-4xl xl:max-w-6xl mx-auto h-dvh flex flex-col bg-dark-bg sm:border-x sm:border-white/5 relative shadow-2xl overflow-hidden">
             <Header />
-            <main className="flex-1 px-4 py-4 overflow-y-auto pb-28">
+            <main className="flex-1 min-h-0 px-3 py-3 sm:px-4 sm:py-4 overflow-y-auto overscroll-contain scroll-pb-5">
               {children}
             </main>
             <BottomNav />

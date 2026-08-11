@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useApp } from '@/context/AppContext';
-import { Flame, Coins, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Coins, Flame, GraduationCap } from 'lucide-react';
 
 const Header = () => {
   const { stats } = useApp();
@@ -30,32 +30,32 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 max-w-md md:max-w-2xl w-full mx-auto glass-panel border-b border-white/10 px-4 py-3.5 flex flex-col gap-2 rounded-b-2xl shadow-md">
-      <div className="flex justify-between items-center">
+    <header className="sticky top-0 z-40 max-w-md md:max-w-4xl xl:max-w-6xl w-full mx-auto glass-panel border-b border-white/10 px-3 py-2.5 sm:px-4 sm:py-3.5 flex flex-col gap-2 rounded-b-2xl shadow-md">
+      <div className="flex justify-between items-center gap-2">
         {/* User Profile Avatar & Info */}
-        <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-white/10 to-white/5 border border-white/15 flex items-center justify-center text-2xl relative shadow-inner">
+        <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 shrink-0 rounded-xl bg-gradient-to-tr from-white/10 to-white/5 border border-white/15 flex items-center justify-center text-xl sm:text-2xl relative shadow-inner">
             {getAvatarEmoji(stats.avatarSkin)}
             <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-neon-rose text-[11px] font-bold flex items-center justify-center border border-dark-bg text-white">
               {stats.level}
             </span>
           </div>
-          <div>
+          <div className="min-w-0">
             <h2 className="text-sm font-bold text-white/90">학습자님</h2>
-            <p className="text-xs text-gray-400 font-medium">{getSkinName(stats.avatarSkin)}</p>
+            <p className="hidden min-[370px]:block text-xs text-gray-400 font-medium truncate">{getSkinName(stats.avatarSkin)}</p>
           </div>
         </div>
 
         {/* Currency & Streak Status */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
           {/* Streak */}
-          <div className="flex items-center gap-1.5 bg-neon-rose/10 border border-neon-rose/20 px-3 py-1.5 rounded-full text-neon-rose font-bold text-sm glow-rose">
+          <div className="flex items-center gap-1 bg-neon-rose/10 border border-neon-rose/20 px-2 sm:px-3 py-1.5 rounded-full text-neon-rose font-bold text-xs sm:text-sm glow-rose">
             <Flame size={15} className="fill-current animate-pulse" />
             <span>{stats.streak}일</span>
           </div>
           
           {/* Gold */}
-          <div className="flex items-center gap-1.5 bg-cyber-yellow/10 border border-cyber-yellow/20 px-3 py-1.5 rounded-full text-cyber-yellow font-bold text-sm glow-yellow animate-float">
+          <div className="flex items-center gap-1 bg-cyber-yellow/10 border border-cyber-yellow/20 px-2 sm:px-3 py-1.5 rounded-full text-cyber-yellow font-bold text-xs sm:text-sm glow-yellow">
             <Coins size={15} className="fill-current" />
             <span>{stats.gold.toLocaleString()}G</span>
           </div>
@@ -75,6 +75,25 @@ const Header = () => {
           {stats.xp}/{stats.xpNeeded}
         </span>
       </div>
+
+      <a
+        href="/topic/"
+        className="group flex min-h-11 items-center justify-between gap-3 rounded-xl border border-sky-300/25 bg-gradient-to-r from-sky-500/15 via-cyan-400/10 to-violet-500/15 px-3 py-2 shadow-sm transition hover:border-sky-300/45 hover:bg-sky-400/15 active:scale-[0.99]"
+        aria-label="한국어 TOPIK 학습 서비스 열기"
+      >
+        <span className="flex min-w-0 items-center gap-2.5">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-300/15 text-sky-200">
+            <GraduationCap size={18} />
+          </span>
+          <span className="min-w-0">
+            <strong className="block truncate text-xs font-extrabold text-white sm:text-sm">한국어 TOPIK 학습</strong>
+            <span className="hidden truncate text-[10px] text-sky-100/70 min-[370px]:block">TOPIK I 수업과 실전 연습 열기</span>
+          </span>
+        </span>
+        <span className="flex shrink-0 items-center gap-1 text-[10px] font-bold text-sky-200 sm:text-xs">
+          시작하기 <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </span>
+      </a>
     </header>
   );
 };

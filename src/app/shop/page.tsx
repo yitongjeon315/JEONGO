@@ -5,12 +5,20 @@ import { useApp } from '@/context/AppContext';
 import { Gift, Coins, ShoppingBag, ShieldAlert, Sparkles, Check, CheckCircle2, PhoneCall } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface RewardItem {
+  id: string;
+  name: string;
+  image: string;
+  cost: number;
+  desc: string;
+}
+
 export default function ShopPage() {
-  const { stats, skins, buySkin, equipSkin, spendGold } = useApp();
+  const { stats, skins, buySkin, equipSkin, spendGold, contentCatalog, recordLearningEvent } = useApp();
   const [activeTab, setActiveTab] = useState<'items' | 'rewards'>('items');
   
   // Reality Exchange modal state
-  const [exchangeTarget, setExchangeTarget] = useState<any | null>(null);
+  const [exchangeTarget, setExchangeTarget] = useState<RewardItem | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isExchangeSuccess, setIsExchangeSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,11 +30,7 @@ export default function ShopPage() {
     { id: 'emperor', name: '한나라 황제 곤룡포', emoji: '👑', cost: 3000, desc: 'HSK 던전을 완전히 마스터하고 왕좌에 올라선 최고 정점의 복식.' }
   ];
 
-  const rewardsList = [
-    { id: 'starbucks', name: '스타벅스 아이스 아메리카노 Tall', image: '☕', cost: 5000, desc: '무더운 학습 고행을 시원하게 식혀줄 현실 커피 쿠폰.' },
-    { id: 'naverpay', name: '네이버페이 포인트 1,000원권', image: '💳', cost: 1200, desc: '현실의 쇼핑에 자유롭게 보탤 수 있는 알짜배기 현금성 포인트.' },
-    { id: 'gs25', name: 'GS25 모바일 상품권 3,000원권', image: '🏪', cost: 3300, desc: '편의점 간식 던전을 돌파할 수 있는 모바일 바코드 상품권.' }
-  ];
+  const rewardsList = contentCatalog.rewards;
 
   const handlePurchaseSkin = (skinId: string, cost: number) => {
     const success = buySkin(skinId, cost);
@@ -35,7 +39,7 @@ export default function ShopPage() {
     }
   };
 
-  const startExchangeFlow = (reward: any) => {
+  const startExchangeFlow = (reward: RewardItem) => {
     if (stats.gold < reward.cost) {
       alert('골드가 부족하여 환전 신청을 하실 수 없습니다.');
       return;
@@ -48,6 +52,7 @@ export default function ShopPage() {
 
   const handleExchangeSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!exchangeTarget) return;
     if (!phoneNumber || phoneNumber.length < 10) {
       setErrorMsg('올바른 전화번호를 입력해 주십시오 (예: 01012345678).');
       return;
@@ -55,6 +60,7 @@ export default function ShopPage() {
 
     const success = spendGold(exchangeTarget.cost);
     if (success) {
+      recordLearningEvent({ type: 'reward', correct: 0, total: 0, xp: 0, gold: -exchangeTarget.cost, weakItems: [exchangeTarget.name] });
       setIsExchangeSuccess(true);
       setTimeout(() => {
         setExchangeTarget(null);

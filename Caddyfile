@@ -1,0 +1,21 @@
+aina365.com {
+	redir https://www.aina365.com{uri} permanent
+}
+
+www.aina365.com {
+	encode zstd gzip
+
+	handle /topic {
+		redir * /topic/ permanent
+	}
+
+	handle_path /topic/* {
+		root * C:/JEONGO/services/topic1/dist
+		try_files {path} /index.html
+		file_server
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:3000
+	}
+}

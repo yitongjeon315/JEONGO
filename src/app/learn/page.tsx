@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { useApp, VocabItem } from '@/context/AppContext';
-import { Swords, Heart, Check, X, ShieldAlert, Award, Star, BookOpen, PenTool, HelpCircle, ChevronRight, LayoutGrid } from 'lucide-react';
+import { Swords, Check, X, Award, BookOpen, PenTool, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getAttackDamage, getDungeonMaxHp, getStrengthBonusDamage } from '@/lib/character-growth';
+import { getLocalizedMeaning } from '@/lib/vocab-i18n';
 
 interface WritingQuest {
   korean: string;
@@ -13,7 +15,7 @@ interface WritingQuest {
 }
 
 export default function LearnPage() {
-  const { vocabList, updateSrsWord, stats, spendGold, addXP, addGold } = useApp();
+  const { vocabList, updateSrsWord, stats, spendGold, addXP, addGold, recordLearningEvent } = useApp();
   
   // Lobby Selection States
   const [selectedHsk, setSelectedHsk] = useState<'hsk12' | 'hsk34' | 'hsk56'>('hsk12');
@@ -44,6 +46,11 @@ export default function LearnPage() {
   const [xpEarned, setXpEarned] = useState(0);
   const [goldEarned, setGoldEarned] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
+  const [missedItems, setMissedItems] = useState<string[]>([]);
+  const [comboCount, setComboCount] = useState(0);
+  const [criticalCount, setCriticalCount] = useState(0);
+  const [strengthBonusDamage, setStrengthBonusDamage] = useState(0);
+  const [startingLevel, setStartingLevel] = useState(stats.level);
   
   // Floating text feedback for attacks
   const [damageEffect, setDamageEffect] = useState<{ active: boolean; text: string; isCrit: boolean }>({ active: false, text: '', isCrit: false });
@@ -70,28 +77,35 @@ export default function LearnPage() {
     setXpEarned(0);
     setGoldEarned(0);
     setIncorrectCount(0);
+    setMissedItems([]);
+    setComboCount(0);
+    setCriticalCount(0);
+    setStrengthBonusDamage(0);
+    setStartingLevel(stats.level);
     setCurrentIndex(0);
     setIsAnswered(false);
     
     if (selectedMode === 'vocab') {
       // Filter words based on selected HSK level, prioritizing learned words
+      const koreanVocabList = vocabList.filter((item) => !getLocalizedMeaning(item, 'ko').isFallback);
       let pool: VocabItem[] = [];
       if (selectedHsk === 'hsk12') {
-        pool = vocabList.filter(item => item.isLearned && (item.hsk === 'HSK 1' || item.hsk === 'HSK 2'));
-        if (pool.length === 0) pool = vocabList.filter(item => item.hsk === 'HSK 1' || item.hsk === 'HSK 2');
+        pool = koreanVocabList.filter(item => item.isLearned && (item.hsk === 'HSK 1' || item.hsk === 'HSK 2'));
+        if (pool.length === 0) pool = koreanVocabList.filter(item => item.hsk === 'HSK 1' || item.hsk === 'HSK 2');
       } else if (selectedHsk === 'hsk34') {
-        pool = vocabList.filter(item => item.isLearned && (item.hsk === 'HSK 3' || item.hsk === 'HSK 4'));
-        if (pool.length === 0) pool = vocabList.filter(item => item.hsk === 'HSK 3' || item.hsk === 'HSK 4');
+        pool = koreanVocabList.filter(item => item.isLearned && (item.hsk === 'HSK 3' || item.hsk === 'HSK 4'));
+        if (pool.length === 0) pool = koreanVocabList.filter(item => item.hsk === 'HSK 3' || item.hsk === 'HSK 4');
       } else {
-        pool = vocabList.filter(item => item.isLearned && (item.hsk === 'HSK 5' || item.hsk === 'HSK 6'));
-        if (pool.length === 0) pool = vocabList.filter(item => item.hsk === 'HSK 5' || item.hsk === 'HSK 6');
+        pool = koreanVocabList.filter(item => item.isLearned && (item.hsk === 'HSK 5' || item.hsk === 'HSK 6'));
+        if (pool.length === 0) pool = koreanVocabList.filter(item => item.hsk === 'HSK 5' || item.hsk === 'HSK 6');
       }
       
       // Shuffle and take max 4 words
       const queue = [...pool].sort(() => 0.5 - Math.random()).slice(0, Math.min(pool.length, 4));
+      if (queue.length === 0) return;
       setCurrentVocabQueue(queue);
       
-      const calculatedHp = queue.length * 25;
+      const calculatedHp = getDungeonMaxHp('vocab', queue.length, stats.str);
       setMonsterHp(calculatedHp);
       setMonsterMaxHp(calculatedHp);
       
@@ -105,7 +119,7 @@ export default function LearnPage() {
       const queue = [...quests].sort(() => 0.5 - Math.random());
       setCurrentWritingQueue(queue);
       
-      const calculatedHp = queue.length * 30;
+      const calculatedHp = getDungeonMaxHp('writing', queue.length, stats.str);
       setMonsterHp(calculatedHp);
       setMonsterMaxHp(calculatedHp);
       
@@ -120,13 +134,17 @@ export default function LearnPage() {
     setIsAnswered(false);
     setPotionUsed(false);
     
+    const correctMeaning = getLocalizedMeaning(word, 'ko').text;
     const wrongOptions = allWords
-      .filter(item => item.id !== word.id && item.meaning !== word.meaning)
-      .map(item => item.meaning)
+      .filter(item => item.id !== word.id)
+      .map(item => getLocalizedMeaning(item, 'ko'))
+      .filter((meaning) => !meaning.isFallback && meaning.text !== correctMeaning)
+      .map((meaning) => meaning.text)
+      .filter((meaning, index, meanings) => meanings.indexOf(meaning) === index)
       .sort(() => 0.5 - Math.random())
       .slice(0, 2);
       
-    const pool = [word.meaning, ...wrongOptions].sort(() => 0.5 - Math.random());
+    const pool = [correctMeaning, ...wrongOptions].sort(() => 0.5 - Math.random());
     setOptions(pool);
   };
 
@@ -165,8 +183,12 @@ export default function LearnPage() {
     setIsCorrect(isRight);
     
     if (isRight) {
-      const isCrit = stats.str > 15 && Math.random() > 0.4;
-      const damage = isCrit ? 40 : 30;
+      const nextComboCount = comboCount + 1;
+      const isCrit = nextComboCount >= 3;
+      const damage = getAttackDamage(stats.str, 'writing', isCrit);
+      setComboCount(isCrit ? 0 : nextComboCount);
+      if (isCrit) setCriticalCount((current) => current + 1);
+      setStrengthBonusDamage((current) => current + getStrengthBonusDamage(stats.str));
       setMonsterHp(prev => Math.max(0, prev - damage));
       
       setDamageEffect({
@@ -178,7 +200,9 @@ export default function LearnPage() {
       setXpEarned(prev => prev + 25);
       setGoldEarned(prev => prev + 12);
     } else {
+      setComboCount(0);
       setIncorrectCount(prev => prev + 1);
+      setMissedItems((current) => [...current, quest.korean]);
       setDamageEffect({
         active: true,
         text: '빗나감! 반격 0 데미지',
@@ -197,15 +221,20 @@ export default function LearnPage() {
     
     const word = currentVocabQueue[currentIndex];
     const chosenMeaning = options[optionIndex];
-    const isRight = chosenMeaning === word.meaning;
+    const correctMeaning = getLocalizedMeaning(word, 'ko').text;
+    const isRight = chosenMeaning === correctMeaning;
     
     setSelectedOption(optionIndex);
     setIsAnswered(true);
     setIsCorrect(isRight);
     
     if (isRight) {
-      const isCrit = stats.str > 15 && Math.random() > 0.5;
-      const damage = isCrit ? 35 : 25;
+      const nextComboCount = comboCount + 1;
+      const isCrit = nextComboCount >= 3;
+      const damage = getAttackDamage(stats.str, 'vocab', isCrit);
+      setComboCount(isCrit ? 0 : nextComboCount);
+      if (isCrit) setCriticalCount((current) => current + 1);
+      setStrengthBonusDamage((current) => current + getStrengthBonusDamage(stats.str));
       setMonsterHp(prev => Math.max(0, prev - damage));
       
       setDamageEffect({
@@ -222,7 +251,9 @@ export default function LearnPage() {
         updateSrsWord(word.id, 5);
       }
     } else {
+      setComboCount(0);
       setIncorrectCount(prev => prev + 1);
+      setMissedItems((current) => [...current, word.hanzi]);
       setDamageEffect({
         active: true,
         text: '빗나감! 반격 0 데미지',
@@ -246,7 +277,7 @@ export default function LearnPage() {
     spendGold(50);
     setPotionUsed(true);
     
-    const correctMeaning = currentVocabQueue[currentIndex].meaning;
+    const correctMeaning = getLocalizedMeaning(currentVocabQueue[currentIndex], 'ko').text;
     const incorrectIndices = options
       .map((opt, idx) => ({ opt, idx }))
       .filter(item => item.opt !== correctMeaning);
@@ -268,6 +299,15 @@ export default function LearnPage() {
       // Grant final stage completion bonus
       addXP(xpEarned);
       addGold(goldEarned);
+      recordLearningEvent({
+        type: 'lesson',
+        correct: Math.max(0, totalQuests - incorrectCount),
+        total: totalQuests,
+        xp: xpEarned,
+        gold: goldEarned,
+        hskLevel: selectedHsk.toUpperCase(),
+        weakItems: missedItems,
+      });
     } else {
       setCurrentIndex(nextIdx);
       if (selectedMode === 'vocab') {
@@ -321,14 +361,14 @@ export default function LearnPage() {
             <div className="flex flex-col gap-2">
               <span className="text-sm font-bold text-gray-300 px-1">1단계: 던전 난이도(HSK 등급) 지정</span>
               <div className="grid grid-cols-3 gap-2">
-                {[
+                {([
                   { id: 'hsk12', label: '1-2급 (초급)', name: '만리장성' },
                   { id: 'hsk34', label: '3-4급 (중급)', name: '상하이' },
                   { id: 'hsk56', label: '5-6급 (고급)', name: '자금성' }
-                ].map(level => (
+                ] as const).map(level => (
                   <button
                     key={level.id}
-                    onClick={() => setSelectedHsk(level.id as any)}
+                    onClick={() => setSelectedHsk(level.id)}
                     className={`glass-panel border rounded-xl py-3 px-1 text-center transition-all ${
                       selectedHsk === level.id 
                         ? 'border-neon-green/40 bg-neon-green/5 text-neon-green font-bold shadow-[0_0_12px_rgba(16,185,129,0.15)]' 
@@ -388,6 +428,7 @@ export default function LearnPage() {
 
             <button
               onClick={startDungeon}
+              data-testid="start-dungeon"
               className="w-full mt-2 py-3.5 bg-neon-green hover:bg-emerald-500 text-dark-bg font-extrabold rounded-xl text-sm shadow-lg shadow-neon-green/20 hover:scale-105 active:scale-95 transition-all"
             >
               던전 침공 개시 (전투 시작)
@@ -415,6 +456,10 @@ export default function LearnPage() {
                   className="h-full bg-gradient-to-r from-red-600 to-neon-rose transition-all duration-300"
                   style={{ width: `${(monsterHp / monsterMaxHp) * 100}%` }}
                 />
+              </div>
+              <div className="flex items-center justify-between text-[10px]">
+                <span className="text-gray-400">연속 정답</span>
+                <span className={comboCount === 2 ? 'font-extrabold text-cyber-yellow' : 'font-bold text-gray-300'}>{comboCount}/3 · {comboCount === 2 ? '다음 정답은 크리티컬!' : '3연속 정답 시 크리티컬'}</span>
               </div>
             </div>
 
@@ -460,7 +505,7 @@ export default function LearnPage() {
                     문장 결합 쓰기 미션
                   </span>
                   <h2 className="text-sm font-extrabold text-white mt-1 leading-snug">
-                    "{currentWritingQueue[currentIndex]?.korean}"
+                    &quot;{currentWritingQueue[currentIndex]?.korean}&quot;
                   </h2>
                   <p className="text-[10px] text-gray-500 font-medium">위 한국어에 부합하도록 중국어 단어를 조립하십시오.</p>
                 </div>
@@ -473,10 +518,11 @@ export default function LearnPage() {
               <div className="flex flex-col gap-2">
                 {options.map((option, idx) => {
                   const isSelected = selectedOption === idx;
+                  const correctMeaning = getLocalizedMeaning(currentVocabQueue[currentIndex], 'ko').text;
                   let optionStyle = 'border-white/10 bg-white/5 hover:bg-white/10 text-white';
                   
                   if (isAnswered) {
-                    if (option === currentVocabQueue[currentIndex].meaning) {
+                    if (option === correctMeaning) {
                       optionStyle = 'border-neon-green/40 bg-neon-green/10 text-neon-green font-bold';
                     } else if (isSelected) {
                       optionStyle = 'border-neon-rose/40 bg-neon-rose/10 text-neon-rose font-bold';
@@ -488,13 +534,15 @@ export default function LearnPage() {
                   return (
                     <button
                       key={idx}
+                      data-testid="vocab-option"
+                      data-correct={option === correctMeaning}
                       disabled={isAnswered || option.startsWith('🧪')}
                       onClick={() => handleVocabAnswerSubmit(idx)}
                       className={`w-full py-3.5 px-4 border rounded-xl text-left text-xs transition-all flex items-center justify-between hover:scale-[1.01] ${optionStyle}`}
                     >
                       <span>{option}</span>
-                      {isAnswered && option === currentVocabQueue[currentIndex].meaning && <Check size={16} />}
-                      {isAnswered && isSelected && option !== currentVocabQueue[currentIndex].meaning && <X size={16} />}
+                      {isAnswered && option === correctMeaning && <Check size={16} />}
+                      {isAnswered && isSelected && option !== correctMeaning && <X size={16} />}
                     </button>
                   );
                 })}
@@ -587,6 +635,7 @@ export default function LearnPage() {
               ) : (
                 <button
                   onClick={nextTurn}
+                  data-testid="next-turn"
                   className="flex-1 py-3.5 bg-neon-cyan hover:bg-cyan-500 text-dark-bg font-extrabold rounded-xl text-xs shadow-lg shadow-neon-cyan/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-1.5"
                 >
                   다음 관문 돌파 <ChevronRight size={16} />
@@ -599,6 +648,7 @@ export default function LearnPage() {
         {/* Cleared State Summary */}
         {gameState === 'cleared' && (
           <motion.div
+            data-testid="dungeon-cleared"
             key="cleared"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -634,6 +684,19 @@ export default function LearnPage() {
                   {incorrectCount} 개
                 </span>
               </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-400 font-medium">크리티컬 공격</span>
+                <span className="font-bold text-cyber-yellow">{criticalCount}회</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-400 font-medium">힘 스탯 추가 피해</span>
+                <span className="font-bold text-neon-green">+{strengthBonusDamage}</span>
+              </div>
+              {stats.level > startingLevel && (
+                <div className="rounded-lg border border-neon-cyan/20 bg-neon-cyan/5 px-3 py-2 text-center text-xs font-extrabold text-neon-cyan">
+                  레벨 업! Lv.{startingLevel} → Lv.{stats.level} · 스탯 포인트 +{(stats.level - startingLevel) * 3}
+                </div>
+              )}
               <hr className="border-white/5 my-1" />
               <div className="flex justify-between text-xs font-bold">
                 <span className="text-cyber-yellow">지급 골드</span>

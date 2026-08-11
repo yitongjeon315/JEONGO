@@ -41,7 +41,7 @@
   { "id": 39, "hanzi": "黑", "pinyin": "hēi", "meaning": "검다/어둡다", "hsk": "HSK 2", "partOfSpeech": "형용사", "exampleHanzi": "天黑了，我们回家吧。", "examplePinyin": "Tiān hēi le, wǒmen huí jiā ba.", "exampleMeaning": "날이 어두워졌으니, 우리 집에 갑시다." },
   { "id": 40, "hanzi": "晴", "pinyin": "qíng", "meaning": "맑다", "hsk": "HSK 2", "partOfSpeech": "형용사", "exampleHanzi": "今天是晴天。", "examplePinyin": "Jīntiān shì qíngtiān.", "exampleMeaning": "오늘은 맑은 날씨이다." },
 
-  { "id": 41, "hanzi": "经常", "pinyin": "jīngcháng", "meaning": "자주", "hsk": "HSK 3", "partOfSpeech": "부사", "exampleHanzi": "我经常去图书馆看书。", "examplePinyin": "Wǒ jīngcháng qù túshūguǎn kànshū.", "meaning": "나는 자주 도서관에 가서 책을 읽는다." },
+  { "id": 41, "hanzi": "经常", "pinyin": "jīngcháng", "meaning": "자주", "hsk": "HSK 3", "partOfSpeech": "부사", "exampleHanzi": "我经常去图书馆看书。", "examplePinyin": "Wǒ jīngcháng qù túshūguǎn kànshū.", "exampleMeaning": "나는 자주 도서관에 가서 책을 읽는다." },
   { "id": 42, "hanzi": "努力", "pinyin": "nǔlì", "meaning": "노력하다", "hsk": "HSK 3", "partOfSpeech": "형용사/동사", "exampleHanzi": "只要努力就能成功。", "examplePinyin": "Zhǐyào nǔlì jiù néng chénggōng.", "exampleMeaning": "노력하기만 하면 성공할 수 있다." },
   { "id": 43, "hanzi": "必须", "pinyin": "bìxū", "meaning": "반드시 ~해야 한다", "hsk": "HSK 3", "partOfSpeech": "부사", "exampleHanzi": "你必须按时吃药。", "examplePinyin": "Nǐ bìxū ànshí chī yào.", "exampleMeaning": "너는 제때에 약을 복용해야만 한다." },
   { "id": 44, "hanzi": "或者", "pinyin": "huòzhě", "meaning": "또는/혹은", "hsk": "HSK 3", "partOfSpeech": "접속사", "exampleHanzi": "喝茶或者咖啡都可以。", "examplePinyin": "Hē chá huòzhě kāfēi dōu kěyǐ.", "exampleMeaning": "차 또는 커피 둘 다 괜찮습니다." },

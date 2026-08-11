@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <base target="_top">
+    <style>
+      :root {
+        --navy: #0f172a;
+        --blue: #2563eb;
+        --blue-dark: #1d4ed8;
+        --teal: #0f766e;
+        --surface: #ffffff;
+        --muted: #64748b;
+        --line: #dbe4f0;
+        --soft: #f1f5f9;
+        --danger: #b91c1c;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #eef4ff;
+        color: var(--navy);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+      }
+      button, input, textarea, select { font: inherit; }
+      button { min-height: 46px; cursor: pointer; }
+
+      .topbar {
+        background: linear-gradient(135deg, #172554, #1e3a8a);
+        color: white;
+        padding: 1rem;
+      }
+      .topbar-inner { max-width: 1100px; margin: 0 auto; }
+      .topbar h1 { margin: 0; font-size: clamp(1.25rem, 4vw, 1.8rem); }
+      .topbar p { margin: 0.35rem 0 0; color: #c7d2fe; }
+
+      .shell { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 12px 34px rgba(15, 23, 42, 0.08);
+        padding: clamp(1rem, 4vw, 1.5rem);
+        margin-bottom: 1rem;
+      }
+      .hidden { display: none !important; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+      .field { display: grid; gap: 0.45rem; }
+      .field label { font-weight: 750; }
+      .field input, .field textarea, .field select {
+        width: 100%;
+        border: 1px solid #b8c7dc;
+        border-radius: 12px;
+        padding: 0.8rem 0.9rem;
+        background: white;
+        color: var(--navy);
+      }
+      .field input:focus, .field textarea:focus, .field select:focus {
+        outline: 3px solid #bfdbfe;
+        border-color: var(--blue);
+      }
+      textarea { min-height: 145px; resize: vertical; line-height: 1.65; }
+      .btn {
+        border: 0;
+        border-radius: 12px;
+        padding: 0.75rem 1rem;
+        font-weight: 800;
+        color: white;
+        background: var(--blue);
+      }
+      .btn:hover { background: var(--blue-dark); }
+      .btn.secondary { background: #475569; }
+      .btn.danger { background: var(--danger); }
+      .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+      .actions { display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center; }
+      .status {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        border-radius: 12px;
+        padding: 0.7rem 0.9rem;
+        background: var(--soft);
+        color: #334155;
+        margin-top: 0.8rem;
+      }
+      .status.error { background: #fee2e2; color: #991b1b; }
+      .status.success { background: #dcfce7; color: #166534; }
+
+      .room-banner {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 1rem;
+        align-items: center;
+      }
+      .room-code {
+        background: #172554;
+        color: white;
+        border-radius: 16px;
+        padding: 1rem;
+        text-align: center;
+      }
+      .room-code small { display: block; color: #bfdbfe; }
+      .room-code strong { display: block; font-size: 1.75rem; letter-spacing: 0.12em; margin-top: 0.25rem; }
+      .share-link { overflow-wrap: anywhere; color: var(--blue-dark); }
+
+      .translation-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9rem;
+        margin-top: 1rem;
+      }
+      .translation-card {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1rem;
+        background: #f8fafc;
+        min-height: 125px;
+      }
+      .translation-card h3 { margin: 0 0 0.6rem; color: var(--blue-dark); font-size: 1rem; }
+      .translation-card p { margin: 0; white-space: pre-wrap; line-height: 1.7; overflow-wrap: anywhere; }
+
+      .student-source {
+        background: #172554;
+        color: white;
+        border-radius: 16px;
+        padding: 1.1rem;
+        margin-bottom: 1rem;
+      }
+      .student-source small { color: #bfdbfe; font-weight: 700; }
+      .student-source p { font-size: clamp(1.15rem, 4.5vw, 1.55rem); line-height: 1.7; margin: 0.45rem 0 0; white-space: pre-wrap; }
+      .student-translation {
+        border-left: 6px solid var(--teal);
+        background: #f0fdfa;
+        border-radius: 14px;
+        padding: 1.1rem;
+      }
+      .student-translation p { font-size: clamp(1.15rem, 4.5vw, 1.55rem); line-height: 1.7; white-space: pre-wrap; }
+      .meta { color: var(--muted); font-size: 0.88rem; }
+      .switch-row { display: flex; align-items: center; gap: 0.55rem; color: #334155; }
+      .switch-row input { width: 20px; height: 20px; }
+      .tts-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        align-items: center;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #bfe6df;
+      }
+      .tts-controls .btn { background: var(--teal); }
+      .tts-controls .btn.secondary { background: #475569; }
+      .tts-speed {
+        min-height: 46px;
+        border: 1px solid #94a3b8;
+        border-radius: 12px;
+        padding: 0.65rem 0.8rem;
+        background: white;
+      }
+      .tts-note { width: 100%; margin: 0; color: #475569; font-size: 0.86rem; }
+
+      @media (max-width: 680px) {
+        .grid, .translation-grid { grid-template-columns: 1fr; }
+        .room-banner { grid-template-columns: 1fr; }
+        .shell { padding: 0.75rem; }
+        .card { border-radius: 14px; }
+        .actions .btn { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <h1>🌐 TOPIK 실시간 번역 수업방</h1>
+        <p>한국어 입력을 영어·중국어·베트남어·네팔어로 번역합니다.</p>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section id="teacher-view" class="hidden">
+        <div id="setup-card" class="card hidden">
+          <h2>처음 한 번: 교사 비밀번호 설정</h2>
+          <p class="meta">학생이 수업방을 만들거나 판서를 수정하지 못하도록 교사 전용 비밀번호를 설정합니다.</p>
+          <div class="grid">
+            <div class="field">
+              <label for="new-pin">새 교사 비밀번호</label>
+              <input id="new-pin" type="password" minlength="4" autocomplete="new-password">
+            </div>
+            <div class="field">
+              <label for="confirm-pin">비밀번호 확인</label>
+              <input id="confirm-pin" type="password" minlength="4" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="actions" style="margin-top:1rem">
+            <button id="setup-btn" class="btn">비밀번호 설정</button>
+          </div>
+          <div id="setup-status" class="status" role="status">4자 이상으로 설정하세요.</div>
+        </div>
+
+        <div id="room-login-card" class="card hidden">
+          <h2>교사 수업방 시작</h2>
+          <div class="field">
+            <label for="teacher-pin">교사 비밀번호</label>
+            <input id="teacher-pin" type="password" autocomplete="current-password">
+          </div>
+          <div class="actions" style="margin-top:1rem">
+            <button id="create-room-btn" class="btn">새 수업방 만들기</button>
+          </div>
+          <div id="login-status" class="status" role="status">비밀번호를 입력하고 수업방을 만드세요.</div>
+        </div>
+
+        <div id="teacher-room" class="hidden">
+          <div class="card room-banner">
+            <div class="room-code"><small>학생 입장 코드</small><strong id="room-code">------</strong></div>
+            <div>
+              <strong>학생에게 아래 링크를 보내세요.</strong>
+              <p id="student-link" class="share-link"></p>
+              <div class="actions">
+                <button id="copy-link-btn" class="btn secondary">학생 링크 복사</button>
+                <button id="close-room-btn" class="btn danger">수업방 종료</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="field">
+              <label for="korean-input">한국어 판서 입력</label>
+              <textarea id="korean-input" maxlength="600" placeholder="예: 도서관에서 책을 읽습니다."></textarea>
+            </div>
+            <div class="actions" style="margin-top:0.8rem">
+              <button id="translate-btn" class="btn">지금 번역하기</button>
+              <label class="switch-row"><input id="auto-translate" type="checkbox" checked> 입력을 멈추면 자동 번역</label>
+              <span id="character-count" class="meta">0 / 600자</span>
+            </div>
+            <div id="teacher-status" class="status" role="status">한국어를 입력하면 약 1.2초 후 자동 번역됩니다.</div>
+
+            <div class="translation-grid">
+              <article class="translation-card"><h3>🇺🇸 English</h3><p data-translation="en">번역 대기 중</p></article>
+              <article class="translation-card"><h3>🇨🇳 简体中文</h3><p data-translation="zh-CN">번역 대기 중</p></article>
+              <article class="translation-card"><h3>🇻🇳 Tiếng Việt</h3><p data-translation="vi">번역 대기 중</p></article>
+              <article class="translation-card"><h3>🇳🇵 नेपाली</h3><p data-translation="ne">번역 대기 중</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="student-view" class="hidden">
+        <div class="card">
+          <div class="grid">
+            <div>
+              <h2 style="margin-top:0">학생 번역 화면</h2>
+              <p class="meta">수업방 <strong id="student-room-code"></strong> · 자동 새로고침</p>
+            </div>
+            <div class="field">
+              <label for="student-language">내 번역 언어</label>
+              <select id="student-language">
+                <option value="en">English</option>
+                <option value="zh-CN">简体中文</option>
+                <option value="vi">Tiếng Việt</option>
+                <option value="ne">नेपाली</option>
+              </select>
+            </div>
+          </div>
+          <div id="student-status" class="status" role="status">수업방에 연결하는 중입니다.</div>
+        </div>
+
+        <div class="card">
+          <div class="student-source"><small>한국어 원문</small><p id="student-source">선생님의 판서를 기다리고 있습니다.</p></div>
+          <div class="student-translation">
+            <strong id="student-language-label">English</strong>
+            <p id="student-translation">번역을 기다리고 있습니다.</p>
+            <div class="tts-controls" aria-label="번역문 음성 읽기 설정">
+              <label class="switch-row"><input id="auto-tts" type="checkbox"> 새 번역 자동 읽기</label>
+              <button id="speak-translation-btn" class="btn" type="button">🔊 다시 듣기</button>
+              <button id="stop-tts-btn" class="btn secondary" type="button">⏹ 음성 중지</button>
+              <label for="tts-speed" class="meta">속도</label>
+              <select id="tts-speed" class="tts-speed">
+                <option value="0.8">느리게</option>
+                <option value="1" selected>보통</option>
+              </select>
+              <p id="tts-note" class="tts-note">무료 기기 음성을 사용합니다. API 키가 필요 없습니다.</p>
+            </div>
+          </div>
+          <p id="student-updated" class="meta"></p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const BOOT = <?!= bootData ?>;
+      const state = { roomId: BOOT.room || '', writeKey: '', studentUrl: '', lastSent: '', timer: null, version: -1, roomData: null, voices: [], lastAutoSpokenKey: '' };
+      const TTS_LANGUAGE_TAGS = Object.freeze({ en: 'en-US', 'zh-CN': 'zh-CN', vi: 'vi-VN', ne: 'ne-NP' });
+      const $ = (selector) => document.querySelector(selector);
+      const setStatus = (selector, message, kind = '') => {
+        const node = $(selector);
+        node.textContent = message;
+        node.className = `status ${kind}`.trim();
+      };
+      const server = (method, ...args) => new Promise((resolve, reject) => {
+        google.script.run.withSuccessHandler(resolve).withFailureHandler(reject)[method](...args);
+      });
+
+      function errorMessage(error) {
+        return (error && error.message) ? error.message.replace(/^Exception:\s*/, '') : '잠시 후 다시 시도하세요.';
+      }
+
+      async function initTeacher() {
+        $('#teacher-view').classList.remove('hidden');
+        try {
+          const setup = await server('getSetupState');
+          (setup.configured ? $('#room-login-card') : $('#setup-card')).classList.remove('hidden');
+        } catch (error) {
+          $('#room-login-card').classList.remove('hidden');
+          setStatus('#login-status', errorMessage(error), 'error');
+        }
+      }
+
+      async function setupPin() {
+        const pin = $('#new-pin').value.trim();
+        const confirmPin = $('#confirm-pin').value.trim();
+        if (pin.length < 4) return setStatus('#setup-status', '4자 이상으로 입력하세요.', 'error');
+        if (pin !== confirmPin) return setStatus('#setup-status', '비밀번호 확인이 일치하지 않습니다.', 'error');
+        $('#setup-btn').disabled = true;
+        setStatus('#setup-status', '비밀번호를 설정하는 중입니다.');
+        try {
+          await server('initializeTeacherPin', pin);
+          $('#setup-card').classList.add('hidden');
+          $('#room-login-card').classList.remove('hidden');
+          $('#teacher-pin').value = pin;
+          setStatus('#login-status', '설정 완료! 새 수업방을 만드세요.', 'success');
+        } catch (error) {
+          setStatus('#setup-status', errorMessage(error), 'error');
+        } finally {
+          $('#setup-btn').disabled = false;
+        }
+      }
+
+      async function createRoom() {
+        const pin = $('#teacher-pin').value.trim();
+        if (!pin) return setStatus('#login-status', '교사 비밀번호를 입력하세요.', 'error');
+        $('#create-room-btn').disabled = true;
+        setStatus('#login-status', '수업방을 만드는 중입니다.');
+        try {
+          const room = await server('createRoom', pin);
+          Object.assign(state, { roomId: room.roomId, writeKey: room.writeKey, studentUrl: room.studentUrl });
+          $('#room-code').textContent = room.roomId;
+          $('#student-link').textContent = room.studentUrl;
+          $('#room-login-card').classList.add('hidden');
+          $('#teacher-room').classList.remove('hidden');
+          $('#korean-input').focus();
+        } catch (error) {
+          setStatus('#login-status', errorMessage(error), 'error');
+        } finally {
+          $('#create-room-btn').disabled = false;
+        }
+      }
+
+      async function translateNow() {
+        const text = $('#korean-input').value.trim();
+        if (!text || text === state.lastSent) return;
+        $('#translate-btn').disabled = true;
+        setStatus('#teacher-status', '4개 언어로 번역하는 중입니다…');
+        try {
+          const room = await server('publishText', state.roomId, state.writeKey, text);
+          state.lastSent = text;
+          state.version = room.version;
+          renderTeacherTranslations(room.translations);
+          setStatus('#teacher-status', '학생 화면에 번역을 전송했습니다.', 'success');
+        } catch (error) {
+          setStatus('#teacher-status', errorMessage(error), 'error');
+        } finally {
+          $('#translate-btn').disabled = false;
+        }
+      }
+
+      function scheduleTranslation() {
+        const value = $('#korean-input').value;
+        $('#character-count').textContent = `${value.length} / 600자`;
+        clearTimeout(state.timer);
+        if (!$('#auto-translate').checked || !value.trim()) return;
+        state.timer = setTimeout(translateNow, 1200);
+      }
+
+      function renderTeacherTranslations(translations) {
+        document.querySelectorAll('[data-translation]').forEach((node) => {
+          node.textContent = translations[node.dataset.translation] || '번역 없음';
+        });
+      }
+
+      async function copyStudentLink() {
+        try {
+          await navigator.clipboard.writeText(state.studentUrl);
+          setStatus('#teacher-status', '학생 링크를 복사했습니다.', 'success');
+        } catch (error) {
+          window.prompt('아래 링크를 복사하세요.', state.studentUrl);
+        }
+      }
+
+      async function closeRoom() {
+        if (!confirm('현재 수업방을 종료할까요? 학생 화면 연결도 끝납니다.')) return;
+        try {
+          await server('closeRoom', state.roomId, state.writeKey);
+          location.href = BOOT.appUrl || location.pathname;
+        } catch (error) {
+          setStatus('#teacher-status', errorMessage(error), 'error');
+        }
+      }
+
+      function initStudent() {
+        $('#student-view').classList.remove('hidden');
+        $('#student-room-code').textContent = state.roomId || '없음';
+        const savedLanguage = localStorage.getItem('topik-translation-language');
+        if (savedLanguage && BOOT.languages[savedLanguage]) $('#student-language').value = savedLanguage;
+        $('#auto-tts').checked = localStorage.getItem('topik-auto-tts') === 'true';
+        $('#tts-speed').value = localStorage.getItem('topik-tts-speed') || '1';
+        initializeTts();
+        updateStudentLanguageLabel();
+        if (!state.roomId) {
+          setStatus('#student-status', '학생 링크의 수업방 번호가 없습니다.', 'error');
+          return;
+        }
+        refreshStudent();
+        setInterval(refreshStudent, 1500);
+      }
+
+      async function refreshStudent() {
+        try {
+          const room = await server('getRoom', state.roomId);
+          if (!room.found) return setStatus('#student-status', room.message, 'error');
+          setStatus('#student-status', '수업방 연결됨 · 새 판서를 자동 확인합니다.', 'success');
+          if (room.version !== state.version) {
+            state.version = room.version;
+            state.roomData = room;
+            renderStudent(room);
+          }
+        } catch (error) {
+          setStatus('#student-status', '연결을 다시 시도하는 중입니다.', 'error');
+        }
+      }
+
+      function renderStudent(room) {
+        const language = $('#student-language').value;
+        const translation = room.translations[language] || '';
+        $('#student-source').textContent = room.source || '선생님의 판서를 기다리고 있습니다.';
+        $('#student-translation').textContent = translation || '번역을 기다리고 있습니다.';
+        $('#student-updated').textContent = room.updatedAt ? `마지막 업데이트: ${new Date(room.updatedAt).toLocaleTimeString()}` : '';
+
+        const autoKey = `${room.version}:${language}`;
+        if (translation && $('#auto-tts').checked && state.lastAutoSpokenKey !== autoKey) {
+          state.lastAutoSpokenKey = autoKey;
+          setTimeout(() => speakTranslation(true), 80);
+        }
+      }
+
+      function updateStudentLanguageLabel() {
+        const language = $('#student-language').value;
+        localStorage.setItem('topik-translation-language', language);
+        $('#student-language-label').textContent = BOOT.languages[language] || language;
+        stopTts();
+        if (state.roomData) renderStudent(state.roomData);
+      }
+
+      function initializeTts() {
+        const supported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+        $('#speak-translation-btn').disabled = !supported;
+        $('#stop-tts-btn').disabled = !supported;
+        $('#auto-tts').disabled = !supported;
+        if (!supported) {
+          $('#tts-note').textContent = '이 브라우저에서는 무료 TTS를 지원하지 않습니다.';
+          return;
+        }
+
+        const refreshVoices = () => {
+          state.voices = window.speechSynthesis.getVoices();
+          updateTtsAvailability();
+        };
+        refreshVoices();
+        if (typeof window.speechSynthesis.addEventListener === 'function') {
+          window.speechSynthesis.addEventListener('voiceschanged', refreshVoices);
+        } else {
+          window.speechSynthesis.onvoiceschanged = refreshVoices;
+        }
+      }
+
+      function findVoice(language) {
+        const tag = TTS_LANGUAGE_TAGS[language] || language;
+        const exact = state.voices.find((voice) => voice.lang.toLowerCase() === tag.toLowerCase());
+        if (exact) return exact;
+        const base = tag.split('-')[0].toLowerCase();
+        return state.voices.find((voice) => voice.lang.toLowerCase().split('-')[0] === base) || null;
+      }
+
+      function updateTtsAvailability() {
+        if (!('speechSynthesis' in window)) return;
+        const language = $('#student-language').value;
+        const voice = findVoice(language);
+        $('#tts-note').textContent = voice
+          ? `${voice.name} 기기 음성으로 읽습니다. API 키가 필요 없습니다.`
+          : '이 언어의 전용 음성을 찾지 못했습니다. 기기 기본 음성으로 재생을 시도합니다.';
+      }
+
+      function speakTranslation(isAutomatic = false) {
+        if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) return;
+        const text = $('#student-translation').textContent.trim();
+        if (!text || text === '번역을 기다리고 있습니다.') return;
+
+        const language = $('#student-language').value;
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voice = findVoice(language);
+        utterance.lang = TTS_LANGUAGE_TAGS[language] || language;
+        utterance.rate = Number($('#tts-speed').value || 1);
+        if (voice) utterance.voice = voice;
+        utterance.onstart = () => { $('#tts-note').textContent = isAutomatic ? '새 번역을 자동으로 읽는 중입니다.' : '번역문을 읽는 중입니다.'; };
+        utterance.onend = updateTtsAvailability;
+        utterance.onerror = () => { $('#tts-note').textContent = '이 기기에서 해당 언어 음성을 재생하지 못했습니다.'; };
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      }
+
+      function stopTts() {
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      }
+
+      function toggleAutoTts() {
+        localStorage.setItem('topik-auto-tts', String($('#auto-tts').checked));
+        if ($('#auto-tts').checked) speakTranslation(true);
+        else stopTts();
+      }
+
+      function updateTtsSpeed() {
+        localStorage.setItem('topik-tts-speed', $('#tts-speed').value);
+        stopTts();
+      }
+
+      $('#setup-btn').addEventListener('click', setupPin);
+      $('#create-room-btn').addEventListener('click', createRoom);
+      $('#translate-btn').addEventListener('click', translateNow);
+      $('#korean-input').addEventListener('input', scheduleTranslation);
+      $('#copy-link-btn').addEventListener('click', copyStudentLink);
+      $('#close-room-btn').addEventListener('click', closeRoom);
+      $('#student-language').addEventListener('change', updateStudentLanguageLabel);
+      $('#auto-tts').addEventListener('change', toggleAutoTts);
+      $('#speak-translation-btn').addEventListener('click', () => speakTranslation(false));
+      $('#stop-tts-btn').addEventListener('click', stopTts);
+      $('#tts-speed').addEventListener('change', updateTtsSpeed);
+      window.addEventListener('beforeunload', stopTts);
+
+      if (BOOT.view === 'student') initStudent();
+      else initTeacher();
+    </script>
+  </body>
+</html>

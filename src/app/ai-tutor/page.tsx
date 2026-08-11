@@ -5,6 +5,44 @@ import { useApp } from '@/context/AppContext';
 import { Sparkles, MessageSquare, Mic, Volume2, Check, X, ShieldAlert, Award, Star, RefreshCw, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface VocabScore {
+  word: string;
+  status: 'ok' | 'bad';
+  reason?: string;
+}
+
+interface ScenarioTurn {
+  aiText: string;
+  aiTrans: string;
+  userPrompt: string;
+  userPinyin: string;
+  userTrans: string;
+  simulatedUserPitch: number[];
+  simulatedNativePitch: number[];
+  vocabScores: VocabScore[];
+}
+
+interface Scenario {
+  title: string;
+  turns: ScenarioTurn[];
+}
+
+interface TutorInfo {
+  name: string;
+  emoji: string;
+  image: string;
+  personality: string;
+  desc: string;
+}
+
+interface EvaluationReport {
+  score: number;
+  vocabScores: VocabScore[];
+  userPitch: number[];
+  nativePitch: number[];
+  pinyinWords: string[];
+}
+
 interface Message {
   sender: 'ai' | 'user';
   text: string;
@@ -14,7 +52,7 @@ interface Message {
 }
 
 export default function AiTutorPage() {
-  const { stats, addXP, addGold } = useApp();
+  const { stats, addXP, addGold, recordLearningEvent } = useApp();
   
   // Game states
   const [sessionState, setSessionState] = useState<'lobby' | 'chatting' | 'summary'>('lobby');
@@ -28,14 +66,13 @@ export default function AiTutorPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [recordDuration, setRecordDuration] = useState(0);
   const [showPitchChart, setShowPitchChart] = useState(false);
-  const [evaluationReport, setEvaluationReport] = useState<any>(null);
+  const [evaluationReport, setEvaluationReport] = useState<EvaluationReport | null>(null);
   const [showHistory, setShowHistory] = useState(false);
 
   // Track recording duration
   useEffect(() => {
-    let interval: any;
+    let interval: ReturnType<typeof setInterval> | undefined;
     if (isRecording) {
-      setRecordDuration(0);
       interval = setInterval(() => {
         setRecordDuration(prev => prev + 1);
       }, 1000);
@@ -52,13 +89,13 @@ export default function AiTutorPage() {
     meaning: ''
   });
 
-  const tutors = {
+  const tutors: Record<string, TutorInfo> = {
     lily: { name: '릴리 (현지인 친구)', emoji: '🎧', image: '/tutor_lily.jpg', personality: '상하이 트렌디 피플', desc: '유행어와 자연스러운 구어체 위주의 핑퐁 회화.' },
     wang: { name: '왕 선생님 (친절한 멘토)', emoji: '🎒', image: '/tutor_wang.jpg', personality: '표준어 교육공학가', desc: '초보자 맞춤형 천천히 말하기와 기초 문법 피드백.' },
     lee: { name: '교관 리 (독설형 교관)', emoji: '🦁', image: '/tutor_lee.jpg', personality: '스파르타 스피킹 코치', desc: '성조가 1도 틀려도 칼같이 지적하고 교정을 압박.' }
   };
 
-  const scenarios = {
+  const scenarios: Record<string, Scenario> = {
     restaurant: {
       title: '식당에서 훠궈 주문하기',
       turns: [
@@ -129,7 +166,7 @@ export default function AiTutorPage() {
   };
 
   const startScenario = () => {
-    const selectedScenarioData = (scenarios as any)[selectedScenario];
+    const selectedScenarioData = scenarios[selectedScenario];
     const firstTurn = selectedScenarioData.turns[0];
     
     setTurnIndex(0);
@@ -156,6 +193,7 @@ export default function AiTutorPage() {
   const triggerSimulatedRecording = () => {
     if (!isRecording) {
       // Start Recording
+      setRecordDuration(0);
       setIsRecording(true);
     } else {
       // Stop Recording & Start Analysis
@@ -165,11 +203,11 @@ export default function AiTutorPage() {
       setTimeout(() => {
         setIsAnalyzing(false);
         
-        const selectedScenarioData = (scenarios as any)[selectedScenario];
+        const selectedScenarioData = scenarios[selectedScenario];
         const activeTurn = selectedScenarioData.turns[turnIndex];
         
         // Calculate random high-fidelity score
-        const hasErrors = activeTurn.vocabScores.some((w: any) => w.status === 'bad');
+        const hasErrors = activeTurn.vocabScores.some((w: VocabScore) => w.status === 'bad');
         const score = hasErrors ? Math.floor(Math.random() * 10) + 72 : Math.floor(Math.random() * 10) + 88;
         
         setEvaluationReport({
@@ -197,13 +235,22 @@ export default function AiTutorPage() {
         // Add XP & Gold on speaking success
         addXP(20);
         addGold(15);
+        recordLearningEvent({
+          type: 'pronunciation',
+          correct: score >= 80 ? 1 : 0,
+          total: 1,
+          xp: 20,
+          gold: 15,
+          toneScore: score,
+          weakItems: activeTurn.vocabScores.filter((item) => item.status === 'bad').map((item) => item.word),
+        });
         
       }, 1500); // 1.5s simulated processing delay
     }
   };
 
   const advanceConversation = () => {
-    const selectedScenarioData = (scenarios as any)[selectedScenario];
+    const selectedScenarioData = scenarios[selectedScenario];
     const nextTurnIdx = turnIndex + 1;
     
     if (nextTurnIdx >= selectedScenarioData.turns.length) {
@@ -367,8 +414,8 @@ export default function AiTutorPage() {
             <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-white/10 bg-dark-bg shadow-2xl flex items-center justify-center">
               {/* Tutor Full Portrait Image */}
               <img 
-                src={(tutors as any)[selectedTutor].image} 
-                alt={(tutors as any)[selectedTutor].name} 
+                src={tutors[selectedTutor].image}
+                alt={tutors[selectedTutor].name}
                 className={`w-full h-full object-cover object-top transition-all duration-700 ${
                   isRecording ? 'scale-105 filter brightness-75 blur-[1px]' : 'scale-100'
                 }`}
@@ -385,10 +432,10 @@ export default function AiTutorPage() {
 
               {/* Top Left: Tutor Quick Info */}
               <div className="absolute top-3 left-3 flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 z-10">
-                <span className="text-base">{(tutors as any)[selectedTutor].emoji}</span>
+                <span className="text-base">{tutors[selectedTutor].emoji}</span>
                 <div className="flex flex-col">
-                  <span className="text-[11px] font-extrabold text-white">{(tutors as any)[selectedTutor].name}</span>
-                  <span className="text-[8px] font-bold text-neon-cyan tracking-wider">{(tutors as any)[selectedTutor].personality}</span>
+                  <span className="text-[11px] font-extrabold text-white">{tutors[selectedTutor].name}</span>
+                  <span className="text-[8px] font-bold text-neon-cyan tracking-wider">{tutors[selectedTutor].personality}</span>
                 </div>
               </div>
 
@@ -590,7 +637,7 @@ export default function AiTutorPage() {
                   <div className="flex flex-col gap-1.5 mt-1">
                     <h5 className="text-[10px] font-bold text-gray-400">단어별 발음 교정 정보</h5>
                     <div className="flex flex-col gap-1 text-[10px]">
-                      {evaluationReport.vocabScores.map((item: any, idx: number) => (
+                      {evaluationReport.vocabScores.map((item: VocabScore, idx: number) => (
                         <div
                           key={idx}
                           className={`flex items-start gap-1.5 p-2 rounded-lg border ${

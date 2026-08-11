@@ -1,7 +1,24 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import rawVocabData from '@/data/hsk_1to6.json';
+import {
+  buildAnalytics,
+  calculateSm2,
+  type AnalyticsSummary,
+  type LearningEvent,
+  type PlacementResult,
+} from '@/lib/learning';
+import {
+  DAILY_QUESTS_STORAGE_KEY,
+  applyLearningEventToDailyQuests,
+  createDailyQuestState,
+  refreshDailyQuestState,
+  restoreDailyQuestState,
+  type DailyQuest,
+  type DailyQuestState,
+} from '@/lib/daily-quests';
+import { totalAllocatedPoints, type StatAllocation } from '@/lib/character-growth';
 
 // Vocabulary Item Type
 export interface VocabItem {
@@ -21,6 +38,19 @@ export interface VocabItem {
   repetitions: number;
   intervalDays: number;
   nextReviewAt: string; // ISO string
+}
+
+interface RawVocabItem {
+  id: number;
+  hanzi: string;
+  pinyin: string;
+  meaning: string;
+  hsk: string;
+  partOfSpeech?: string;
+  exampleHanzi?: string;
+  examplePinyin?: string;
+  exampleMeaning?: string;
+  isLearned?: boolean;
 }
 
 // User Stats Type
@@ -46,6 +76,38 @@ export interface SkinsState {
   equipped: string;
 }
 
+export interface ContentQuest {
+  id: string;
+  title: string;
+  desc: string;
+  target: number;
+  gold: number;
+  xp: number;
+}
+
+export interface ContentReward {
+  id: string;
+  name: string;
+  image: string;
+  cost: number;
+  desc: string;
+}
+
+export interface ContentCatalog {
+  words: VocabItem[];
+  quests: ContentQuest[];
+  rewards: ContentReward[];
+}
+
+export interface UserSession {
+  id: string;
+  email: string;
+  name: string;
+  role: 'learner' | 'admin';
+}
+
+export type AuthStatus = 'loading' | 'guest' | 'authenticated';
+
 interface AppContextType {
   stats: UserStats;
   vocabList: VocabItem[];
@@ -53,27 +115,28 @@ interface AppContextType {
   addXP: (amount: number) => void;
   addGold: (amount: number) => void;
   spendGold: (amount: number) => boolean;
-  allocateStat: (stat: 'str' | 'dex' | 'int' | 'vit') => void;
+  allocateStats: (allocation: StatAllocation) => void;
   updateSrsWord: (wordId: number, quality: number) => void;
   toggleLearnWord: (wordId: number) => void;
   equipSkin: (skinId: string) => void;
   buySkin: (skinId: string, cost: number) => boolean;
-  completeDailyQuest: (questId: string, goldReward: number, xpReward: number) => void;
+  claimDailyQuest: (questId: string) => void;
   dailyQuests: DailyQuest[];
   activeLeague: string;
   guildInfo: GuildInfo;
   contributeToGuild: (goldAmount: number) => void;
-}
-
-interface DailyQuest {
-  id: string;
-  title: string;
-  desc: string;
-  target: number;
-  current: number;
-  completed: boolean;
-  gold: number;
-  xp: number;
+  session: UserSession | null;
+  authStatus: AuthStatus;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, name: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  learningEvents: LearningEvent[];
+  recordLearningEvent: (event: Omit<LearningEvent, 'id' | 'occurredAt'> & { occurredAt?: string }) => void;
+  placementResult: PlacementResult | null;
+  savePlacementResult: (result: PlacementResult) => void;
+  analytics: AnalyticsSummary;
+  contentCatalog: ContentCatalog;
+  saveContentCatalog: (catalog: ContentCatalog) => void;
 }
 
 interface GuildInfo {
@@ -86,10 +149,27 @@ interface GuildInfo {
   bossMaxHp: number;
 }
 
+interface AccountSnapshot {
+  version: 1;
+  stats: UserStats;
+  vocabProgress: Array<Pick<VocabItem, 'id' | 'isLearned' | 'easiness' | 'repetitions' | 'intervalDays' | 'nextReviewAt'>>;
+  skins: SkinsState;
+  dailyQuestState: DailyQuestState;
+  guildInfo: GuildInfo;
+  learningEvents: LearningEvent[];
+  placementResult: PlacementResult | null;
+}
+
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+const DEFAULT_REWARDS: ContentReward[] = [
+  { id: 'starbucks', name: '스타벅스 아이스 아메리카노 Tall', image: '☕', cost: 5000, desc: '학습 고행을 식혀줄 현실 커피 쿠폰.' },
+  { id: 'naverpay', name: '네이버페이 포인트 1,000원권', image: '💳', cost: 1200, desc: '쇼핑에 사용할 수 있는 포인트.' },
+  { id: 'gs25', name: 'GS25 모바일 상품권 3,000원권', image: '🏪', cost: 3300, desc: '편의점 모바일 상품권.' },
+];
+
 // Initial Vocab Data (Mapped from raw HSK JSON)
-const INITIAL_VOCAB: VocabItem[] = rawVocabData.map((item: any) => ({
+const INITIAL_VOCAB: VocabItem[] = (rawVocabData as RawVocabItem[]).map((item) => ({
   id: item.id,
   hanzi: item.hanzi,
   pinyin: item.pinyin,
@@ -128,11 +208,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     equipped: 'default_explorer',
   });
 
-  const [dailyQuests, setDailyQuests] = useState<DailyQuest[]>([
-    { id: 'q1', title: '일일 던전 클리어', desc: '어휘 던전 전투에서 승리하세요.', target: 1, current: 0, completed: false, gold: 150, xp: 30 },
-    { id: 'q2', title: '성조 마스터', desc: 'AI 튜터에게 80점 이상의 발음 판정을 받으세요.', target: 1, current: 0, completed: false, gold: 200, xp: 50 },
-    { id: 'q3', title: '골드 기여', desc: '길드 퀘스트 보스 물리치기를 위해 100 골드를 기부하세요.', target: 100, current: 0, completed: false, gold: 100, xp: 20 },
-  ]);
+  const [dailyQuestState, setDailyQuestState] = useState<DailyQuestState>(() => createDailyQuestState());
+  const claimedQuestIdsRef = useRef(new Set<string>());
 
   const [guildInfo, setGuildInfo] = useState<GuildInfo>({
     name: '사천 짜장 마법사들',
@@ -143,6 +220,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     bossHp: 6400,
     bossMaxHp: 10000,
   });
+  const [session, setSession] = useState<UserSession | null>(null);
+  const [authStatus, setAuthStatus] = useState<AuthStatus>('loading');
+  const [accountSyncReady, setAccountSyncReady] = useState(false);
+  const [learningEvents, setLearningEvents] = useState<LearningEvent[]>([]);
+  const [placementResult, setPlacementResult] = useState<PlacementResult | null>(null);
+  const [contentCatalog, setContentCatalog] = useState<ContentCatalog>({ words: [], quests: [], rewards: DEFAULT_REWARDS });
 
   const activeLeague = '실버 리그 (Silver League)';
 
@@ -152,47 +235,69 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const savedStats = localStorage.getItem('jeongo_stats');
       const savedVocab = localStorage.getItem('jeongo_vocab');
       const savedSkins = localStorage.getItem('jeongo_skins');
+      const savedEvents = localStorage.getItem('jeongo_learning_events');
+      const savedPlacement = localStorage.getItem('jeongo_placement');
+      const savedContent = localStorage.getItem('jeongo_content_catalog');
+      const savedDailyQuests = localStorage.getItem(DAILY_QUESTS_STORAGE_KEY);
       
-      if (savedStats) setStats(JSON.parse(savedStats));
+      if (savedStats) {
+        window.setTimeout(() => setStats(JSON.parse(savedStats) as UserStats), 0);
+      }
       if (savedVocab) {
         try {
-          const parsedSaved = JSON.parse(savedVocab);
+          const parsedSaved = JSON.parse(savedVocab) as Partial<VocabItem>[];
           if (parsedSaved.length < INITIAL_VOCAB.length) {
-            const savedMap = new Map(parsedSaved.map((item: any) => [item.hanzi, item]));
+            const savedMap = new Map(parsedSaved.map((item) => [item.hanzi, item]));
             const migratedVocab = INITIAL_VOCAB.map(item => {
               const savedItem = savedMap.get(item.hanzi);
               if (savedItem) {
                 return {
                   ...item,
-                  isLearned: savedItem.isLearned,
-                  easiness: savedItem.easiness,
-                  repetitions: savedItem.repetitions,
-                  intervalDays: savedItem.intervalDays,
-                  nextReviewAt: savedItem.nextReviewAt
+                  isLearned: savedItem.isLearned ?? item.isLearned,
+                  easiness: savedItem.easiness ?? item.easiness,
+                  repetitions: savedItem.repetitions ?? item.repetitions,
+                  intervalDays: savedItem.intervalDays ?? item.intervalDays,
+                  nextReviewAt: savedItem.nextReviewAt ?? item.nextReviewAt
                 };
               }
               return item;
             });
-            setVocabList(migratedVocab);
+            window.setTimeout(() => setVocabList(migratedVocab), 0);
             localStorage.setItem('jeongo_vocab', JSON.stringify(migratedVocab));
           } else {
-            setVocabList(parsedSaved);
+            window.setTimeout(() => setVocabList(parsedSaved as VocabItem[]), 0);
           }
         } catch (e) {
           console.error('Error migrating vocab list:', e);
-          setVocabList(INITIAL_VOCAB);
+          window.setTimeout(() => setVocabList(INITIAL_VOCAB), 0);
         }
       } else {
-        setVocabList(INITIAL_VOCAB);
+        window.setTimeout(() => setVocabList(INITIAL_VOCAB), 0);
       }
-      if (savedSkins) setSkins(JSON.parse(savedSkins));
+      if (savedSkins) {
+        window.setTimeout(() => setSkins(JSON.parse(savedSkins) as SkinsState), 0);
+      }
+      localStorage.removeItem('jeongo_session');
+      if (savedEvents) window.setTimeout(() => setLearningEvents(JSON.parse(savedEvents) as LearningEvent[]), 0);
+      if (savedPlacement) window.setTimeout(() => setPlacementResult(JSON.parse(savedPlacement) as PlacementResult), 0);
+      if (savedContent) {
+        const parsed = JSON.parse(savedContent) as ContentCatalog;
+        window.setTimeout(() => {
+          setContentCatalog(parsed);
+          setVocabList((current) => [...current.filter((word) => !parsed.words.some((custom) => custom.id === word.id)), ...parsed.words]);
+        }, 0);
+      }
+
+      const restoredDailyQuests = restoreDailyQuestState(savedDailyQuests);
+      window.setTimeout(() => setDailyQuestState(restoredDailyQuests), 0);
+      localStorage.setItem(DAILY_QUESTS_STORAGE_KEY, JSON.stringify(restoredDailyQuests));
 
       // Register PWA Service Worker (only in production / not on localhost)
       if ('serviceWorker' in navigator) {
         if (window.location.hostname === 'localhost') {
           // Unregister any active service worker on localhost to avoid dev caching issues
           navigator.serviceWorker.getRegistrations().then((registrations) => {
-            for (let registration of registrations) {
+            for (const registration of registrations) {
               registration.unregister();
               console.log('Unregistered service worker on localhost');
             }
@@ -211,6 +316,104 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       }
     }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    void (async () => {
+      try {
+        const sessionResponse = await fetch('/api/auth/session', { cache: 'no-store' });
+        if (!sessionResponse.ok) throw new Error('SESSION_LOOKUP_FAILED');
+        const sessionData = (await sessionResponse.json()) as { user: UserSession | null };
+        if (cancelled) return;
+        if (!sessionData.user) {
+          setAuthStatus('guest');
+          return;
+        }
+
+        setSession(sessionData.user);
+        setAuthStatus('authenticated');
+        const snapshotResponse = await fetch('/api/account/snapshot', { cache: 'no-store' });
+        if (!snapshotResponse.ok) throw new Error('SNAPSHOT_LOOKUP_FAILED');
+        const snapshotData = (await snapshotResponse.json()) as { snapshot: AccountSnapshot | null };
+        const snapshot = snapshotData.snapshot;
+        if (!cancelled && snapshot?.version === 1) {
+          setStats(snapshot.stats);
+          setSkins(snapshot.skins);
+          setDailyQuestState(refreshDailyQuestState(snapshot.dailyQuestState));
+          setGuildInfo(snapshot.guildInfo);
+          setLearningEvents(snapshot.learningEvents);
+          setPlacementResult(snapshot.placementResult);
+          const progress = new Map(snapshot.vocabProgress.map((item) => [item.id, item]));
+          setVocabList((current) => current.map((word) => ({ ...word, ...progress.get(word.id) })));
+        }
+        if (!cancelled) setAccountSyncReady(true);
+      } catch (error) {
+        console.error('Server session restore failed', error);
+        if (!cancelled) {
+          setSession(null);
+          setAuthStatus('guest');
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!session || !accountSyncReady) return;
+
+    const timeoutId = window.setTimeout(() => {
+      const snapshot: AccountSnapshot = {
+        version: 1,
+        stats,
+        vocabProgress: vocabList.map(({ id, isLearned, easiness, repetitions, intervalDays, nextReviewAt }) => ({
+          id,
+          isLearned,
+          easiness,
+          repetitions,
+          intervalDays,
+          nextReviewAt,
+        })),
+        skins,
+        dailyQuestState,
+        guildInfo,
+        learningEvents,
+        placementResult,
+      };
+      void fetch('/api/account/snapshot', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ snapshot }),
+      }).then((response) => {
+        if (!response.ok) console.error('Account snapshot sync failed', response.status);
+      });
+    }, 800);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [accountSyncReady, dailyQuestState, guildInfo, learningEvents, placementResult, session, skins, stats, vocabList]);
+
+  useEffect(() => {
+    const refreshDailyQuests = () => {
+      setDailyQuestState((current) => {
+        const refreshed = refreshDailyQuestState(current);
+        if (refreshed !== current) {
+          claimedQuestIdsRef.current.clear();
+          localStorage.setItem(DAILY_QUESTS_STORAGE_KEY, JSON.stringify(refreshed));
+        }
+        return refreshed;
+      });
+    };
+
+    const intervalId = window.setInterval(refreshDailyQuests, 60_000);
+    document.addEventListener('visibilitychange', refreshDailyQuests);
+    return () => {
+      window.clearInterval(intervalId);
+      document.removeEventListener('visibilitychange', refreshDailyQuests);
+    };
   }, []);
 
   const saveToLocalStorage = (newStats: UserStats, newVocab: VocabItem[], newSkins: SkinsState) => {
@@ -264,13 +467,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return true;
   };
 
-  const allocateStat = (stat: 'str' | 'dex' | 'int' | 'vit') => {
-    if (stats.points <= 0) return;
+  const allocateStats = (allocation: StatAllocation) => {
+    const allocatedPoints = totalAllocatedPoints(allocation);
+    if (allocatedPoints <= 0) return;
     setStats((prev) => {
+      const isValid = Object.values(allocation).every((value) => Number.isInteger(value) && value >= 0);
+      if (!isValid || allocatedPoints > prev.points) return prev;
+
       const updated = {
         ...prev,
-        [stat]: prev[stat] + 1,
-        points: prev.points - 1,
+        str: prev.str + allocation.str,
+        dex: prev.dex + allocation.dex,
+        int: prev.int + allocation.int,
+        vit: prev.vit + allocation.vit,
+        points: prev.points - allocatedPoints,
       };
       saveToLocalStorage(updated, vocabList, skins);
       return updated;
@@ -283,27 +493,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const updatedVocab = prevVocab.map((item) => {
         if (item.id !== wordId) return item;
 
-        let { easiness, repetitions, intervalDays } = item;
-
-        // Correct answer
-        if (quality >= 3) {
-          if (repetitions === 0) {
-            intervalDays = 1;
-          } else if (repetitions === 1) {
-            intervalDays = 6;
-          } else {
-            intervalDays = Math.round(intervalDays * easiness);
-          }
-          repetitions += 1;
-        } else {
-          // Incorrect answer, reset interval
-          repetitions = 0;
-          intervalDays = 1;
-        }
-
-        // Adjust Easiness Factor
-        easiness = easiness + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-        if (easiness < 1.3) easiness = 1.3;
+        const { easiness, repetitions, intervalDays } = calculateSm2(item, quality);
 
         // Calculate next review date
         const nextReviewAt = new Date();
@@ -362,14 +552,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return true;
   };
 
-  const completeDailyQuest = (questId: string, goldReward: number, xpReward: number) => {
-    setDailyQuests((prev) =>
-      prev.map((q) => (q.id === questId ? { ...q, current: q.target, completed: true } : q))
-    );
-    addGold(goldReward);
-    addXP(xpReward);
-  };
-
   const contributeToGuild = (goldAmount: number) => {
     if (stats.gold < goldAmount) return;
     spendGold(goldAmount);
@@ -397,20 +579,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       };
     });
 
-    // Mark Daily Quest 3 progress
-    setDailyQuests((prev) =>
-      prev.map((q) => {
-        if (q.id === 'q3') {
-          const newCurrent = Math.min(q.target, q.current + goldAmount);
-          return {
-            ...q,
-            current: newCurrent,
-            completed: newCurrent >= q.target,
-          };
-        }
-        return q;
-      })
-    );
   };
 
   const toggleLearnWord = (wordId: number) => {
@@ -434,6 +602,122 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   };
 
+  const readApiError = async (response: Response) => {
+    try {
+      const body = (await response.json()) as { error?: string };
+      return body.error ?? '요청을 처리하지 못했습니다.';
+    } catch {
+      return '요청을 처리하지 못했습니다.';
+    }
+  };
+
+  const loadAccountSnapshot = async () => {
+    const response = await fetch('/api/account/snapshot', { cache: 'no-store' });
+    if (!response.ok) throw new Error(await readApiError(response));
+    const { snapshot } = (await response.json()) as { snapshot: AccountSnapshot | null };
+    if (!snapshot || snapshot.version !== 1) return;
+
+    setStats(snapshot.stats);
+    setSkins(snapshot.skins);
+    setDailyQuestState(refreshDailyQuestState(snapshot.dailyQuestState));
+    setGuildInfo(snapshot.guildInfo);
+    setLearningEvents(snapshot.learningEvents);
+    setPlacementResult(snapshot.placementResult);
+    const progress = new Map(snapshot.vocabProgress.map((item) => [item.id, item]));
+    setVocabList((current) => current.map((word) => ({ ...word, ...progress.get(word.id) })));
+  };
+
+  const authenticate = async (path: '/api/auth/login' | '/api/auth/register', payload: Record<string, string>) => {
+    setAccountSyncReady(false);
+    const response = await fetch(path, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error(await readApiError(response));
+
+    const { user } = (await response.json()) as { user: UserSession };
+    setSession(user);
+    setAuthStatus('authenticated');
+    await loadAccountSnapshot();
+    setAccountSyncReady(true);
+    recordLearningEvent({ type: 'login', correct: 0, total: 0, xp: 0, gold: 0 });
+  };
+
+  const login = (email: string, password: string) => authenticate('/api/auth/login', { email, password });
+
+  const register = (email: string, name: string, password: string) =>
+    authenticate('/api/auth/register', { email, name, password });
+
+  const logout = async () => {
+    const response = await fetch('/api/auth/logout', { method: 'POST' });
+    if (!response.ok) throw new Error(await readApiError(response));
+    for (const key of [
+      'jeongo_stats',
+      'jeongo_vocab',
+      'jeongo_skins',
+      'jeongo_learning_events',
+      'jeongo_placement',
+      DAILY_QUESTS_STORAGE_KEY,
+    ]) {
+      localStorage.removeItem(key);
+    }
+    setAccountSyncReady(false);
+    setSession(null);
+    setAuthStatus('guest');
+  };
+
+  const recordLearningEvent = (event: Omit<LearningEvent, 'id' | 'occurredAt'> & { occurredAt?: string }) => {
+    setLearningEvents((current) => {
+      const next = [...current, {
+        ...event,
+        id: `${Date.now()}-${current.length}`,
+        occurredAt: event.occurredAt ?? new Date().toISOString(),
+      }];
+      localStorage.setItem('jeongo_learning_events', JSON.stringify(next));
+      return next;
+    });
+
+    setDailyQuestState((current) => {
+      const next = applyLearningEventToDailyQuests(current, event);
+      if (next !== current) localStorage.setItem(DAILY_QUESTS_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const claimDailyQuest = (questId: string) => {
+    const quest = dailyQuestState.quests.find((item) => item.id === questId);
+    const canClaim = quest && quest.current >= quest.target && !quest.claimed;
+    if (!canClaim || claimedQuestIdsRef.current.has(questId)) return;
+
+    claimedQuestIdsRef.current.add(questId);
+    setDailyQuestState((current) => {
+      const next = {
+        ...current,
+        quests: current.quests.map((item) => (item.id === questId ? { ...item, claimed: true } : item)),
+      };
+      localStorage.setItem(DAILY_QUESTS_STORAGE_KEY, JSON.stringify(next));
+      return next;
+    });
+
+    addGold(quest.gold);
+    addXP(quest.xp);
+    recordLearningEvent({ type: 'reward', correct: 0, total: 0, xp: quest.xp, gold: quest.gold });
+  };
+
+  const savePlacementResult = (result: PlacementResult) => {
+    setPlacementResult(result);
+    localStorage.setItem('jeongo_placement', JSON.stringify(result));
+  };
+
+  const saveContentCatalog = (catalog: ContentCatalog) => {
+    setContentCatalog(catalog);
+    setVocabList((current) => [...current.filter((word) => !catalog.words.some((custom) => custom.id === word.id)), ...catalog.words]);
+    localStorage.setItem('jeongo_content_catalog', JSON.stringify(catalog));
+  };
+
+  const analytics = buildAnalytics(learningEvents);
+
   return (
     <AppContext.Provider
       value={{
@@ -443,16 +727,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addXP,
         addGold,
         spendGold,
-        allocateStat,
+        allocateStats,
         updateSrsWord,
         toggleLearnWord,
         equipSkin,
         buySkin,
-        completeDailyQuest,
-        dailyQuests,
+        claimDailyQuest,
+        dailyQuests: dailyQuestState.quests,
         activeLeague,
         guildInfo,
         contributeToGuild,
+        session,
+        authStatus,
+        login,
+        register,
+        logout,
+        learningEvents,
+        recordLearningEvent,
+        placementResult,
+        savePlacementResult,
+        analytics,
+        contentCatalog,
+        saveContentCatalog,
       }}
     >
       {children}
