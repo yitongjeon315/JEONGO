@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     ".agents/**",
     ".vibe-diagnosis/**",
     "scratch/**",
+    ".tmp/**",
   ]),
 ]);
 

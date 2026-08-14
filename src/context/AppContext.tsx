@@ -19,26 +19,13 @@ import {
   type DailyQuestState,
 } from '@/lib/daily-quests';
 import { totalAllocatedPoints, type StatAllocation } from '@/lib/character-growth';
+import {
+  DEFAULT_CONTENT_CATALOG,
+  type ContentCatalog,
+  type VocabItem,
+} from '@/lib/content-catalog';
 
-// Vocabulary Item Type
-export interface VocabItem {
-  id: number;
-  hanzi: string;
-  pinyin: string;
-  meaning: string;
-  hsk: string;
-  partOfSpeech?: string;
-  exampleHanzi?: string;
-  examplePinyin?: string;
-  exampleMeaning?: string;
-  isLearned: boolean;
-  
-  // SRS parameters
-  easiness: number;
-  repetitions: number;
-  intervalDays: number;
-  nextReviewAt: string; // ISO string
-}
+export type { ContentCatalog, ContentQuest, ContentReward, VocabItem } from '@/lib/content-catalog';
 
 interface RawVocabItem {
   id: number;
@@ -51,6 +38,15 @@ interface RawVocabItem {
   examplePinyin?: string;
   exampleMeaning?: string;
   isLearned?: boolean;
+}
+
+async function readApiError(response: Response) {
+  try {
+    const body = (await response.json()) as { error?: string };
+    return body.error ?? '요청을 처리하지 못했습니다.';
+  } catch {
+    return '요청을 처리하지 못했습니다.';
+  }
 }
 
 // User Stats Type
@@ -74,29 +70,6 @@ export interface UserStats {
 export interface SkinsState {
   owned: string[];
   equipped: string;
-}
-
-export interface ContentQuest {
-  id: string;
-  title: string;
-  desc: string;
-  target: number;
-  gold: number;
-  xp: number;
-}
-
-export interface ContentReward {
-  id: string;
-  name: string;
-  image: string;
-  cost: number;
-  desc: string;
-}
-
-export interface ContentCatalog {
-  words: VocabItem[];
-  quests: ContentQuest[];
-  rewards: ContentReward[];
 }
 
 export interface UserSession {
@@ -136,7 +109,7 @@ interface AppContextType {
   savePlacementResult: (result: PlacementResult) => void;
   analytics: AnalyticsSummary;
   contentCatalog: ContentCatalog;
-  saveContentCatalog: (catalog: ContentCatalog) => void;
+  saveContentCatalog: (catalog: ContentCatalog) => Promise<void>;
 }
 
 interface GuildInfo {
@@ -149,10 +122,12 @@ interface GuildInfo {
   bossMaxHp: number;
 }
 
+type VocabProgress = Pick<VocabItem, 'id' | 'isLearned' | 'easiness' | 'repetitions' | 'intervalDays' | 'nextReviewAt'>;
+
 interface AccountSnapshot {
   version: 1;
   stats: UserStats;
-  vocabProgress: Array<Pick<VocabItem, 'id' | 'isLearned' | 'easiness' | 'repetitions' | 'intervalDays' | 'nextReviewAt'>>;
+  vocabProgress: VocabProgress[];
   skins: SkinsState;
   dailyQuestState: DailyQuestState;
   guildInfo: GuildInfo;
@@ -161,12 +136,6 @@ interface AccountSnapshot {
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
-
-const DEFAULT_REWARDS: ContentReward[] = [
-  { id: 'starbucks', name: '스타벅스 아이스 아메리카노 Tall', image: '☕', cost: 5000, desc: '학습 고행을 식혀줄 현실 커피 쿠폰.' },
-  { id: 'naverpay', name: '네이버페이 포인트 1,000원권', image: '💳', cost: 1200, desc: '쇼핑에 사용할 수 있는 포인트.' },
-  { id: 'gs25', name: 'GS25 모바일 상품권 3,000원권', image: '🏪', cost: 3300, desc: '편의점 모바일 상품권.' },
-];
 
 // Initial Vocab Data (Mapped from raw HSK JSON)
 const INITIAL_VOCAB: VocabItem[] = (rawVocabData as RawVocabItem[]).map((item) => ({
@@ -225,7 +194,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [accountSyncReady, setAccountSyncReady] = useState(false);
   const [learningEvents, setLearningEvents] = useState<LearningEvent[]>([]);
   const [placementResult, setPlacementResult] = useState<PlacementResult | null>(null);
-  const [contentCatalog, setContentCatalog] = useState<ContentCatalog>({ words: [], quests: [], rewards: DEFAULT_REWARDS });
+  const [contentCatalog, setContentCatalog] = useState<ContentCatalog>(() => ({
+    words: [],
+    quests: [],
+    rewards: [...DEFAULT_CONTENT_CATALOG.rewards],
+  }));
+  const contentWordIdsRef = useRef(new Set<number>());
+  const accountVocabProgressRef = useRef(new Map<number, VocabProgress>());
 
   const activeLeague = '실버 리그 (Silver League)';
 
@@ -237,7 +212,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       const savedSkins = localStorage.getItem('jeongo_skins');
       const savedEvents = localStorage.getItem('jeongo_learning_events');
       const savedPlacement = localStorage.getItem('jeongo_placement');
-      const savedContent = localStorage.getItem('jeongo_content_catalog');
       const savedDailyQuests = localStorage.getItem(DAILY_QUESTS_STORAGE_KEY);
       
       if (savedStats) {
@@ -280,13 +254,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.removeItem('jeongo_session');
       if (savedEvents) window.setTimeout(() => setLearningEvents(JSON.parse(savedEvents) as LearningEvent[]), 0);
       if (savedPlacement) window.setTimeout(() => setPlacementResult(JSON.parse(savedPlacement) as PlacementResult), 0);
-      if (savedContent) {
-        const parsed = JSON.parse(savedContent) as ContentCatalog;
-        window.setTimeout(() => {
-          setContentCatalog(parsed);
-          setVocabList((current) => [...current.filter((word) => !parsed.words.some((custom) => custom.id === word.id)), ...parsed.words]);
-        }, 0);
-      }
+      localStorage.removeItem('jeongo_content_catalog');
 
       const restoredDailyQuests = restoreDailyQuestState(savedDailyQuests);
       window.setTimeout(() => setDailyQuestState(restoredDailyQuests), 0);
@@ -318,6 +286,35 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, []);
 
+  const applyContentCatalog = (catalog: ContentCatalog) => {
+    const previousWordIds = contentWordIdsRef.current;
+    const incomingWordIds = new Set(catalog.words.map((word) => word.id));
+    const incomingWords = catalog.words.map((word) => ({
+      ...word,
+      ...accountVocabProgressRef.current.get(word.id),
+    }));
+    setVocabList((current) => [
+      ...current.filter((word) => !previousWordIds.has(word.id) && !incomingWordIds.has(word.id)),
+      ...incomingWords,
+    ]);
+    contentWordIdsRef.current = incomingWordIds;
+    setContentCatalog(catalog);
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetch('/api/content', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(await readApiError(response));
+        const { catalog } = (await response.json()) as { catalog: ContentCatalog };
+        if (!cancelled) applyContentCatalog(catalog);
+      })
+      .catch((error) => console.error('Public content catalog load failed', error));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -346,6 +343,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           setLearningEvents(snapshot.learningEvents);
           setPlacementResult(snapshot.placementResult);
           const progress = new Map(snapshot.vocabProgress.map((item) => [item.id, item]));
+          accountVocabProgressRef.current = progress;
           setVocabList((current) => current.map((word) => ({ ...word, ...progress.get(word.id) })));
         }
         if (!cancelled) setAccountSyncReady(true);
@@ -602,15 +600,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   };
 
-  const readApiError = async (response: Response) => {
-    try {
-      const body = (await response.json()) as { error?: string };
-      return body.error ?? '요청을 처리하지 못했습니다.';
-    } catch {
-      return '요청을 처리하지 못했습니다.';
-    }
-  };
-
   const loadAccountSnapshot = async () => {
     const response = await fetch('/api/account/snapshot', { cache: 'no-store' });
     if (!response.ok) throw new Error(await readApiError(response));
@@ -624,6 +613,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setLearningEvents(snapshot.learningEvents);
     setPlacementResult(snapshot.placementResult);
     const progress = new Map(snapshot.vocabProgress.map((item) => [item.id, item]));
+    accountVocabProgressRef.current = progress;
     setVocabList((current) => current.map((word) => ({ ...word, ...progress.get(word.id) })));
   };
 
@@ -663,6 +653,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.removeItem(key);
     }
     setAccountSyncReady(false);
+    accountVocabProgressRef.current.clear();
     setSession(null);
     setAuthStatus('guest');
   };
@@ -710,10 +701,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('jeongo_placement', JSON.stringify(result));
   };
 
-  const saveContentCatalog = (catalog: ContentCatalog) => {
-    setContentCatalog(catalog);
-    setVocabList((current) => [...current.filter((word) => !catalog.words.some((custom) => custom.id === word.id)), ...catalog.words]);
-    localStorage.setItem('jeongo_content_catalog', JSON.stringify(catalog));
+  const saveContentCatalog = async (catalog: ContentCatalog) => {
+    const response = await fetch('/api/content', {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ catalog }),
+    });
+    if (!response.ok) throw new Error(await readApiError(response));
+    const { catalog: savedCatalog } = (await response.json()) as { catalog: ContentCatalog };
+    applyContentCatalog(savedCatalog);
   };
 
   const analytics = buildAnalytics(learningEvents);
