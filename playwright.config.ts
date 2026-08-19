@@ -3,6 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
+  workers: 1,
   // Next dev compiles routes on first visit; the full learning flow crosses many pages.
   timeout: 120_000,
   retries: 0,

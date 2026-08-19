@@ -1,0 +1,9 @@
+Source deck: TOPIK-I-3-session-lesson.pptx
+Purpose: Preserve the existing 44-slide dark navy classroom deck and add the missing stage 1 vocabulary and stage 2 reading-preparation content for each of the three sessions.
+Structure: slide 1 cover; slides 2, 17, and 31 session dividers; all other slides are practice-question layouts.
+Reusable pattern: source slide 4 is the text-only teaching layout with a stage label, category label, title, one large explanation area, four supporting text areas, and an editable page marker.
+Insertion contract: duplicate source slide 4 twice after each session divider, rewrite only its inherited text elements, and preserve all existing source slides and decorative/footer elements.
+Typography and styling: retain the existing Calibri/Calibri Light type, navy background, teal category label, white headline, dark content surfaces, and gray footer.
+Placeholders: the source layouts contain no inherited placeholder elements; all inserted-slide changes target existing slide-local text elements.
+Audience: beginning TOPIK I learners in a two-hour instructor-led class.
+Communication job: learners should review the session's essential vocabulary and reading clues before moving into the existing practice questions.

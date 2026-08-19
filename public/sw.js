@@ -1,6 +1,13 @@
-const CACHE_NAME = 'jeongo-cache-v1';
+const CACHE_NAME = 'jeongo-cache-v3';
 const ASSETS_TO_CACHE = [
   '/',
+  '/home',
+  '/learn',
+  '/vocab-book',
+  '/ai-tutor',
+  '/shop',
+  '/social',
+  '/analytics',
   '/manifest.json',
   '/icon.svg',
 ];
@@ -62,5 +69,14 @@ self.addEventListener('fetch', (event) => {
           });
         });
       })
+  );
+});
+
+self.addEventListener('sync', (event) => {
+  if (event.tag !== 'jeongo-account-sync') return;
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clients) => {
+      clients.forEach((client) => client.postMessage({ type: 'JEONGO_FLUSH_OFFLINE' }));
+    })
   );
 });

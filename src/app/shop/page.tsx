@@ -1,9 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useApp } from '@/context/AppContext';
-import { Gift, Coins, ShoppingBag, ShieldAlert, Sparkles, Check, CheckCircle2, PhoneCall } from 'lucide-react';
+import { Gift, Coins, ShoppingBag, CheckCircle2, PhoneCall } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { RedemptionStatus, RewardRedemptionSummary } from '@/lib/reward-redemption';
+
+const redemptionStatusLabel: Record<RedemptionStatus, string> = {
+  pending: '승인 대기', approved: '발송 대기', sent: '발송 완료', cancelled: '취소',
+};
 
 interface RewardItem {
   id: string;
@@ -14,7 +19,7 @@ interface RewardItem {
 }
 
 export default function ShopPage() {
-  const { stats, skins, buySkin, equipSkin, spendGold, contentCatalog, recordLearningEvent } = useApp();
+  const { stats, skins, buySkin, equipSkin, spendGold, contentCatalog, recordLearningEvent, session } = useApp();
   const [activeTab, setActiveTab] = useState<'items' | 'rewards'>('items');
   
   // Reality Exchange modal state
@@ -22,6 +27,9 @@ export default function ShopPage() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isExchangeSuccess, setIsExchangeSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isExchangePending, setIsExchangePending] = useState(false);
+  const [redemptions, setRedemptions] = useState<RewardRedemptionSummary[]>([]);
+  const exchangeRequestKeyRef = useRef('');
 
   const skinsList = [
     { id: 'default_explorer', name: '기본 탐험가 복장', emoji: '🎒', cost: 0, desc: '중국 성조 던전에 갓 입문한 초보 개척자의 기본 복장.' },
@@ -32,6 +40,23 @@ export default function ShopPage() {
 
   const rewardsList = contentCatalog.rewards;
 
+  const loadRedemptions = async () => {
+    if (!session) return;
+    const response = await fetch('/api/rewards/redemptions', { cache: 'no-store' });
+    if (!response.ok) return;
+    const data = (await response.json()) as { redemptions: RewardRedemptionSummary[] };
+    setRedemptions(data.redemptions);
+  };
+
+  useEffect(() => {
+    if (activeTab !== 'rewards' || !session) return;
+    let cancelled = false;
+    void fetch('/api/rewards/redemptions', { cache: 'no-store' })
+      .then(async (response) => response.ok ? response.json() as Promise<{ redemptions: RewardRedemptionSummary[] }> : { redemptions: [] })
+      .then((data) => { if (!cancelled) setRedemptions(data.redemptions); });
+    return () => { cancelled = true; };
+  }, [activeTab, session]);
+
   const handlePurchaseSkin = (skinId: string, cost: number) => {
     const success = buySkin(skinId, cost);
     if (!success) {
@@ -40,6 +65,10 @@ export default function ShopPage() {
   };
 
   const startExchangeFlow = (reward: RewardItem) => {
+    if (!session) {
+      alert('현실 보상 환전은 개인정보와 신청 내역 보호를 위해 로그인이 필요합니다.');
+      return;
+    }
     if (stats.gold < reward.cost) {
       alert('골드가 부족하여 환전 신청을 하실 수 없습니다.');
       return;
@@ -48,9 +77,10 @@ export default function ShopPage() {
     setPhoneNumber('');
     setIsExchangeSuccess(false);
     setErrorMsg('');
+    exchangeRequestKeyRef.current = crypto.randomUUID();
   };
 
-  const handleExchangeSubmit = (e: React.FormEvent) => {
+  const handleExchangeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!exchangeTarget) return;
     if (!phoneNumber || phoneNumber.length < 10) {
@@ -58,15 +88,35 @@ export default function ShopPage() {
       return;
     }
 
-    const success = spendGold(exchangeTarget.cost);
-    if (success) {
+    setIsExchangePending(true);
+    setErrorMsg('');
+    try {
+      const response = await fetch('/api/rewards/redemptions', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          rewardId: exchangeTarget.id,
+          phoneNumber,
+          idempotencyKey: exchangeRequestKeyRef.current,
+        }),
+      });
+      if (!response.ok) {
+        const body = (await response.json()) as { error?: string };
+        setErrorMsg(body.error ?? '환전 신청을 저장하지 못했습니다.');
+        return;
+      }
+      const success = spendGold(exchangeTarget.cost);
+      if (!success) {
+        setErrorMsg('서버 신청은 저장되었지만 화면의 골드 동기화가 지연되고 있습니다. 새로고침해 주세요.');
+        return;
+      }
       recordLearningEvent({ type: 'reward', correct: 0, total: 0, xp: 0, gold: -exchangeTarget.cost, weakItems: [exchangeTarget.name] });
+      await loadRedemptions();
       setIsExchangeSuccess(true);
-      setTimeout(() => {
-        setExchangeTarget(null);
-      }, 3000); // Close modal automatically
-    } else {
-      setErrorMsg('골드 결제 도중 오류가 발생했습니다.');
+    } catch {
+      setErrorMsg('네트워크에 연결하지 못했습니다. 골드는 차감되지 않았습니다.');
+    } finally {
+      setIsExchangePending(false);
     }
   };
 
@@ -198,9 +248,9 @@ export default function ShopPage() {
 
                 <button
                   onClick={() => startExchangeFlow(reward)}
-                  disabled={stats.gold < reward.cost}
+                  disabled={stats.gold < reward.cost || !session}
                   className={`px-3.5 py-2 font-extrabold rounded-xl text-[10px] flex flex-col items-center justify-center gap-0.5 hover:scale-105 active:scale-95 transition-all ${
-                    stats.gold < reward.cost
+                    stats.gold < reward.cost || !session
                       ? 'bg-white/5 border border-white/5 text-gray-500'
                       : 'bg-gradient-to-r from-cyber-yellow to-yellow-500 text-dark-bg shadow-lg shadow-cyber-yellow/20'
                   }`}
@@ -210,6 +260,13 @@ export default function ShopPage() {
                 </button>
               </div>
             ))}
+            {session && <section className="glass-panel rounded-2xl p-4">
+              <h3 className="text-xs font-bold">내 환전 신청 내역</h3>
+              {redemptions.length === 0 ? <p className="mt-2 text-[10px] text-gray-500">아직 신청 내역이 없습니다.</p> : redemptions.map((item) => <div key={item.id} className="mt-3 flex items-center justify-between border-t border-white/5 pt-3 text-[10px]">
+                <div><strong className="text-white">{item.rewardName}</strong><p className="mt-0.5 text-gray-500">{item.phoneMasked} · {new Date(item.createdAt).toLocaleDateString('ko-KR')}</p></div>
+                <span className={item.status === 'sent' ? 'text-neon-green' : item.status === 'cancelled' ? 'text-neon-rose' : 'text-cyber-yellow'}>{redemptionStatusLabel[item.status]}</span>
+              </div>)}
+            </section>}
           </motion.div>
         )}
       </AnimatePresence>
@@ -268,9 +325,10 @@ export default function ShopPage() {
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-2.5 bg-cyber-yellow hover:bg-yellow-500 text-dark-bg font-extrabold rounded-xl text-xs shadow-lg shadow-cyber-yellow/20 transition-all"
+                        disabled={isExchangePending}
+                        className="flex-1 py-2.5 bg-cyber-yellow hover:bg-yellow-500 text-dark-bg font-extrabold rounded-xl text-xs shadow-lg shadow-cyber-yellow/20 transition-all disabled:opacity-50"
                       >
-                        결제 및 신청
+                        {isExchangePending ? '신청 저장 중…' : '결제 및 신청'}
                       </button>
                     </div>
                   </form>
@@ -280,7 +338,7 @@ export default function ShopPage() {
                   <CheckCircle2 size={48} className="text-neon-green glow-green" />
                   <h4 className="text-sm font-bold text-white">기프티콘 환전 신청 완료!</h4>
                   <p className="text-[10px] text-gray-400 leading-relaxed px-4 font-medium">
-                    사용자의 골드가 성공적으로 차감되었습니다. 모바일 쿠폰은 기재하신 전화번호로 24시간 내 발송 완료됩니다.
+                    골드 차감과 신청 저장이 완료되었습니다. 관리자 승인 및 발송 상태는 서버 신청 내역에 안전하게 보관됩니다.
                   </p>
                 </div>
               )}

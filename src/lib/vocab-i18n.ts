@@ -8,12 +8,14 @@ interface VocabularyMeaningSource {
   hanzi: string;
   pinyin?: string;
   meaning: string;
+  meaningEn?: string;
 }
 
 interface LocalizableWord {
   hanzi: string;
   pinyin: string;
   meaning: string;
+  meaningEn?: string;
   isLearned: boolean;
 }
 
@@ -60,6 +62,9 @@ const CURATED_ENGLISH_MEANINGS: Readonly<Record<string, string>> = {
 export function getLocalizedMeaning(word: LocalizableWord, language: MeaningLanguage) {
   if (language === 'en' && CURATED_ENGLISH_MEANINGS[word.hanzi]) {
     return { text: CURATED_ENGLISH_MEANINGS[word.hanzi], isFallback: false };
+  }
+  if (language === 'en' && word.meaningEn) {
+    return { text: word.meaningEn, isFallback: false };
   }
   const lookups = language === 'ko' ? koreanLookups : englishLookups;
   const translated = lookups.exact.get(lookupKey(word)) ?? lookups.byHanzi.get(word.hanzi);

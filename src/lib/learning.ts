@@ -19,10 +19,35 @@ export interface Sm2State {
   intervalDays: number;
 }
 
+export interface ReviewableItem extends Sm2State {
+  id: number;
+  isLearned?: boolean;
+  nextReviewAt: string;
+}
+
 export interface PlacementAnswer {
   hskLevel: number;
   word: string;
   correct: boolean;
+  domain?: PlacementDomain;
+  durationMs?: number;
+}
+
+export type PlacementDomain = 'vocabulary' | 'grammar' | 'reading' | 'listening';
+
+export interface PlacementDomainScore {
+  domain: PlacementDomain;
+  correct: number;
+  total: number;
+  accuracy: number;
+}
+
+export interface PlacementLevelScore {
+  level: number;
+  correct: number;
+  total: number;
+  accuracy: number;
+  status: 'pass' | 'borderline' | 'fail';
 }
 
 export interface PlacementResult {
@@ -31,6 +56,22 @@ export interface PlacementResult {
   weakHskLevels: number[];
   weakWords: string[];
   completedAt: string;
+  domainScores?: PlacementDomainScore[];
+  levelScores?: PlacementLevelScore[];
+  confidence?: number;
+  totalQuestions?: number;
+  averageDurationMs?: number;
+  learningGoal?: string;
+  dailyMinutes?: number;
+  characterClass?: string;
+}
+
+export function classifyPlacementLevel(answers: PlacementAnswer[]): PlacementLevelScore['status'] {
+  if (answers.length === 0) return 'fail';
+  const accuracy = answers.filter((answer) => answer.correct).length / answers.length;
+  if (accuracy >= 0.7) return 'pass';
+  if (accuracy >= 0.55) return 'borderline';
+  return 'fail';
 }
 
 export interface AnalyticsSummary {
@@ -62,21 +103,59 @@ export function calculateSm2(state: Sm2State, quality: number): Sm2State {
   return { easiness: Math.max(1.3, easiness), repetitions, intervalDays };
 }
 
+export function prioritizeReviewQueue<T extends ReviewableItem>(items: T[], now = new Date()): T[] {
+  const currentTime = now.getTime();
+  return [...items].sort((left, right) => {
+    const leftDue = Boolean(left.isLearned) && Date.parse(left.nextReviewAt) <= currentTime;
+    const rightDue = Boolean(right.isLearned) && Date.parse(right.nextReviewAt) <= currentTime;
+    if (leftDue !== rightDue) return leftDue ? -1 : 1;
+    if (leftDue && rightDue) return Date.parse(left.nextReviewAt) - Date.parse(right.nextReviewAt);
+    return Math.random() - 0.5;
+  });
+}
+
 export function evaluatePlacement(answers: PlacementAnswer[], now = new Date()): PlacementResult {
   const score = answers.length === 0 ? 0 : Math.round((answers.filter((answer) => answer.correct).length / answers.length) * 100);
   const grouped = new Map<number, PlacementAnswer[]>();
   answers.forEach((answer) => grouped.set(answer.hskLevel, [...(grouped.get(answer.hskLevel) ?? []), answer]));
 
+  const levelScores: PlacementLevelScore[] = [...grouped.entries()]
+    .sort(([left], [right]) => left - right)
+    .map(([candidate, items]) => {
+      const correct = items.filter((item) => item.correct).length;
+      return {
+        level: candidate,
+        correct,
+        total: items.length,
+        accuracy: Math.round((correct / items.length) * 100),
+        status: classifyPlacementLevel(items),
+      };
+    });
+
   let level = 1;
   for (let candidate = 1; candidate <= 6; candidate += 1) {
     const items = grouped.get(candidate) ?? [];
-    if (items.length === 0 || items.filter((item) => item.correct).length / items.length < 0.6) break;
+    if (items.length === 0 || classifyPlacementLevel(items) !== 'pass') break;
     level = candidate;
   }
 
   const weakHskLevels = [...grouped.entries()]
-    .filter(([, items]) => items.some((item) => !item.correct))
+    .filter(([, items]) => classifyPlacementLevel(items) !== 'pass')
     .map(([hskLevel]) => hskLevel);
+
+  const domains: PlacementDomain[] = ['vocabulary', 'grammar', 'reading', 'listening'];
+  const domainScores = domains.flatMap((domain) => {
+    const items = answers.filter((answer) => answer.domain === domain);
+    if (items.length === 0) return [];
+    const correct = items.filter((item) => item.correct).length;
+    return [{ domain, correct, total: items.length, accuracy: Math.round((correct / items.length) * 100) }];
+  });
+  const answeredDurations = answers.map((answer) => answer.durationMs).filter((duration): duration is number => typeof duration === 'number');
+  const sampleConfidence = Math.min(30, answers.length) / 30;
+  const thresholdMargin = levelScores.length === 0
+    ? 0
+    : levelScores.reduce((sum, item) => sum + Math.abs(item.accuracy / 100 - 0.7), 0) / levelScores.length;
+  const confidence = Math.round(Math.min(99, 55 + sampleConfidence * 35 + Math.min(0.3, thresholdMargin) * 30));
 
   return {
     level,
@@ -84,6 +163,13 @@ export function evaluatePlacement(answers: PlacementAnswer[], now = new Date()):
     weakHskLevels,
     weakWords: answers.filter((answer) => !answer.correct).map((answer) => answer.word),
     completedAt: now.toISOString(),
+    domainScores,
+    levelScores,
+    confidence,
+    totalQuestions: answers.length,
+    averageDurationMs: answeredDurations.length === 0
+      ? undefined
+      : Math.round(answeredDurations.reduce((sum, duration) => sum + duration, 0) / answeredDurations.length),
   };
 }
 

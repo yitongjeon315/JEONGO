@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import rawVocabData from '@/data/hsk_1to6.json';
+import rawVocabData from '@/data/hsk_official_ko.json';
 import {
   buildAnalytics,
   calculateSm2,
@@ -19,6 +19,7 @@ import {
   type DailyQuestState,
 } from '@/lib/daily-quests';
 import { totalAllocatedPoints, type StatAllocation } from '@/lib/character-growth';
+import { clearOfflineSnapshot, queueOfflineSnapshot, readOfflineSnapshot } from '@/lib/offline-sync';
 import {
   DEFAULT_CONTENT_CATALOG,
   type ContentCatalog,
@@ -32,6 +33,7 @@ interface RawVocabItem {
   hanzi: string;
   pinyin: string;
   meaning: string;
+  meaningEn?: string;
   hsk: string;
   partOfSpeech?: string;
   exampleHanzi?: string;
@@ -89,7 +91,9 @@ interface AppContextType {
   addGold: (amount: number) => void;
   spendGold: (amount: number) => boolean;
   allocateStats: (allocation: StatAllocation) => void;
+  rewardPronunciationGrowth: (pronunciationScore: number, fluencyScore: number) => void;
   updateSrsWord: (wordId: number, quality: number) => void;
+  resetSrsWord: (wordId: number) => void;
   toggleLearnWord: (wordId: number) => void;
   equipSkin: (skinId: string) => void;
   buySkin: (skinId: string, cost: number) => boolean;
@@ -143,6 +147,7 @@ const INITIAL_VOCAB: VocabItem[] = (rawVocabData as RawVocabItem[]).map((item) =
   hanzi: item.hanzi,
   pinyin: item.pinyin,
   meaning: item.meaning,
+  meaningEn: item.meaningEn,
   hsk: item.hsk,
   partOfSpeech: item.partOfSpeech || '명사',
   exampleHanzi: item.exampleHanzi,
@@ -154,6 +159,9 @@ const INITIAL_VOCAB: VocabItem[] = (rawVocabData as RawVocabItem[]).map((item) =
   intervalDays: 0,
   nextReviewAt: new Date().toISOString(),
 }));
+
+const VOCAB_DATA_VERSION = 'hsk2-2015-ko-v1';
+const VOCAB_DATA_VERSION_KEY = 'jeongo_vocab_data_version';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load initial states from localStorage if available, otherwise use defaults
@@ -209,6 +217,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (typeof window !== 'undefined') {
       const savedStats = localStorage.getItem('jeongo_stats');
       const savedVocab = localStorage.getItem('jeongo_vocab');
+      const savedVocabVersion = localStorage.getItem(VOCAB_DATA_VERSION_KEY);
       const savedSkins = localStorage.getItem('jeongo_skins');
       const savedEvents = localStorage.getItem('jeongo_learning_events');
       const savedPlacement = localStorage.getItem('jeongo_placement');
@@ -220,10 +229,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       if (savedVocab) {
         try {
           const parsedSaved = JSON.parse(savedVocab) as Partial<VocabItem>[];
-          if (parsedSaved.length < INITIAL_VOCAB.length) {
-            const savedMap = new Map(parsedSaved.map((item) => [item.hanzi, item]));
+          if (savedVocabVersion !== VOCAB_DATA_VERSION || parsedSaved.length !== INITIAL_VOCAB.length) {
+            const savedExactMap = new Map(parsedSaved.map((item) => [`${item.hanzi}|${item.pinyin}`, item]));
+            const savedHanziMap = new Map(parsedSaved.map((item) => [item.hanzi, item]));
             const migratedVocab = INITIAL_VOCAB.map(item => {
-              const savedItem = savedMap.get(item.hanzi);
+              const savedItem = savedExactMap.get(`${item.hanzi}|${item.pinyin}`) ?? savedHanziMap.get(item.hanzi);
               if (savedItem) {
                 return {
                   ...item,
@@ -238,6 +248,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             });
             window.setTimeout(() => setVocabList(migratedVocab), 0);
             localStorage.setItem('jeongo_vocab', JSON.stringify(migratedVocab));
+            localStorage.setItem(VOCAB_DATA_VERSION_KEY, VOCAB_DATA_VERSION);
           } else {
             window.setTimeout(() => setVocabList(parsedSaved as VocabItem[]), 0);
           }
@@ -247,6 +258,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         }
       } else {
         window.setTimeout(() => setVocabList(INITIAL_VOCAB), 0);
+        localStorage.setItem(VOCAB_DATA_VERSION_KEY, VOCAB_DATA_VERSION);
       }
       if (savedSkins) {
         window.setTimeout(() => setSkins(JSON.parse(savedSkins) as SkinsState), 0);
@@ -387,12 +399,45 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ snapshot }),
       }).then((response) => {
-        if (!response.ok) console.error('Account snapshot sync failed', response.status);
-      });
+        if (!response.ok) {
+          queueOfflineSnapshot(snapshot);
+          console.error('Account snapshot sync failed', response.status);
+        } else {
+          clearOfflineSnapshot();
+        }
+      }).catch(() => queueOfflineSnapshot(snapshot));
     }, 800);
 
     return () => window.clearTimeout(timeoutId);
   }, [accountSyncReady, dailyQuestState, guildInfo, learningEvents, placementResult, session, skins, stats, vocabList]);
+
+  useEffect(() => {
+    if (!session || !accountSyncReady) return;
+    const flushOfflineSnapshot = async () => {
+      const queued = readOfflineSnapshot();
+      if (!queued) return;
+      try {
+        const response = await fetch('/api/account/snapshot', {
+          method: 'PUT',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ snapshot: queued.snapshot }),
+        });
+        if (response.ok) clearOfflineSnapshot();
+      } catch {
+        // Keep the newest snapshot queued for the next online event.
+      }
+    };
+    const handleWorkerMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'JEONGO_FLUSH_OFFLINE') void flushOfflineSnapshot();
+    };
+    window.addEventListener('online', flushOfflineSnapshot);
+    navigator.serviceWorker?.addEventListener('message', handleWorkerMessage);
+    if (navigator.onLine) void flushOfflineSnapshot();
+    return () => {
+      window.removeEventListener('online', flushOfflineSnapshot);
+      navigator.serviceWorker?.removeEventListener('message', handleWorkerMessage);
+    };
+  }, [accountSyncReady, session]);
 
   useEffect(() => {
     const refreshDailyQuests = () => {
@@ -418,6 +463,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     localStorage.setItem('jeongo_stats', JSON.stringify(newStats));
     localStorage.setItem('jeongo_vocab', JSON.stringify(newVocab));
     localStorage.setItem('jeongo_skins', JSON.stringify(newSkins));
+    localStorage.setItem(VOCAB_DATA_VERSION_KEY, VOCAB_DATA_VERSION);
   };
 
   const addXP = (amount: number) => {
@@ -485,6 +531,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   };
 
+  const rewardPronunciationGrowth = (pronunciationScore: number, fluencyScore: number) => {
+    if (pronunciationScore < 80) return;
+    setStats((current) => {
+      const updated = {
+        ...current,
+        int: current.int + Math.max(1, Math.floor(pronunciationScore / 25)),
+        dex: current.dex + Math.max(1, Math.floor(fluencyScore / 25)),
+      };
+      saveToLocalStorage(updated, vocabList, skins);
+      return updated;
+    });
+  };
+
   // SuperMemo-2 (SM2) Algorithm
   const updateSrsWord = (wordId: number, quality: number) => {
     setVocabList((prevVocab) => {
@@ -513,6 +572,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // Add rewards for reviewing a word
     addXP(10);
     addGold(5);
+  };
+
+  const resetSrsWord = (wordId: number) => {
+    setVocabList((current) => {
+      const resetAt = new Date().toISOString();
+      const updated = current.map((item) => item.id === wordId ? {
+        ...item,
+        isLearned: true,
+        easiness: 2.5,
+        repetitions: 0,
+        intervalDays: 0,
+        nextReviewAt: resetAt,
+      } : item);
+      saveToLocalStorage(stats, updated, skins);
+      return updated;
+    });
   };
 
   const equipSkin = (skinId: string) => {
@@ -645,6 +720,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     for (const key of [
       'jeongo_stats',
       'jeongo_vocab',
+      VOCAB_DATA_VERSION_KEY,
       'jeongo_skins',
       'jeongo_learning_events',
       'jeongo_placement',
@@ -724,7 +800,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addGold,
         spendGold,
         allocateStats,
+        rewardPronunciationGrowth,
         updateSrsWord,
+        resetSrsWord,
         toggleLearnWord,
         equipSkin,
         buySkin,

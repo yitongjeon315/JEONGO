@@ -1,0 +1,825 @@
+{"kind":"deck","id":"pr/eg5g2v","name":"Deck"}
+{"kind":"layout","layoutId":"/ppt/slideMasters/slideMaster1.xml","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"/ppt/slideLayouts/slideLayout1.xml","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/0x6bv0","slide":1,"title":"TOPIK I","textShapes":6}
+{"kind":"shape","id":"sh/tgzipkni","slide":1,"bbox":[0,0,18,720]}
+{"kind":"textbox","id":"sh/bmx0fqpk","slide":1,"name":"deck-kicker","text":"TOPIK I","textPreview":"TOPIK I","textChars":7,"textLines":1,"bbox":[86,118,1040,80]}
+{"kind":"textbox","id":"sh/aloz6loz","slide":1,"name":"deck-title","text":"3회 완성 초고속 특강","textPreview":"3회 완성 초고속 특강","textChars":12,"textLines":1,"bbox":[86,210,1080,100]}
+{"kind":"textbox","id":"sh/5czil0nm","slide":1,"name":"deck-subtitle","text":"한 문제 한 화면 · 오프라인 수업용 PowerPoint","textPreview":"한 문제 한 화면 · 오프라인 수업용 PowerPoint","textChars":31,"textLines":1,"bbox":[90,335,900,56]}
+{"kind":"textbox","id":"sh/kb6hcv61","slide":1,"name":"deck-flow","text":"읽기 전 지식 → 문제 풀이 → 듣기 전 지식 → 복습","textPreview":"읽기 전 지식 → 문제 풀이 → 듣기 전 지식 → 복습","textChars":30,"textLines":1,"bbox":[90,470,1000,46]}
+{"kind":"textbox","id":"sh/jax0ja5g","slide":1,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/i9oza5ov","slide":1,"name":"footer-page","text":"수업용 교안","textPreview":"수업용 교안","textChars":6,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/0x6bv0","slide":1,"text":"웹서버 연결이 어려울 때 사용할 수 있는 오프라인 수업용 PPT입니다.\n[Sources]\n- Local topic1 curriculum repository"}
+{"kind":"slide","id":"sl/78i67v","slide":2,"title":"SESSION 01","textShapes":6}
+{"kind":"textbox","id":"sh/obyl4vmt","slide":2,"name":"session-1-kicker","text":"SESSION 01","textPreview":"SESSION 01","textChars":10,"textLines":1,"bbox":[78,92,450,54]}
+{"kind":"textbox","id":"sh/y10nap4b","slide":2,"name":"session-1-title","text":"1회차: 기본 인물, 장소, 동작 마스터","textPreview":"1회차: 기본 인물, 장소, 동작 마스터","textChars":22,"textLines":1,"bbox":[78,176,1110,150]}
+{"kind":"textbox","id":"sh/z294julw","slide":2,"name":"session-1-subtitle","text":"TOPIK I 합격의 첫걸음! 일상생활의 주체(인물)와 공간(장소) 및 기본 동사를 배웁니다.","textPreview":"TOPIK I 합격의 첫걸음! 일상생활의 주체(인물)와 공간(장소) 및 기본 동사를 배웁니다.","textChars":52,"textLines":1,"bbox":[82,350,1060,100]}
+{"kind":"shape","id":"sh/8725gz2d","slide":2,"bbox":[82,500,360,74]}
+{"kind":"textbox","id":"sh/98bmp43y","slide":2,"name":"session-1-count","text":"14문항 · 약 2시간","textPreview":"14문항 · 약 2시간","textChars":12,"textLines":1,"bbox":[108,513,310,48]}
+{"kind":"textbox","id":"sh/m5knepk7","slide":2,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/76t4nuls","slide":2,"name":"footer-page","text":"1회차 시작","textPreview":"1회차 시작","textChars":6,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/78i67v","slide":2,"text":"[Sources]\n- Local topic1 curriculum repository, session 1"}
+{"kind":"slide","id":"sl/fh7tgb","slide":3,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/vat8bm9g","slide":3,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/5kf29gzu","slide":3,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/4jml0bi9","slide":3,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/vudk3m1s","slide":3,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/ut4ju107","slide":3,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/hwv25wjy","slide":3,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/gvmlwrid","slide":3,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/fqxkfqhw","slide":3,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/epo36l0b","slide":3,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/kzm9obqd","slide":3,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/50vahwry","slide":3,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/ix4rm187","slide":3,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/jydsf69s","slide":3,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/wvm9krq1","slide":3,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/xwvadwrm","slide":3,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/a9krih8v","slide":3,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/fh7tgb","slide":3,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/8og1th","slide":4,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/6lwfmdwb","slide":4,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/yp4b25k7","slide":4,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/zqdcbq1s","slide":4,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/cnmt0v21","slide":4,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/xovu90jm","slide":4,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/al4bylkv","slide":4,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/bmdc7q1g","slide":4,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/oj2twb25","slide":4,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/pkvu5gja","slide":4,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/hs7ylsfy","slide":4,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/grehsned","slide":4,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/fq5gjix8","slide":4,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/upwzqdwn","slide":4,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/tonyh8f2","slide":4,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/snexoneh","slide":4,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/7m5gfixw","slide":4,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/8og1th","slide":4,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/odt8zs","slide":5,"title":"문제 01","textShapes":9}
+{"kind":"shape","id":"sh/6x03258r","slide":5,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/lwbed0jy","slide":5,"name":"q-q1_r1-number","text":"문제 01","textPreview":"문제 01","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/0v2d4vid","slide":5,"name":"q-q1_r1-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/rqtc7q1w","slide":5,"name":"q-q1_r1-text","text":"다음 그림을 보고 무엇을 하는 상황인지 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textPreview":"다음 그림을 보고 무엇을 하는 상황인지 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textChars":51,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/dsbe9gj2","slide":5,"bbox":[490,222,708,70]}
+{"kind":"textbox","id":"sh/cr2d0vih","slide":5,"name":"q-q1_r1-option-1","text":"①  밥을 먹습니다.","textPreview":"①  밥을 먹습니다.","textChars":11,"textLines":1,"bbox":[508,228,672,58]}
+{"kind":"shape","id":"sh/3m9c3610","slide":5,"bbox":[490,302,708,70]}
+{"kind":"textbox","id":"sh/210vu10f","slide":5,"name":"q-q1_r1-option-2","text":"②  노래를 부릅니다.","textPreview":"②  노래를 부릅니다.","textChars":12,"textLines":1,"bbox":[508,308,672,58]}
+{"kind":"shape","id":"sh/g32l8fqt","slide":5,"bbox":[490,382,708,70]}
+{"kind":"textbox","id":"sh/14bm1kre","slide":5,"name":"q-q1_r1-option-3","text":"③  책을 고릅니다.","textPreview":"③  책을 고릅니다.","textChars":11,"textLines":1,"bbox":[508,388,672,58]}
+{"kind":"shape","id":"sh/e1k3658n","slide":5,"bbox":[490,462,708,70]}
+{"kind":"textbox","id":"sh/f2t4za98","slide":5,"name":"q-q1_r1-option-4","text":"④  옷을 삽니다.","textPreview":"④  옷을 삽니다.","textChars":10,"textLines":1,"bbox":[508,468,672,58]}
+{"kind":"textbox","id":"sh/szil4fqx","slide":5,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/t0r2x0ri","slide":5,"name":"footer-page","text":"1회차 · 1/14","textPreview":"1회차 · 1/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"image","id":"im/kzixgbip","slide":5,"name":"","geometry":"roundRect","bbox":[70,226.4,390,291.2]}
+{"kind":"notes","id":"nt/odt8zs","slide":5,"text":"정답: 3번\n해설: 그림을 보면 많은 책이 꽂혀 있는 책장 앞에서 책을 한 권 손에 들고 보고 있습니다. 책을 고르고 파는 장소인 서점의 맥락과 일치하는 동작입니다.\n보기 해설:\n① 밥을 먹습니다 (X) - 음식을 식탁에서 먹고 있는 상황이 아닙니다.\n② 노래를 부릅니다 (X) - 마이크를 쥐고 노래하는 방이 아닌 책들이 있는 공간입니다.\n③ 책을 고릅니다 (O) - 책장 앞에서 서서 마음에 드는 책을 손에 들고 확인하는 행동이므로 그림과 완벽히 일치합니다.\n④ 옷을 삽니다 (X) - 옷가게에서 옷을 거울에 비춰보거나 계산하고 있지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r1"}
+{"kind":"slide","id":"sl/33zupf","slide":6,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/mxsbqho7","slide":6,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/mlgjedwn","slide":6,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/n6p0nids","slide":6,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/wbi1k7ep","slide":6,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/hcritsva","slide":6,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/a90jixwj","slide":6,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/va90r2d4","slide":6,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/4f21o7el","slide":6,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/5gb2xcv6","slide":6,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/lwzahcnm","slide":6,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/kvqto761","slide":6,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/zuhsf25w","slide":6,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/yt8bmxob","slide":6,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/9kjulcny","slide":6,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/8jats76d","slide":6,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/7i1cjm5s","slide":6,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/33zupf","slide":6,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/d0tvsl","slide":7,"title":"문제 03","textShapes":9}
+{"kind":"shape","id":"sh/32dwrep0","slide":7,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/e9cnmlo7","slide":7,"name":"q-q1_r3-number","text":"문제 03","textPreview":"문제 03","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/za54vq5s","slide":7,"name":"q-q1_r3-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/oze5sv69","slide":7,"name":"q-q1_r3-text","text":"다음 그림 상황에 들어맞는 문장으로 가장 알맞은 것을 고르십시오.","textPreview":"다음 그림 상황에 들어맞는 문장으로 가장 알맞은 것을 고르십시오.","textChars":36,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/mxwnq5o3","slide":7,"bbox":[490,222,708,70]}
+{"kind":"textbox","id":"sh/ny5ozq5o","slide":7,"name":"q-q1_r3-option-1","text":"①  진료를 받습니다.","textPreview":"①  진료를 받습니다.","textChars":12,"textLines":1,"bbox":[508,228,672,58]}
+{"kind":"shape","id":"sh/43u5gb65","slide":7,"bbox":[490,302,708,70]}
+{"kind":"textbox","id":"sh/p43mpgnq","slide":7,"name":"q-q1_r3-option-2","text":"②  장난감을 가지고 놉니다.","textPreview":"②  장난감을 가지고 놉니다.","textChars":16,"textLines":1,"bbox":[508,308,672,58]}
+{"kind":"shape","id":"sh/h0bepo7u","slide":7,"bbox":[490,382,708,70]}
+{"kind":"textbox","id":"sh/gz2xgjq9","slide":7,"name":"q-q1_r3-option-3","text":"③  공부를 가르칩니다.","textPreview":"③  공부를 가르칩니다.","textChars":13,"textLines":1,"bbox":[508,388,672,58]}
+{"kind":"shape","id":"sh/vytwnep4","slide":7,"bbox":[490,462,708,70]}
+{"kind":"textbox","id":"sh/uxkfe98j","slide":7,"name":"q-q1_r3-option-4","text":"④  요리를 시킵니다.","textPreview":"④  요리를 시킵니다.","textChars":12,"textLines":1,"bbox":[508,468,672,58]}
+{"kind":"textbox","id":"sh/54veto76","slide":7,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/43mxkjql","slide":7,"name":"footer-page","text":"1회차 · 3/14","textPreview":"1회차 · 3/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"image","id":"im/18naxcbq","slide":7,"name":"","geometry":"roundRect","bbox":[115,222,300,300]}
+{"kind":"notes","id":"nt/d0tvsl","slide":7,"text":"정답: 1번\n해설: 의사 가운을 입은 의사가 병실에서 환자를 성심껏 돌보며 대화하는 모습이므로, 병원에서 치료를 받거나 **진료를 받습니다**가 가장 정확합니다.\n보기 해설:\n① 진료를 받습니다 (O) - 의사에게 아픈 상태를 말하고 검사를 받는 과정과 정확히 일치합니다.\n② 장난감을 가지고 놉니다 (X) - 어린아이가 놀이터나 방에서 노는 상황이 아닙니다.\n③ 공부를 가르칩니다 (X) - 학교나 교실에서 선생님이 하는 행위입니다.\n④ 요리를 시킵니다 (X) - 주방이나 식당에서 셰프가 지시하는 행위입니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r3"}
+{"kind":"slide","id":"sl/c5rr7b","slide":8,"title":"문제 04","textShapes":10}
+{"kind":"shape","id":"sh/edo7i5kj","slide":8,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/uhojapwb","slide":8,"name":"q-q1_r4-number","text":"문제 04","textPreview":"문제 04","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/vixk3udw","slide":8,"name":"q-q1_r4-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/47qlgzed","slide":8,"name":"q-q1_r4-text","text":"다음 빈칸에 들어갈 알맞은 조사를 고르십시오.","textPreview":"다음 빈칸에 들어갈 알맞은 조사를 고르십시오.","textChars":25,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/58z294vy","slide":8,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/i583e9wn","slide":8,"name":"q-q1_r4-passage","text":"저는 주말에 도서관에 갑니다. 도서관(         ) 책을 많이 읽습니다.","textPreview":"저는 주말에 도서관에 갑니다. 도서관(         ) 책을 많이 읽습니다.","textChars":43,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/36hk7eds","slide":8,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/sbalkjep","slide":8,"name":"q-q1_r4-option-1","text":"①  이","textPreview":"①  이","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/dcj2dova","slide":8,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/tcf6p03e","slide":8,"name":"q-q1_r4-option-2","text":"②  을","textPreview":"②  을","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/sb6pgvmt","slide":8,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/raxonql8","slide":8,"name":"q-q1_r4-option-3","text":"③  에서","textPreview":"③  에서","textChars":5,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/69o7el4n","slide":8,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/10z6t03a","slide":8,"name":"q-q1_r4-option-4","text":"④  의","textPreview":"④  의","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/gzqpkv2p","slide":8,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/fyxoral4","slide":8,"name":"footer-page","text":"1회차 · 4/14","textPreview":"1회차 · 4/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/c5rr7b","slide":8,"text":"정답: 3번\n해설: 동작이 일어나는 공간적 활동 지점을 나타내는 부사격 조사는 **에서**입니다.\n보기 해설:\n① 이 (X) - 주격 조사이므로 어울리지 않습니다.\n② 을 (X) - 목적격 조사이므로 장소 명사 뒤에 붙을 수 없습니다.\n③ 에서 (O) - '읽다'라는 능동적 서술어가 있으므로 활동 지점 조사 '에서'가 정확합니다.\n④ 의 (X) - 소유를 나타내는 관형격 조사입니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r4"}
+{"kind":"slide","id":"sl/rncx1f","slide":9,"title":"문제 05","textShapes":10}
+{"kind":"shape","id":"sh/jqlcz61k","slide":9,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/xgn6pcza","slide":9,"name":"q-q1_r5-number","text":"문제 05","textPreview":"문제 05","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/cfepw7yp","slide":9,"name":"q-q1_r5-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/zipormh0","slide":9,"name":"q-q1_r5-text","text":"다음 글의 중심 생각을 고르십시오.","textPreview":"다음 글의 중심 생각을 고르십시오.","textChars":19,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/yhw7yhgv","slide":9,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/lk76tcz6","slide":9,"name":"q-q1_r5-passage","text":"저는 한국 노래를 자주 듣습니다. 특히 BTS 노래를 정말 좋아합니다. 나중에 한국 콘서트에 직접 가서 한국 가수들을 만나고 싶습니다.","textPreview":"저는 한국 노래를 자주 듣습니다. 특히 BTS 노래를 정말 좋아합니다. 나중에 한국 콘서트에 직접 가서 한국 가수들을 만나고 싶습니다.","textChars":75,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/kjyp07yl","slide":9,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/7mpovmhc","slide":9,"name":"q-q1_r5-option-1","text":"①  저는 한국 가수를 좋아합니다.","textPreview":"①  저는 한국 가수를 좋아합니다.","textChars":19,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/mlg72hgr","slide":9,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/wnad4r2t","slide":9,"name":"q-q1_r5-option-2","text":"②  저는 노래방에 자주 갑니다.","textPreview":"②  저는 노래방에 자주 갑니다.","textChars":18,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/xojuxwje","slide":9,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/alsv2hkn","slide":9,"name":"q-q1_r5-option-3","text":"③  저는 방학 때 여행을 갈 것입니다.","textPreview":"③  저는 방학 때 여행을 갈 것입니다.","textChars":22,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/vm1cvm18","slide":9,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/krud8b2p","slide":9,"name":"q-q1_r5-option-4","text":"④  저는 춤을 열심히 배웁니다.","textPreview":"④  저는 춤을 열심히 배웁니다.","textChars":18,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/5s3u1gja","slide":9,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/ipcv61kz","slide":9,"name":"footer-page","text":"1회차 · 5/14","textPreview":"1회차 · 5/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/rncx1f","slide":9,"text":"정답: 1번\n해설: 한국 노래를 좋아하고, 특히 BTS의 팬이며, 나중에 한국에 직접 가서 가수를 만나고 싶다는 소망이 중심 생각인 ①번이 유일합니다.\n보기 해설:\n① 한국 가수를 좋아합니다 (O) - 글 전체가 좋아하는 노래와 가수를 언급하고 있으므로 정합합니다.\n② 노래방에 자주 갑니다 (X) - 노래방(장소)에 관한 구체적 발언이 없습니다.\n③ 여행을 갈 것입니다 (X) - 단지 콘서트 참관을 위한 소망이 있을 뿐 일반 여행 목적이 중심 생각이 아닙니다.\n④ 춤을 열심히 배웁니다 (X) - 무용이나 댄스 학원에 대한 내용이 없습니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r5"}
+{"kind":"slide","id":"sl/n0zjsy","slide":10,"title":"문제 06","textShapes":9}
+{"kind":"shape","id":"sh/cbapsvm9","slide":10,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/b6x0jqlg","slide":10,"name":"q-q1_l1-number","text":"문제 06","textPreview":"문제 06","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/alozqlkv","slide":10,"name":"q-q1_l1-category","text":"듣기 (Listening) 기출","textPreview":"듣기 (Listening) 기출","textChars":17,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/lczip0ji","slide":10,"name":"q-q1_l1-text","text":"다음을 듣고 그림과 어울리는 올바른 대화 상황을 고르십시오. (TOPIK I 기출)","textPreview":"다음을 듣고 그림과 어울리는 올바른 대화 상황을 고르십시오. (TOPIK I 기출)","textChars":46,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/jah0na1c","slide":10,"bbox":[490,222,708,70]}
+{"kind":"textbox","id":"sh/y98zu5kr","slide":10,"name":"q-q1_l1-option-1","text":"①  병원에서 의사와 간호사가 환자를 만납니다.","textPreview":"①  병원에서 의사와 간호사가 환자를 만납니다.","textChars":26,"textLines":1,"bbox":[508,228,672,58]}
+{"kind":"shape","id":"sh/1gvidg3e","slide":10,"bbox":[490,302,708,70]}
+{"kind":"textbox","id":"sh/0fmhkb2t","slide":10,"name":"q-q1_l1-option-2","text":"②  카페에서 여자가 음료와 디저트를 주문합니다.","textPreview":"②  카페에서 여자가 음료와 디저트를 주문합니다.","textChars":27,"textLines":1,"bbox":[508,308,672,58]}
+{"kind":"shape","id":"sh/2587ml47","slide":10,"bbox":[490,382,708,70]}
+{"kind":"textbox","id":"sh/36h8vqls","slide":10,"name":"q-q1_l1-option-3","text":"③  은행에서 남자가 카드를 넣어 돈을 찾습니다.","textPreview":"③  은행에서 남자가 카드를 넣어 돈을 찾습니다.","textChars":27,"textLines":1,"bbox":[508,388,672,58]}
+{"kind":"shape","id":"sh/o7qpovmd","slide":10,"bbox":[490,462,708,70]}
+{"kind":"textbox","id":"sh/p8zqx03y","slide":10,"name":"q-q1_l1-option-4","text":"④  서점에서 남자가 직원에게 책 위치를 묻습니다.","textPreview":"④  서점에서 남자가 직원에게 책 위치를 묻습니다.","textChars":28,"textLines":1,"bbox":[508,468,672,58]}
+{"kind":"textbox","id":"sh/q987q54j","slide":10,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/bah8zalo","slide":10,"name":"footer-page","text":"1회차 · 6/14","textPreview":"1회차 · 6/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"image","id":"im/a5czqdoz","slide":10,"name":"","geometry":"roundRect","bbox":[70,226.4,390,291.2]}
+{"kind":"notes","id":"nt/n0zjsy","slide":10,"text":"정답: 2번\n해설: 여자가 주문을 하고 점원(남자)이 대답을 하는 장소는 카페입니다. 카페에서 두 사람이 커피를 나누고 주문하는 장면이므로 ②번이 그림 상황과 완벽히 부합합니다.\n듣기 대본:\n여: 여기 커피 두 잔하고 케이크 하나 주세요.\n남: 네, 알겠습니다. 저기 테이블에서 잠시만 기다려 주세요.\n보기 해설:\n① 병원에서 환자를 만납니다 (X) - 대화가 진료나 주사 등 병원과 무관합니다.\n② 카페에서 음료와 디저트를 주문합니다 (O) - 여자가 커피 두 잔과 케이크를 달라고 주문하며 남자가 서빙을 대기하라고 하는 내용이므로 카페 그림에 정확히 일치합니다.\n③ 은행에서 돈을 찾습니다 (X) - 금융 기기나 카드, 통장에 관한 언급이 전혀 없습니다.\n④ 서점에서 책 위치를 묻습니다 (X) - 책장이나 도서 검색 등에 대한 얘기가 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l1"}
+{"kind":"slide","id":"sl/lb3iuw","slide":11,"title":"문제 07","textShapes":9}
+{"kind":"shape","id":"sh/fa14b6ps","slide":11,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/fat4je14","slide":11,"name":"q-q1_l2-number","text":"문제 07","textPreview":"문제 07","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/u90na9kj","slide":11,"name":"q-q1_l2-category","text":"듣기 (Listening) 기출","textPreview":"듣기 (Listening) 기출","textChars":17,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/t8rmh4jy","slide":11,"name":"q-q1_l2-text","text":"다음을 듣고 두 사람이 대화하는 장소로 가장 알맞은 곳을 고르십시오. (TOPIK I 기출)","textPreview":"다음을 듣고 두 사람이 대화하는 장소로 가장 알맞은 곳을 고르십시오. (TOPIK I 기출)","textChars":51,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/87i58z2d","slide":11,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/7694fu1s","slide":11,"name":"q-q1_l2-option-1","text":"①  은행","textPreview":"①  은행","textChars":5,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/650n69k7","slide":11,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/d4v6t8j2","slide":11,"name":"q-q1_l2-option-2","text":"②  약국","textPreview":"②  약국","textChars":5,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/c3m5k32h","slide":11,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/2ds3ml8j","slide":11,"name":"q-q1_l2-option-3","text":"③  우체국","textPreview":"③  우체국","textChars":6,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/ne14fqp4","slide":11,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/ofalovqp","slide":11,"name":"q-q1_l2-option-4","text":"④  세탁소","textPreview":"④  세탁소","textChars":6,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/pg3mhg7u","slide":11,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/e9s3i187","slide":11,"name":"footer-page","text":"1회차 · 7/14","textPreview":"1회차 · 7/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/lb3iuw","slide":11,"text":"정답: 2번\n해설: 여자가 아픈 부위를 말하며 '약'을 요구하였고, 약사가 '이 약을 드세요'라고 건네며 복약 지도를 하고 있으므로 대화 장소는 **약국**이 확실합니다.\n듣기 대본:\n여: 머리가 많이 아파요. 약 좀 주세요.\n남: 네, 이 약을 드세요. 그리고 오늘은 따뜻한 물을 많이 마시고 푹 쉬세요.\n보기 해설:\n① 은행 (X) - 예금, 출금 등 금융 업무와 관련이 없습니다.\n② 약국 (O) - '아파요', '약 좀 주세요', '이 약을 드세요' 등의 단어를 통해 조제약을 판매하는 약국임이 확실하게 도출됩니다.\n③ 우체국 (X) - 편지, 소포 배달 용어가 언급되지 않았습니다.\n④ 세탁소 (X) - 옷 수선, 세탁물 수거 등의 단어와 매칭되지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l2"}
+{"kind":"slide","id":"sl/a7zayd","slide":12,"title":"문제 08","textShapes":9}
+{"kind":"shape","id":"sh/t4j2l4bq","slide":12,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/lofutsny","slide":12,"name":"q-q1_l3-number","text":"문제 08","textPreview":"문제 08","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/kn6d0nmd","slide":12,"name":"q-q1_l3-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/bidcny5w","slide":12,"name":"q-q1_l3-text","text":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오.","textPreview":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오.","textChars":31,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/ah4but4b","slide":12,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/xkvup8n2","slide":12,"name":"q-q1_l3-option-1","text":"①  네, 하늘에 구름이 없고 파래요.","textPreview":"①  네, 하늘에 구름이 없고 파래요.","textChars":21,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/cjmtw3mh","slide":12,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/nutcjy50","slide":12,"name":"q-q1_l3-option-2","text":"②  네, 우산을 꼭 가져가세요.","textPreview":"②  네, 우산을 꼭 가져가세요.","textChars":18,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/2tkbqt4f","slide":12,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/g7ulwjah","slide":12,"name":"q-q1_l3-option-3","text":"③  네, 비가 많이 쏟아져요.","textPreview":"③  네, 비가 많이 쏟아져요.","textChars":17,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/1832pob2","slide":12,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/e5c3u9sb","slide":12,"name":"q-q1_l3-option-4","text":"④  네, 바람이 불고 추워요.","textPreview":"④  네, 바람이 불고 추워요.","textChars":17,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/f6lknetw","slide":12,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/s3alsja5","slide":12,"name":"footer-page","text":"1회차 · 8/14","textPreview":"1회차 · 8/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/a7zayd","slide":12,"text":"정답: 1번\n해설: 남자가 날씨가 아주 맑고 구름도 없다고 관찰했으므로 이에 호응하며 '네, 하늘이 파랗다'고 대답하는 ①번이 적절합니다.\n듣기 대본:\n남: 오늘 날씨가 참 맑네요. 구름도 없어요.\n보기 해설:\n① 하늘에 구름이 없고 파래요 (O) - 맑은 하늘에 어울리는 최적의 대화 호응입니다.\n② 우산을 꼭 가져가세요 (X) - 비 소식이 없으므로 오답입니다.\n③ 비가 많이 쏟아져요 (X) - 맑은 상황과 반대되므로 어긋납니다.\n④ 바람이 불고 추워요 (X) - 맑은 한낮의 긍정적인 평가와 모순됩니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l3"}
+{"kind":"slide","id":"sl/mn5wyv","slide":13,"title":"문제 09","textShapes":9}
+{"kind":"shape","id":"sh/xsjq58zy","slide":13,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/1wnadcnm","slide":13,"name":"q-q1_l4-number","text":"문제 09","textPreview":"문제 09","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/0vetk7m1","slide":13,"name":"q-q1_l4-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/rqls7i5k","slide":13,"name":"q-q1_l4-text","text":"다음을 듣고 두 사람이 대화하는 장소로 알맞은 곳을 고르십시오.","textPreview":"다음을 듣고 두 사람이 대화하는 장소로 알맞은 곳을 고르십시오.","textChars":35,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/qpcredoz","slide":13,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/dsna9snq","slide":13,"name":"q-q1_l4-option-1","text":"①  우체국","textPreview":"①  우체국","textChars":6,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/cretgn65","slide":13,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/32ls3i5o","slide":13,"name":"q-q1_l4-option-2","text":"②  옷가게","textPreview":"②  옷가게","textChars":6,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/21crado3","slide":13,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/kvu903ip","slide":13,"name":"q-q1_l4-option-3","text":"③  미술관","textPreview":"③  미술관","textChars":6,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/lw3q98za","slide":13,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/ytsryd0j","slide":13,"name":"q-q1_l4-option-4","text":"④  세탁소","textPreview":"④  세탁소","textChars":6,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/zu187yh4","slide":13,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/cra9w3id","slide":13,"name":"footer-page","text":"1회차 · 9/14","textPreview":"1회차 · 9/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/mn5wyv","slide":13,"text":"정답: 2번\n해설: 옷을 입어보겠다고 물어보았고, 탈의 장소(피팅룸)와 거울을 안내하며 점원이 '손님'이라고 칭하므로 **옷가게**가 정답입니다.\n듣기 대본:\n여: 이 파란색 옷을 한 번 입어봐도 돼요?\n남: 네, 손님. 저기 거울이 있는 피팅룸에서 입어보세요. 아주 예쁠 거예요.\n보기 해설:\n① 우체국 (X) - 편지나 택배를 접수하는 곳이 아닙니다.\n② 옷가게 (O) - '옷', '입어보다', '거울', '피팅룸' 등을 통해 옷 매장임을 정확히 파악할 수 있습니다.\n③ 미술관 (X) - 미술 작품을 감상하는 전시실이 아닙니다.\n④ 세탁소 (X) - 옷을 세탁하거나 수선 의뢰하는 상황이 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l4"}
+{"kind":"slide","id":"sl/gop91j","slide":14,"title":"문제 10","textShapes":9}
+{"kind":"shape","id":"sh/3qtgfadg","slide":14,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/jy9kju50","slide":14,"name":"q-q1_l5-number","text":"문제 10","textPreview":"문제 10","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/ix03qp4f","slide":14,"name":"q-q1_l5-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/tobmpon2","slide":14,"name":"q-q1_l5-text","text":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오.","textPreview":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오.","textChars":35,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/sn2lwjmh","slide":14,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/7mt4ne5w","slide":14,"name":"q-q1_l5-option-1","text":"①  남자는 오늘 오후에 아주 바쁩니다.","textPreview":"①  남자는 오늘 오후에 아주 바쁩니다.","textChars":22,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/6l03u94r","slide":14,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/9s72dkny","slide":14,"name":"q-q1_l5-option-2","text":"②  남자는 오늘 집에서 휴식을 취할 것입니다.","textPreview":"②  남자는 오늘 집에서 휴식을 취할 것입니다.","textChars":26,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/8rylkfmd","slide":14,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/u10z2lwz","slide":14,"name":"q-q1_l5-option-3","text":"③  여자는 오늘 시장에 가서 옷을 살 것입니다.","textPreview":"③  여자는 오늘 시장에 가서 옷을 살 것입니다.","textChars":27,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/v29gbqxk","slide":14,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/g3ih4vep","slide":14,"name":"q-q1_l5-option-4","text":"④  두 사람은 오늘 오후에 만나서 놀기로 했습니다.","textPreview":"④  두 사람은 오늘 오후에 만나서 놀기로 했습니다.","textChars":29,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/h4ryd0va","slide":14,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/i5kz65wv","slide":14,"name":"footer-page","text":"1회차 · 10/14","textPreview":"1회차 · 10/14","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/gop91j","slide":14,"text":"정답: 2번\n해설: 남자가 오늘 오후에 아무 계획 없이 집에서 잠을 자며 쉴 것이라 했으므로, ②번 '남자는 오늘 집에서 휴식을 취할 것이다'가 가장 일치합니다.\n듣기 대본:\n여: 민수 씨, 오늘 오후에 특별한 일정이 있어요?\n남: 아니요, 오늘은 아무 계획이 없어요. 그냥 집에서 밀린 잠을 자고 푹 쉴 거예요.\n보기 해설:\n① 오늘 오후에 아주 바쁩니다 (X) - 아무 계획이 없다고 밝혔으므로 바쁘지 않습니다.\n② 집에서 휴식을 취할 것입니다 (O) - '집에서 잠을 자고 푹 쉴 것이다'라는 핵심 대사와 완벽하게 일치합니다.\n③ 시장에 가서 옷을 살 것입니다 (X) - 여자의 동선 및 쇼핑 계획은 언급되지 않았습니다.\n④ 만나서 놀기로 했습니다 (X) - 남자가 집에서 쉴 것이라 했으므로 오늘 약속은 없습니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l5"}
+{"kind":"slide","id":"sl/akvjxj","slide":15,"title":"문제 11","textShapes":10}
+{"kind":"shape","id":"sh/hgrqhgry","slide":15,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/ze1wvy9s","slide":15,"name":"q-q1_r6-number","text":"문제 11","textPreview":"문제 11","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/ydsf2t87","slide":15,"name":"q-q1_r6-category","text":"읽기 (Reading) 추가 실전","textPreview":"읽기 (Reading) 추가 실전","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/tk3e187a","slide":15,"name":"q-q1_r6-text","text":"다음 안내문을 볼 수 있는 장소로 가장 알맞은 곳을 고르십시오.","textPreview":"다음 안내문을 볼 수 있는 장소로 가장 알맞은 곳을 고르십시오.","textChars":35,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/8jux83qp","slide":15,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/7i1wzyp4","slide":15,"name":"q-q1_r6-passage","text":"책을 읽는 분들을 위해 조용히 해 주세요.\n빌린 책은 14일 안에 돌려주세요.","textPreview":"책을 읽는 분들을 위해 조용히 해 주세요. | 빌린 책은 14일 안에 돌려주세요.","textChars":43,"textLines":2,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/mhsf6t8j","slide":15,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/h83y5s76","slide":15,"name":"q-q1_r6-option-1","text":"①  도서관","textPreview":"①  도서관","textChars":6,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/g7uxcnql","slide":15,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/6907i18b","slide":15,"name":"q-q1_r6-option-2","text":"②  식당","textPreview":"②  식당","textChars":5,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/7a98b69g","slide":15,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/8bipkbq1","slide":15,"name":"q-q1_r6-option-3","text":"③  은행","textPreview":"③  은행","textChars":5,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/tcrqdwrm","slide":15,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/ud07m187","slide":15,"name":"q-q1_r6-option-4","text":"④  병원","textPreview":"④  병원","textChars":5,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/ve98f69s","slide":15,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/gfipobqd","slide":15,"name":"footer-page","text":"1회차 · 11/14","textPreview":"1회차 · 11/14","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/akvjxj","slide":15,"text":"정답: 1번\n해설: '책을 읽다', '빌린 책', '돌려주다'는 도서관에서 사용하는 핵심 표현이므로 정답은 ①번입니다.\n보기 해설:\n① 도서관 (O) - 책을 읽고 빌리고 반납하는 장소입니다.\n② 식당 (X) - 음식 주문이나 식사 관련 표현이 없습니다.\n③ 은행 (X) - 예금, 출금, 통장 관련 표현이 없습니다.\n④ 병원 (X) - 진료나 약과 관련된 안내가 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r6"}
+{"kind":"slide","id":"sl/h204zl","slide":16,"title":"문제 12","textShapes":10}
+{"kind":"shape","id":"sh/f2tg3ix4","slide":16,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/lgb6xwj6","slide":16,"name":"q-q1_r7-number","text":"문제 12","textPreview":"문제 12","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/0f2p4ril","slide":16,"name":"q-q1_r7-category","text":"읽기 (Reading) 추가 실전","textPreview":"읽기 (Reading) 추가 실전","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/ba9orm1o","slide":16,"name":"q-q1_r7-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오.","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오.","textChars":28,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/q90nyh0j","slide":16,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/dcr6tcju","slide":16,"name":"q-q1_r7-passage","text":"선생님(     ) 교실에서 한국어를 가르칩니다.","textPreview":"선생님(     ) 교실에서 한국어를 가르칩니다.","textChars":27,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/cbip0ri9","slide":16,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/v6do36h8","slide":16,"name":"q-q1_r7-option-1","text":"①  이","textPreview":"①  이","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/u5k7a10n","slide":16,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/o7mhgne1","slide":16,"name":"q-q1_r7-option-2","text":"②  을","textPreview":"②  을","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/p8vy9sf6","slide":16,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/254fexwv","slide":16,"name":"q-q1_r7-option-3","text":"③  에","textPreview":"③  에","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/36dg7ixg","slide":16,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/g32xcnep","slide":16,"name":"q-q1_r7-option-4","text":"④  와","textPreview":"④  와","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/14vy5sfa","slide":16,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/e1kfadwj","slide":16,"name":"footer-page","text":"1회차 · 12/14","textPreview":"1회차 · 12/14","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/h204zl","slide":16,"text":"정답: 1번\n해설: '선생님'이 행동의 주체이므로 받침 있는 명사 뒤에 붙는 주격 조사 '이'가 알맞습니다.\n보기 해설:\n① 이 (O) - 받침 있는 주어 '선생님' 뒤에 붙는 주격 조사입니다.\n② 을 (X) - 목적어를 표시하는 조사입니다.\n③ 에 (X) - 시간이나 도착점, 존재 장소 등에 쓰는 조사입니다.\n④ 와 (X) - 두 명사를 연결하거나 함께하는 대상을 나타냅니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r7"}
+{"kind":"slide","id":"sl/gwxg5x","slide":17,"title":"문제 13","textShapes":9}
+{"kind":"shape","id":"sh/zelwv6x8","slide":17,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/balwzq18","slide":17,"name":"q-q1_l6-number","text":"문제 13","textPreview":"문제 13","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/a9cv6lkn","slide":17,"name":"q-q1_l6-category","text":"듣기 (Listening) 추가 실전","textPreview":"듣기 (Listening) 추가 실전","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/983exgji","slide":17,"name":"q-q1_l6-text","text":"다음을 듣고 여자가 누구인지 고르십시오.","textPreview":"다음을 듣고 여자가 누구인지 고르십시오.","textChars":22,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/o7ud4b2x","slide":17,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/n6lwv61c","slide":17,"name":"q-q1_l6-option-1","text":"①  학생","textPreview":"①  학생","textChars":5,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/m5sv21kr","slide":17,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/t4ne90jm","slide":17,"name":"q-q1_l6-option-2","text":"②  선생님","textPreview":"②  선생님","textChars":6,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/83ex0f21","slide":17,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/mhcfqlwz","slide":17,"name":"q-q1_l6-option-3","text":"③  의사","textPreview":"③  의사","textChars":5,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/7ilwz6xk","slide":17,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/8jexsbep","slide":17,"name":"q-q1_l6-option-4","text":"④  요리사","textPreview":"④  요리사","textChars":6,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/9kny1gfa","slide":17,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/ytcfm1wn","slide":17,"name":"footer-page","text":"1회차 · 13/14","textPreview":"1회차 · 13/14","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/gwxg5x","slide":17,"text":"정답: 2번\n해설: 여자는 여러 사람에게 책을 펴라고 안내하고 공부할 내용을 설명하므로 선생님입니다.\n듣기 대본:\n여: 여러분, 책 25쪽을 펴세요. 오늘은 장소를 나타내는 말을 공부하겠습니다.\n보기 해설:\n① 학생 (X) - 수업 내용을 안내하는 역할이 아닙니다.\n② 선생님 (O) - 학생들에게 교재와 학습 내용을 안내하고 있습니다.\n③ 의사 (X) - 환자나 진료에 관한 말이 없습니다.\n④ 요리사 (X) - 음식이나 조리에 관한 말이 없습니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l6"}
+{"kind":"slide","id":"sl/q02jwz","slide":18,"title":"문제 14","textShapes":9}
+{"kind":"shape","id":"sh/1kvmt83e","slide":18,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/h0be98je","slide":18,"name":"q-q1_l7-number","text":"문제 14","textPreview":"문제 14","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/gz2x03it","slide":18,"name":"q-q1_l7-category","text":"듣기 (Listening) 추가 실전","textPreview":"듣기 (Listening) 추가 실전","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/3mtwbi1k","slide":18,"name":"q-q1_l7-text","text":"다음을 듣고 이어질 말로 가장 알맞은 것을 고르십시오.","textPreview":"다음을 듣고 이어질 말로 가장 알맞은 것을 고르십시오.","textChars":30,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/ilkf2d0z","slide":18,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/5ovedsja","slide":18,"name":"q-q1_l7-option-1","text":"①  학교에 가요.","textPreview":"①  학교에 가요.","textChars":10,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/4nmx4nip","slide":18,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/jq9wze10","slide":18,"name":"q-q1_l7-option-2","text":"②  학교에서 공부했어요.","textPreview":"②  학교에서 공부했어요.","textChars":14,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/yp0vq90f","slide":18,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/sv25w32h","slide":18,"name":"q-q1_l7-option-3","text":"③  학생이 많아요.","textPreview":"③  학생이 많아요.","textChars":11,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/dgbmp832","slide":18,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/qtk3utkr","slide":18,"name":"q-q1_l7-option-4","text":"④  책이 재미있어요.","textPreview":"④  책이 재미있어요.","textChars":12,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/rut4nylc","slide":18,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/0jm5032t","slide":18,"name":"footer-page","text":"1회차 · 14/14","textPreview":"1회차 · 14/14","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/q02jwz","slide":18,"text":"정답: 1번\n해설: '어디에 가요?'는 목적지를 묻는 질문이므로 장소와 '에 가요'로 대답하는 ①번이 자연스럽습니다.\n듣기 대본:\n남: 수진 씨, 지금 어디에 가요?\n보기 해설:\n① 학교에 가요 (O) - 이동 목적지를 직접 대답합니다.\n② 학교에서 공부했어요 (X) - 과거 행동을 말해 질문과 시제가 맞지 않습니다.\n③ 학생이 많아요 (X) - 사람 수에 관한 설명입니다.\n④ 책이 재미있어요 (X) - 책에 대한 감상으로 질문과 관련이 없습니다.\n[Sources]\n- Local topic1 curriculum repository, q1_l7"}
+{"kind":"slide","id":"sl/zcclh0","slide":19,"title":"SESSION 02","textShapes":6}
+{"kind":"textbox","id":"sh/vit03m1k","slide":19,"name":"session-2-kicker","text":"SESSION 02","textPreview":"SESSION 02","textChars":10,"textLines":1,"bbox":[78,92,450,54]}
+{"kind":"textbox","id":"sh/tcv2dgji","slide":19,"name":"session-2-title","text":"2회차: 일상생활과 물건 쇼핑","textPreview":"2회차: 일상생활과 물건 쇼핑","textChars":16,"textLines":1,"bbox":[78,176,1110,150]}
+{"kind":"textbox","id":"sh/sbm14b2x","slide":19,"name":"session-2-subtitle","text":"가장 실용적인 한국어 표현! 물건 구매, 식사, 그리고 조사 결합 형태를 훈련합니다.","textPreview":"가장 실용적인 한국어 표현! 물건 구매, 식사, 그리고 조사 결합 형태를 훈련합니다.","textChars":47,"textLines":1,"bbox":[82,350,1060,100]}
+{"kind":"shape","id":"sh/fedkf61o","slide":19,"bbox":[82,500,360,74]}
+{"kind":"textbox","id":"sh/ed4j61k3","slide":19,"name":"session-2-count","text":"13문항 · 약 2시간","textPreview":"13문항 · 약 2시간","textChars":12,"textLines":1,"bbox":[108,513,310,48]}
+{"kind":"textbox","id":"sh/10v2hgju","slide":19,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/gzm18b29","slide":19,"name":"footer-page","text":"2회차 시작","textPreview":"2회차 시작","textChars":6,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/zcclh0","slide":19,"text":"[Sources]\n- Local topic1 curriculum repository, session 2"}
+{"kind":"slide","id":"sl/ynbymg","slide":20,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/hwzqhcva","slide":20,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/ral0jqhk","slide":20,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/q9czqlgf","slide":20,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/1gnip0z2","slide":20,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/0fe1wvyh","slide":20,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/ze50nqhw","slide":20,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/edwjulgb","slide":20,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/947it0zy","slide":20,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/o3y10fyd","slide":20,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/6po72xwn","slide":20,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/7qh8b2d8","slide":20,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/8rqp47et","slide":20,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/tszqdcve","slide":20,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/ut876hwj","slide":20,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/vuh8f2d4","slide":20,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/gvqp87ep","slide":20,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/ynbymg","slide":20,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/6baojp","slide":21,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/xcjqpc7m","slide":21,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/zydonq9k","slide":21,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/yd47el8z","slide":21,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/94fqt07m","slide":21,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/836pkvq1","slide":21,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/n2dorq9g","slide":21,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/m147il8v","slide":21,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/x8fqxk7i","slide":21,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/w76pofqx","slide":21,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/m58rqx8z","slide":21,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/n6h8jipk","slide":21,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/87q9snqp","slide":21,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/98zqls7a","slide":21,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/a9srux8v","slide":21,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/va18n2pg","slide":21,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/wba9w7q1","slide":21,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/6baojp","slide":21,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/admr6t","slide":22,"title":"문제 01","textShapes":10}
+{"kind":"shape","id":"sh/j2pcfm9s","slide":22,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/9cva10ji","slide":22,"name":"q-q2_r1-number","text":"문제 01","textPreview":"문제 01","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/8bmt8vix","slide":22,"name":"q-q2_r1-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/z6dsvq1g","slide":22,"name":"q-q2_r1-text","text":"다음 안내문의 내용과 같은 것을 고르십시오. (TOPIK I 기출)","textPreview":"다음 안내문의 내용과 같은 것을 고르십시오. (TOPIK I 기출)","textChars":37,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/y5kr2lkv","slide":22,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/l8vaxgjm","slide":22,"name":"q-q2_r1-passage","text":"[미술관 안내]\n- 이용 시간: 오전 10시 ~ 오후 6시\n- 입장 요금: 5,000원\n- (※ 매주 월요일은 쉽니다.)","textPreview":"[미술관 안내] | - 이용 시간: 오전 10시 ~ 오후 6시 | - 입장 요금: 5,000원 | - (※ 매주 월요일은 쉽니다.)","textChars":67,"textLines":4,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/07mt4vi1","slide":22,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/j2xs7a1k","slide":22,"name":"q-q2_r1-option-1","text":"①  미술관은 월요일에 문을 엽니다.","textPreview":"①  미술관은 월요일에 문을 엽니다.","textChars":20,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/i1obe50z","slide":22,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/8ritsra9","slide":22,"name":"q-q2_r1-option-2","text":"②  미술관은 저녁 8시에 문을 닫습니다.","textPreview":"②  미술관은 저녁 8시에 문을 닫습니다.","textChars":23,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/tsrulwru","slide":22,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/6p0bq1s3","slide":22,"name":"q-q2_r1-option-3","text":"③  미술관 입장 요금은 오천 원입니다.","textPreview":"③  미술관 입장 요금은 오천 원입니다.","textChars":22,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/7q9cj69o","slide":22,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/knytorax","slide":22,"name":"q-q2_r1-option-4","text":"④  오전 9시부터 입장하여 볼 수 있습니다.","textPreview":"④  오전 9시부터 입장하여 볼 수 있습니다.","textChars":25,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/lo7uhwri","slide":22,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/y1gbmhs7","slide":22,"name":"footer-page","text":"2회차 · 1/13","textPreview":"2회차 · 1/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/admr6t","slide":22,"text":"정답: 3번\n해설: 안내문을 보면 입장 요금은 '5,000원'이라 명시되어 있습니다. 월요일은 휴관하고, 오전 10시에 열어 오후 6시에 닫으므로 다른 보기들은 오답이며 ③번이 정답입니다.\n보기 해설:\n① 월요일에 문을 엽니다 (X) - 안내문에 '매주 월요일은 쉽니다(휴무)'라고 나와 있습니다.\n② 저녁 8시에 문을 닫습니다 (X) - 이용 시간이 '오후 6시'까지입니다.\n③ 입장 요금은 오천 원입니다 (O) - 요금란에 '5,000원'으로 적혀 있는 사실과 정확히 부합합니다.\n④ 오전 9시부터 입장할 수 있습니다 (X) - 이용 시작 시간은 오전 10시부터입니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r1"}
+{"kind":"slide","id":"sl/aqo7tb","slide":23,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/5872d4by","slide":23,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/jupcfq50","slide":23,"name":"q-q2_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/itgvml4f","slide":23,"name":"q-q2_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/dkrulkn2","slide":23,"name":"q-q2_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 단어를 고르십시오. (TOPIK I 기출 유형)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 단어를 고르십시오. (TOPIK I 기출 유형)","textChars":44,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/sjidsfmx","slide":23,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/ri9cja5c","slide":23,"name":"q-q2_r2-passage","text":"저는 지난 주말에 친구를 (         ). 그리고 같이 재미있는 영화를 봤습니다.","textPreview":"저는 지난 주말에 친구를 (         ). 그리고 같이 재미있는 영화를 봤습니다.","textChars":48,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/qh0vq54r","slide":23,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/1obepkne","slide":23,"name":"q-q2_r2-option-1","text":"①  만났습니다","textPreview":"①  만났습니다","textChars":8,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/0n2dwfmt","slide":23,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/uhwjepcb","slide":23,"name":"q-q2_r2-option-2","text":"②  만납니다","textPreview":"②  만납니다","textChars":7,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/vi507atw","slide":23,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/gje1gfu1","slide":23,"name":"q-q2_r2-option-3","text":"③  만날 것입니다","textPreview":"③  만날 것입니다","textChars":10,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/h4ni9kbm","slide":23,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/i5wjipc7","slide":23,"name":"q-q2_r2-option-4","text":"④  만나서","textPreview":"④  만나서","textChars":6,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/365kbuts","slide":23,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/47y1kzud","slide":23,"name":"footer-page","text":"2회차 · 2/13","textPreview":"2회차 · 2/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/aqo7tb","slide":23,"text":"정답: 1번\n해설: 문장에 '어제'라는 시간 단어가 있고, 뒷문장 역시 과거형 시제 '봤습니다'가 쓰였으므로 시제를 과거형으로 일치시켜야 합니다.\n보기 해설:\n① 만났습니다 (O) - '어제' 일어난 과거 사실을 종결짓는 올바른 어미입니다.\n② 만납니다 (X) - 현재 시제이므로 시간 어휘와 맞지 않습니다.\n③ 만날 것입니다 (X) - 미래 시제이므로 어색합니다.\n④ 만나서 (X) - 문장 종결 어미가 필요하므로 틀립니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r2"}
+{"kind":"slide","id":"sl/qt7fow","slide":24,"title":"문제 03","textShapes":9}
+{"kind":"shape","id":"sh/8nedonud","slide":24,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/rqlcbmxo","slide":24,"name":"q-q2_r3-number","text":"문제 03","textPreview":"문제 03","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/6pcbihg3","slide":24,"name":"q-q2_r3-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/1gnuhwfq","slide":24,"name":"q-q2_r3-text","text":"다음 그림 상황에 맞는 문장으로 가장 알맞은 것을 고르십시오.","textPreview":"다음 그림 상황에 맞는 문장으로 가장 알맞은 것을 고르십시오.","textChars":34,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/fulcf6x0","slide":24,"bbox":[490,222,708,70]}
+{"kind":"textbox","id":"sh/etcbm1gf","slide":24,"name":"q-q2_r3-option-1","text":"①  음식을 주문합니다.","textPreview":"①  음식을 주문합니다.","textChars":13,"textLines":1,"bbox":[508,228,672,58]}
+{"kind":"shape","id":"sh/xkja5cfm","slide":24,"bbox":[490,302,708,70]}
+{"kind":"textbox","id":"sh/wjatc7y1","slide":24,"name":"q-q2_r3-option-2","text":"②  요리를 만듭니다.","textPreview":"②  요리를 만듭니다.","textChars":12,"textLines":1,"bbox":[508,308,672,58]}
+{"kind":"shape","id":"sh/yhcbidcv","slide":24,"bbox":[490,382,708,70]}
+{"kind":"textbox","id":"sh/zilcbitg","slide":24,"name":"q-q2_r3-option-3","text":"③  청소를 열심히 합니다.","textPreview":"③  청소를 열심히 합니다.","textChars":15,"textLines":1,"bbox":[508,388,672,58]}
+{"kind":"shape","id":"sh/kjetknu1","slide":24,"bbox":[490,462,708,70]}
+{"kind":"textbox","id":"sh/lknudsbm","slide":24,"name":"q-q2_r3-option-4","text":"④  그릇을 닦습니다.","textPreview":"④  그릇을 닦습니다.","textChars":12,"textLines":1,"bbox":[508,468,672,58]}
+{"kind":"textbox","id":"sh/mlwbmxc7","slide":24,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/7m5cfits","slide":24,"name":"footer-page","text":"2회차 · 3/13","textPreview":"2회차 · 3/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"image","id":"im/a5o3ad83","slide":24,"name":"","geometry":"roundRect","bbox":[115,222,300,300]}
+{"kind":"notes","id":"nt/qt7fow","slide":24,"text":"정답: 2번\n해설: 주방 모자를 쓰고 프라이팬에 요리를 올리고 있는 주방장 셰프의 그림이므로 **요리를 만듭니다**가 정확합니다.\n보기 해설:\n① 음식을 주문합니다 (X) - 손님이 카운터나 테이블에서 시키는 대화입니다.\n② 요리를 만듭니다 (O) - 조리실에서 직접 음식을 만드는 동작입니다.\n③ 청소를 열심히 합니다 (X) - 빗자루나 걸레로 청소하는 묘사가 아닙니다.\n④ 그릇을 닦습니다 (X) - 개수대에서 설거지하는 상황이 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r3"}
+{"kind":"slide","id":"sl/x7crx1","slide":25,"title":"문제 04","textShapes":10}
+{"kind":"shape","id":"sh/8n2pcbu9","slide":25,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/ofi9obi5","slide":25,"name":"q-q2_r4-number","text":"문제 04","textPreview":"문제 04","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/pgrqhgzq","slide":25,"name":"q-q2_r4-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/e9g7i103","slide":25,"name":"q-q2_r4-text","text":"다음 빈칸에 들어갈 알맞은 표현을 고르십시오.","textPreview":"다음 빈칸에 들어갈 알맞은 표현을 고르십시오.","textChars":25,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/fap8b6ho","slide":25,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/0bipkbi9","slide":25,"name":"q-q2_r4-passage","text":"저는 지난 주말에 부모님과 함께 제주도로 여행을 (         ).","textPreview":"저는 지난 주말에 부모님과 함께 제주도로 여행을 (         ).","textChars":39,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/1crqdgze","slide":25,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/y5kru5g7","slide":25,"name":"q-q2_r4-option-1","text":"①  갔습니다","textPreview":"①  갔습니다","textChars":7,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/z6t8nahs","slide":25,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/ji9oz6dc","slide":25,"name":"q-q2_r4-option-2","text":"②  갑니다","textPreview":"②  갑니다","textChars":6,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/yh0n61cr","slide":25,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/lkb61gvi","slide":25,"name":"q-q2_r4-option-3","text":"③  갈 것입니다","textPreview":"③  갈 것입니다","textChars":9,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/kji58bux","slide":25,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/7mto3qdo","slide":25,"name":"q-q2_r4-option-4","text":"④  가고 싶습니다","textPreview":"④  가고 싶습니다","textChars":10,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/6lknalc3","slide":25,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/t8b65gve","slide":25,"name":"footer-page","text":"2회차 · 4/13","textPreview":"2회차 · 4/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/x7crx1","slide":25,"text":"정답: 1번\n해설: '지난 주말'이라는 과거 시간 지시어가 있으므로 시제는 과거형인 **갔습니다**가 정합합니다.\n보기 해설:\n① 갔습니다 (O) - 과거완료 사실을 서술하는 표현입니다.\n② 갑니다 (X) - 현재형 시제입니다.\n③ 갈 것입니다 (X) - 미래 계획이나 약속형 표현입니다.\n④ 가고 싶습니다 (X) - 희망/소망을 나타내는 현재적 선호입니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r4"}
+{"kind":"slide","id":"sl/50phv9","slide":26,"title":"문제 05","textShapes":10}
+{"kind":"shape","id":"sh/nyhczmxg","slide":26,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/1sjypcby","slide":26,"name":"q-q2_r5-number","text":"문제 05","textPreview":"문제 05","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/07qxw7ad","slide":26,"name":"q-q2_r5-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/nu1grmt4","slide":26,"name":"q-q2_r5-text","text":"다음 글의 중심 생각을 고르십시오.","textPreview":"다음 글의 중심 생각을 고르십시오.","textChars":19,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/2tsfyhsj","slide":26,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/pwjytwba","slide":26,"name":"q-q2_r5-passage","text":"이 신발은 제 발에 잘 맞고 걸을 때 아주 편합니다. 파란색 색상과 모양도 정말 마음에 듭니다. 그래서 저는 매일 이 신발을 신고 밖으로 나갑니다.","textPreview":"이 신발은 제 발에 잘 맞고 걸을 때 아주 편합니다. 파란색 색상과 모양도 정말 마음에 듭니다. 그래서 저는 매일 이 신발을 신고 밖으로 나갑니다.","textChars":82,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/ovax0rap","slide":26,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/by1gvmt0","slide":26,"name":"q-q2_r5-option-1","text":"①  저는 매일 운동을 합니다.","textPreview":"①  저는 매일 운동을 합니다.","textChars":17,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/axsf21sf","slide":26,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/0vqto7e5","slide":26,"name":"q-q2_r5-option-2","text":"②  이 신발은 아주 마음에 듭니다.","textPreview":"②  이 신발은 아주 마음에 듭니다.","textChars":20,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/1wzuxcfq","slide":26,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/et8bmxwz","slide":26,"name":"q-q2_r5-option-3","text":"③  저는 새 신발을 사고 싶습니다.","textPreview":"③  저는 새 신발을 사고 싶습니다.","textChars":20,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/zuhcv2xk","slide":26,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/ozadsre1","slide":26,"name":"q-q2_r5-option-4","text":"④  이 신발은 가격이 비쌉니다.","textPreview":"④  이 신발은 가격이 비쌉니다.","textChars":18,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/90ju1wfm","slide":26,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/mx8bqhwb","slide":26,"name":"footer-page","text":"2회차 · 5/13","textPreview":"2회차 · 5/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/50phv9","slide":26,"text":"정답: 2번\n해설: 신발이 아주 편하고, 색깔과 모양이 내 취향에 맞아 마음에 든다는 글쓴이의 주관적 만족도를 설명하고 있으므로 ②번이 최적의 중심 생각입니다.\n보기 해설:\n① 매일 운동을 합니다 (X) - 운동 목적이 아닌 일반 보행 및 신발에 대한 만족도 서술입니다.\n② 이 신발은 아주 마음에 듭니다 (O) - 글의 핵심 주제를 정확하게 서술하고 있습니다.\n③ 새 신발을 사고 싶습니다 (X) - 이미 신발을 가지고 있으므로 모순됩니다.\n④ 가격이 비쌉니다 (X) - 가격 정보는 적혀 있지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r5"}
+{"kind":"slide","id":"sl/hutf7d","slide":27,"title":"문제 06","textShapes":9}
+{"kind":"shape","id":"sh/n258bm1g","slide":27,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/fepsnahg","slide":27,"name":"q-q2_l1-number","text":"문제 06","textPreview":"문제 06","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/udgre5gv","slide":27,"name":"q-q2_l1-category","text":"듣기 (Listening) 기출","textPreview":"듣기 (Listening) 기출","textChars":17,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/pkratkzi","slide":27,"name":"q-q2_l1-text","text":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textPreview":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textChars":44,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/4jitkfyd","slide":27,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/3i9srahs","slide":27,"name":"q-q2_l1-option-1","text":"①  반갑습니다. 저는 이수진입니다.","textPreview":"①  반갑습니다. 저는 이수진입니다.","textChars":20,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/2h0bi5g7","slide":27,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/5onahgze","slide":27,"name":"q-q2_l1-option-2","text":"②  네, 안녕히 계세요.","textPreview":"②  네, 안녕히 계세요.","textChars":14,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/kne98vit","slide":27,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/yxc7eh0z","slide":27,"name":"q-q2_l1-option-3","text":"③  미안합니다. 괜찮습니다.","textPreview":"③  미안합니다. 괜찮습니다.","textChars":16,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/zylo7m1k","slide":27,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/0zupg7ip","slide":27,"name":"q-q2_l1-option-4","text":"④  축하합니다. 고맙습니다.","textPreview":"④  축하합니다. 고맙습니다.","textChars":16,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/l03q9cja","slide":27,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/m1c7ih0v","slide":27,"name":"footer-page","text":"2회차 · 6/13","textPreview":"2회차 · 6/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/hutf7d","slide":27,"text":"정답: 1번\n해설: 남자가 처음 만났을 때 나누는 자기소개 인사를 건넸으므로 이에 이어질 가장 적절한 대답은 맞인사인 '반갑습니다. 저는 이수진입니다.'(①)가 가장 명확합니다.\n듣기 대본:\n남: 처음 뵙겠습니다. 김민수입니다.\n보기 해설:\n① 반갑습니다. 저는 이수진입니다 (O) - 인사에 상호적으로 대답하는 올바른 격식입니다.\n② 네, 안녕히 계세요 (X) - 작별 인사입니다.\n③ 미안합니다. 괜찮습니다 (X) - 사과에 대한 응답입니다.\n④ 축하합니다. 고맙습니다 (X) - 감사에 관한 맥락입니다.\n[Sources]\n- Local topic1 curriculum repository, q2_l1"}
+{"kind":"slide","id":"sl/23wgcf","slide":28,"title":"문제 07","textShapes":9}
+{"kind":"shape","id":"sh/dwbitc3a","slide":28,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/58fqdoz2","slide":28,"name":"q-q2_l2-number","text":"문제 07","textPreview":"문제 07","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/k76pkjih","slide":28,"name":"q-q2_l2-category","text":"듣기 (Listening) 기출","textPreview":"듣기 (Listening) 기출","textChars":17,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/v2do7u10","slide":28,"name":"q-q2_l2-text","text":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오. (TOPIK I 기출)","textPreview":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오. (TOPIK I 기출)","textChars":48,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/ah47ep0f","slide":28,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/x4v694j6","slide":28,"name":"q-q2_l2-option-1","text":"①  남자는 컴퓨터 수리를 완전히 끝냈습니다.","textPreview":"①  남자는 컴퓨터 수리를 완전히 끝냈습니다.","textChars":25,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/w3mpgzil","slide":28,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/neto3u1o","slide":28,"name":"q-q2_l2-option-2","text":"②  여자가 직접 도구를 들고 컴퓨터를 고치고 있습니다.","textPreview":"②  여자가 직접 도구를 들고 컴퓨터를 고치고 있습니다.","textChars":31,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/mdk7ap0j","slide":28,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/0j214r21","slide":28,"name":"q-q2_l2-option-3","text":"③  남자는 지금 현재 컴퓨터를 고치고 있습니다.","textPreview":"③  남자는 지금 현재 컴퓨터를 고치고 있습니다.","textChars":27,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/1kbixwjm","slide":28,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/ehkj2hkv","slide":28,"name":"q-q2_l2-option-4","text":"④  두 사람은 오늘 매장에 가서 컴퓨터를 새로 살 것입니다.","textPreview":"④  두 사람은 오늘 매장에 가서 컴퓨터를 새로 살 것입니다.","textChars":34,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/zit0vmlg","slide":28,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/cvi10725","slide":28,"name":"footer-page","text":"2회차 · 7/13","textPreview":"2회차 · 7/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/23wgcf","slide":28,"text":"정답: 3번\n해설: 남자가 '아니요, 아직 고치고 있어요'라고 말했으므로 남자가 지금 컴퓨터를 수리 중인 상태입니다. 따라서 정답은 ③번입니다.\n듣기 대본:\n여: 민수 씨, 컴퓨터 다 고쳤어요?\n남: 아니요, 아직 고치고 있어요. 조금만 기다려 주세요.\n여: 그럼 컴퓨터를 다 고친 후에 저한테 꼭 연락해 주세요.\n보기 해설:\n① 수리를 완전히 끝냈습니다 (X) - 아직 진행형이므로 틀립니다.\n② 여자가 고칩니다 (X) - 실제 수리 주체는 남자입니다.\n③ 지금 컴퓨터를 고치고 있습니다 (O) - 대화 속 남자의 행동 상태와 완벽히 맞아떨어집니다.\n④ 새로 살 것입니다 (X) - 수리 중이므로 어울리지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q2_l2"}
+{"kind":"slide","id":"sl/1of499","slide":29,"title":"문제 08","textShapes":9}
+{"kind":"shape","id":"sh/hwba1gni","slide":29,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/9g3edc3u","slide":29,"name":"q-q2_l3-number","text":"문제 08","textPreview":"문제 08","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/ofudk7m9","slide":29,"name":"q-q2_l3-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/za1w72ls","slide":29,"name":"q-q2_l3-text","text":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오.","textPreview":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오.","textChars":31,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/e9svex47","slide":29,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/1cje9s3y","slide":29,"name":"q-q2_l3-option-1","text":"①  정말 고마워요. 마음에 들어요.","textPreview":"①  정말 고마워요. 마음에 들어요.","textChars":20,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/0badg7md","slide":29,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/j65wjmlw","slide":29,"name":"q-q2_l3-option-2","text":"②  네, 안녕히 계세요.","textPreview":"②  네, 안녕히 계세요.","textChars":14,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/y5cvqh4r","slide":29,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/4z29cb69","slide":29,"name":"q-q2_l3-option-3","text":"③  죄송합니다. 늦었습니다.","textPreview":"③  죄송합니다. 늦었습니다.","textChars":16,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/p0ba5gnu","slide":29,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/2xkra1o3","slide":29,"name":"q-q2_l3-option-4","text":"④  아니요, 저는 선물이 없어요.","textPreview":"④  아니요, 저는 선물이 없어요.","textChars":19,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/3yts365o","slide":29,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/gvi98b6x","slide":29,"name":"footer-page","text":"2회차 · 8/13","textPreview":"2회차 · 8/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/1of499","slide":29,"text":"정답: 1번\n해설: 상대방이 생일 축하와 함께 선물을 건넸으므로 감사를 표하는 '정말 고마워요' 대화인 ①번이 정답입니다.\n듣기 대본:\n여: 민수 씨, 생일 축하해요! 여기 제 생일 선물이에요.\n보기 해설:\n① 정말 고마워요. 마음에 들어요 (O) - 선물을 받고 나누는 자연스럽고 훈훈한 화답입니다.\n② 안녕히 계세요 (X) - 헤어지는 작별 구도이므로 어색합니다.\n③ 죄송합니다 (X) - 실수를 고백하거나 사과할 때 쓰는 표현입니다.\n④ 저는 선물이 없어요 (X) - 선물을 수령하는 입장에서의 답으로 무례합니다.\n[Sources]\n- Local topic1 curriculum repository, q2_l3"}
+{"kind":"slide","id":"sl/aun40v","slide":30,"title":"문제 09","textShapes":9}
+{"kind":"shape","id":"sh/fydgn2p8","slide":30,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/7mh43ilo","slide":30,"name":"q-q2_l4-number","text":"문제 09","textPreview":"문제 09","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/6l83udk3","slide":30,"name":"q-q2_l4-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/lkzm183i","slide":30,"name":"q-q2_l4-text","text":"다음을 듣고 두 사람이 대화하는 장소로 가장 알맞은 곳을 고르십시오.","textPreview":"다음을 듣고 두 사람이 대화하는 장소로 가장 알맞은 곳을 고르십시오.","textChars":38,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/kjqlsn2d","slide":30,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/jih4zils","slide":30,"name":"q-q2_l4-option-1","text":"①  우체국","textPreview":"①  우체국","textChars":6,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/yho3qdk7","slide":30,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/xwfmx83m","slide":30,"name":"q-q2_l4-option-2","text":"②  과일 가게","textPreview":"②  과일 가게","textChars":8,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/wv6lo321","slide":30,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/214zix8j","slide":30,"name":"q-q2_l4-option-3","text":"③  병원","textPreview":"③  병원","textChars":5,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/3mdgr2p4","slide":30,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/onmhk7qp","slide":30,"name":"q-q2_l4-option-4","text":"④  세탁소","textPreview":"④  세탁소","textChars":6,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/pofydc7a","slide":30,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/ex4zex8n","slide":30,"name":"footer-page","text":"2회차 · 9/13","textPreview":"2회차 · 9/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/aun40v","slide":30,"text":"정답: 2번\n해설: 사과와 바나나를 지정하여 주문하고 금액을 결제하는 대화이므로 청과 상점인 **과일 가게**가 맞습니다.\n듣기 대본:\n남: 사장님, 맛있는 사과 세 개랑 노란 바나나 한 송이 주세요.\n여: 네, 손님. 여기 담아 드립니다. 모두 합해서 구천 원입니다.\n보기 해설:\n① 우체국 (X) - 우편 관련 대화가 아닙니다.\n② 과일 가게 (O) - 사과와 바나나를 현금 계산하여 포장하는 상거래 장소이므로 정확합니다.\n③ 병원 (X) - 건강에 관한 의학적 조언 대사가 아닙니다.\n④ 세탁소 (X) - 세탁 의류를 취급하는 정황이 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q2_l4"}
+{"kind":"slide","id":"sl/lhf22m","slide":31,"title":"문제 10","textShapes":9}
+{"kind":"shape","id":"sh/sfmdszyp","slide":31,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/ip0zutgb","slide":31,"name":"q-q2_l5-number","text":"문제 10","textPreview":"문제 10","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/jq9gnyxw","slide":31,"name":"q-q2_l5-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/sv2h03ed","slide":31,"name":"q-q2_l5-text","text":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오.","textPreview":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오.","textChars":35,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/dwbit8fy","slide":31,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/6tkzytwn","slide":31,"name":"q-q2_l5-option-1","text":"①  남자는 지갑에 현금이 많습니다.","textPreview":"①  남자는 지갑에 현금이 많습니다.","textChars":20,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/rut0ryxs","slide":31,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/8zyhojy9","slide":31,"name":"q-q2_l5-option-2","text":"②  남자는 지금 신용카드를 가지고 있습니다.","textPreview":"②  남자는 지금 신용카드를 가지고 있습니다.","textChars":25,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/907yhofu","slide":31,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/5sbuh4zy","slide":31,"name":"q-q2_l5-option-3","text":"③  남자는 지갑을 찾으러 집에 갈 예정입니다.","textPreview":"③  남자는 지갑을 찾으러 집에 갈 예정입니다.","textChars":26,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/kr2tozyd","slide":31,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/jqtcfuhs","slide":31,"name":"q-q2_l5-option-4","text":"④  여자가 남자에게 지갑을 선물해 줄 것입니다.","textPreview":"④  여자가 남자에게 지갑을 선물해 줄 것입니다.","textChars":27,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/ypkbmpg7","slide":31,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/tgvul4za","slide":31,"name":"footer-page","text":"2회차 · 10/13","textPreview":"2회차 · 10/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/lhf22m","slide":31,"text":"정답: 2번\n해설: 남자가 지갑은 집에 두었으나 주머니에 신용카드가 있다고 진술했으므로, ②번 '남자는 지금 신용카드를 가지고 있다'가 확실한 일치 사실입니다.\n듣기 대본:\n여: 민수 씨, 지갑에 지금 현금이 좀 있어요?\n남: 아니요, 지갑을 오늘 집에 두고 나와서 현금은 없어요. 대신 주머니에 신용카드는 있어요.\n보기 해설:\n① 현금이 많습니다 (X) - 지갑이 집에 있고 현금이 전혀 없다고 밝혔습니다.\n② 신용카드를 가지고 있습니다 (O) - 주머니에 카드가 들어있는 상태이므로 사실과 부합합니다.\n③ 지갑을 찾으러 집에 갑니다 (X) - 집에 가겠다는 동작 의도는 직접 언급되지 않았습니다.\n④ 지갑을 선물해 줍니다 (X) - 선물에 대한 제안이나 거래 정황은 들리지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q2_l5"}
+{"kind":"slide","id":"sl/qcxsox","slide":32,"title":"문제 11","textShapes":10}
+{"kind":"shape","id":"sh/dwvyx4n2","slide":32,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/nuhsb6lc","slide":32,"name":"q-q2_r6-number","text":"문제 11","textPreview":"문제 11","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/2t8r21kr","slide":32,"name":"q-q2_r6-category","text":"읽기 (Reading) 추가 실전","textPreview":"읽기 (Reading) 추가 실전","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/xkjahg3e","slide":32,"name":"q-q2_r6-text","text":"다음 광고의 내용과 같은 것을 고르십시오.","textPreview":"다음 광고의 내용과 같은 것을 고르십시오.","textChars":23,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/cja98v2t","slide":32,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/bi1sfql8","slide":32,"name":"q-q2_r6-passage","text":"[여름 신발 할인]\n운동화 30,000원 → 20,000원\n이번 주 일요일까지","textPreview":"[여름 신발 할인] | 운동화 30,000원 → 20,000원 | 이번 주 일요일까지","textChars":43,"textLines":3,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/ah8r6lkn","slide":32,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/lojal03q","slide":32,"name":"q-q2_r6-option-1","text":"①  운동화는 삼만 원입니다.","textPreview":"①  운동화는 삼만 원입니다.","textChars":16,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/knatcv25","slide":32,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/25kfipof","slide":32,"name":"q-q2_r6-option-2","text":"②  할인은 다음 달까지입니다.","textPreview":"②  할인은 다음 달까지입니다.","textChars":17,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/36tgru50","slide":32,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/o7mxkz65","slide":32,"name":"q-q2_r6-option-3","text":"③  운동화를 이만 원에 살 수 있습니다.","textPreview":"③  운동화를 이만 원에 살 수 있습니다.","textChars":23,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/p8vyt4nq","slide":32,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/q94zmp4b","slide":32,"name":"q-q2_r6-option-4","text":"④  일요일에는 가게가 쉽니다.","textPreview":"④  일요일에는 가게가 쉽니다.","textChars":17,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/budgvu5w","slide":32,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/cvmhozmh","slide":32,"name":"footer-page","text":"2회차 · 11/13","textPreview":"2회차 · 11/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/qcxsox","slide":32,"text":"정답: 3번\n해설: 광고에 할인 가격이 20,000원으로 표시되어 있으므로 ③번이 내용과 같습니다.\n보기 해설:\n① 삼만 원입니다 (X) - 삼만 원은 할인 전 가격입니다.\n② 다음 달까지입니다 (X) - 이번 주 일요일까지라고 했습니다.\n③ 이만 원에 살 수 있습니다 (O) - 표시된 할인 가격과 같습니다.\n④ 일요일에 쉽니다 (X) - 일요일까지 할인한다는 뜻이지 휴무라는 뜻이 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r6"}
+{"kind":"slide","id":"sl/dwu5di","slide":33,"title":"문제 12","textShapes":10}
+{"kind":"shape","id":"sh/fqtw7u9c","slide":33,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/t8nyh43e","slide":33,"name":"q-q2_r7-number","text":"문제 12","textPreview":"문제 12","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/87exojm9","slide":33,"name":"q-q2_r7-category","text":"읽기 (Reading) 추가 실전","textPreview":"읽기 (Reading) 추가 실전","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/zilwbu5c","slide":33,"name":"q-q2_r7-text","text":"다음 빈칸에 들어갈 가장 알맞은 말을 고르십시오.","textPreview":"다음 빈칸에 들어갈 가장 알맞은 말을 고르십시오.","textChars":27,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/yhcfip4r","slide":33,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/lk3yd4ni","slide":33,"name":"q-q2_r7-passage","text":"카페에서 커피 두 (     )을 주문했습니다.","textPreview":"카페에서 커피 두 (     )을 주문했습니다.","textChars":26,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/kjuxkzmx","slide":33,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/3epgnylw","slide":33,"name":"q-q2_r7-option-1","text":"①  명","textPreview":"①  명","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/idgfut4b","slide":33,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/ofmx4jqt","slide":33,"name":"q-q2_r7-option-2","text":"②  잔","textPreview":"②  잔","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/pgvedore","slide":33,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/2dkf298n","slide":33,"name":"q-q2_r7-option-3","text":"③  켤레","textPreview":"③  켤레","textChars":5,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/netwbe98","slide":33,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/0b2x0zqx","slide":33,"name":"q-q2_r7-option-4","text":"④  장","textPreview":"④  장","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/1cbe94ri","slide":33,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/epkfyp8r","slide":33,"name":"footer-page","text":"2회차 · 12/13","textPreview":"2회차 · 12/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/dwu5di","slide":33,"text":"정답: 2번\n해설: 커피나 차처럼 컵에 담긴 음료를 셀 때는 단위 명사 '잔'을 사용합니다.\n보기 해설:\n① 명 (X) - 사람을 세는 단위입니다.\n② 잔 (O) - 컵에 담긴 음료를 세는 단위입니다.\n③ 켤레 (X) - 신발이나 양말을 세는 단위입니다.\n④ 장 (X) - 종이, 표, 얇은 물건을 세는 단위입니다.\n[Sources]\n- Local topic1 curriculum repository, q2_r7"}
+{"kind":"slide","id":"sl/v6kbdl","slide":34,"title":"문제 13","textShapes":9}
+{"kind":"shape","id":"sh/cra5k7ep","slide":34,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/q58z25s3","slide":34,"name":"q-q2_l6-number","text":"문제 13","textPreview":"문제 13","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/r6hgvqto","slide":34,"name":"q-q2_l6-category","text":"듣기 (Listening) 추가 실전","textPreview":"듣기 (Listening) 추가 실전","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/0bah8fa5","slide":34,"name":"q-q2_l6-text","text":"다음을 듣고 여자가 할 행동으로 가장 알맞은 것을 고르십시오.","textPreview":"다음을 듣고 여자가 할 행동으로 가장 알맞은 것을 고르십시오.","textChars":34,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/1cjy1kbq","slide":34,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/e9sz65sf","slide":34,"name":"q-q2_l6-option-1","text":"①  신발값을 깎습니다.","textPreview":"①  신발값을 깎습니다.","textChars":13,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/za1gzatk","slide":34,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/gf6xwba1","slide":34,"name":"q-q2_l6-option-2","text":"②  신발을 더 작은 것으로 바꿉니다.","textPreview":"②  신발을 더 작은 것으로 바꿉니다.","textChars":21,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/hgfypgbm","slide":34,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/pojm9svy","slide":34,"name":"q-q2_l6-option-3","text":"③  큰 사이즈 신발을 받습니다.","textPreview":"③  큰 사이즈 신발을 받습니다.","textChars":18,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/4nqlgned","slide":34,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/3mh47id8","slide":34,"name":"q-q2_l6-option-4","text":"④  신발을 빌립니다.","textPreview":"④  신발을 빌립니다.","textChars":12,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/2l83edwn","slide":34,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/dsjmdsva","slide":34,"name":"footer-page","text":"2회차 · 13/13","textPreview":"2회차 · 13/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/v6kbdl","slide":34,"text":"정답: 3번\n해설: 여자는 현재 신발이 작아서 더 큰 사이즈로 교환해 달라고 요청했습니다.\n듣기 대본:\n여: 이 신발은 조금 작아요. 한 사이즈 큰 것으로 바꿔 주세요.\n남: 네, 손님. 잠시만 기다려 주세요.\n보기 해설:\n① 값을 깎습니다 (X) - 가격 할인을 요청하지 않았습니다.\n② 더 작은 것으로 바꿉니다 (X) - 현재 신발이 이미 작습니다.\n③ 큰 사이즈 신발을 받습니다 (O) - 여자의 교환 요청과 일치합니다.\n④ 신발을 빌립니다 (X) - 구매한 상품을 교환하는 상황입니다.\n[Sources]\n- Local topic1 curriculum repository, q2_l6"}
+{"kind":"slide","id":"sl/gkyim0","slide":35,"title":"SESSION 03","textShapes":6}
+{"kind":"textbox","id":"sh/gbexsbq9","slide":35,"name":"session-3-kicker","text":"SESSION 03","textPreview":"SESSION 03","textChars":10,"textLines":1,"bbox":[78,92,450,54]}
+{"kind":"textbox","id":"sh/y1svih8b","slide":35,"name":"session-3-title","text":"3회차: 시간, 상태, 그리고 미래 계획","textPreview":"3회차: 시간, 상태, 그리고 미래 계획","textChars":22,"textLines":1,"bbox":[78,176,1110,150]}
+{"kind":"textbox","id":"sh/j21wbm9g","slide":35,"name":"session-3-subtitle","text":"일정 및 약속 잡기! 날씨, 시간 관련 어휘와 미래 시제 문법을 연습합니다.","textPreview":"일정 및 약속 잡기! 날씨, 시간 관련 어휘와 미래 시제 문법을 연습합니다.","textChars":42,"textLines":1,"bbox":[82,350,1060,100]}
+{"kind":"shape","id":"sh/87udorqd","slide":35,"bbox":[82,500,360,74]}
+{"kind":"textbox","id":"sh/t83ehwry","slide":35,"name":"session-3-count","text":"13문항 · 약 2시간","textPreview":"13문항 · 약 2시간","textChars":12,"textLines":1,"bbox":[108,513,310,48]}
+{"kind":"textbox","id":"sh/65cvmh87","slide":35,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/76lwfm9s","slide":35,"name":"footer-page","text":"3회차 시작","textPreview":"3회차 시작","textChars":6,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/gkyim0","slide":35,"text":"[Sources]\n- Local topic1 curriculum repository, session 3"}
+{"kind":"slide","id":"sl/wwmj3m","slide":36,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/utsnahkz","slide":36,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/it43u1g7","slide":36,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/3uxkn6xs","slide":36,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/grmlsryh","slide":36,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/hsv2lwf2","slide":36,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/up43qhgb","slide":36,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/vqdkjmxw","slide":36,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/0nql4vel","slide":36,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/1ozmxgf6","slide":36,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/5k36pw3m","slide":36,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/4zu5gb21","slide":36,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/jyl4n6lg","slide":36,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/ixcne1kv","slide":36,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/hw3mlw3a","slide":36,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/wvu5cr2p","slide":36,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/vu14jmlk","slide":36,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/wwmj3m","slide":36,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/l5r9h3","slide":37,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/sb2h8rux","slide":37,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/8ja9cb21","slide":37,"name":"q-q1_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/9kja5g36","slide":37,"name":"q-q1_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/yt8r61kj","slide":37,"name":"q-q1_r2-text","text":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textPreview":"다음 빈칸에 들어갈 가장 알맞은 조사를 고르십시오. (TOPIK I 기출)","textChars":41,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/zu1sz6l4","slide":37,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/kva98b2p","slide":37,"name":"q-q1_r2-passage","text":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textPreview":"저는 오늘 시장에 갑니다. 시장에서 사과(         ) 배를 삽니다.","textChars":41,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/lwja1w3a","slide":37,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/ap8r2hkn","slide":37,"name":"q-q1_r2-option-1","text":"①  가","textPreview":"①  가","textChars":4,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/bqhsvml8","slide":37,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/jm9gb2d0","slide":37,"name":"q-q1_r2-option-2","text":"②  와","textPreview":"②  와","textChars":4,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/il0f2xcv","slide":37,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/58rydcv6","slide":37,"name":"q-q1_r2-option-3","text":"③  를","textPreview":"③  를","textChars":4,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/k7ix47ul","slide":37,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/7a9gfmtc","slide":37,"name":"q-q1_r2-option-4","text":"④  로","textPreview":"④  로","textChars":4,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/690z6hcr","slide":37,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/tcbyhcbi","slide":37,"name":"footer-page","text":"1회차 · 2/14","textPreview":"1회차 · 2/14","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/l5r9h3","slide":37,"text":"정답: 2번\n해설: 명사와 명사를 대등하게 연결하며 'and'의 의미를 지니는 접속 조사는 **와/과**입니다. 앞 명사 '사과'에 받침이 없으므로 **와**가 어울립니다.\n보기 해설:\n① 가 (X) - 주격을 나타내는 조사로, 사과를 문장의 주어로 만들기 때문에 어울리지 않습니다.\n② 와 (O) - 사과와 배라는 두 대상을 대등하게 나열하는 접속 조사로, 문장의 목적어 자리에 잘 들어맞습니다.\n③ 를 (X) - 목적격 조사로, 이미 뒤에 '배를' 목적격 조사가 결합해 있으므로 명사와 명사를 대등하게 이어줄 수 없습니다.\n④ 로 (X) - 도구나 수단, 방향을 나타내는 부사격 조사로 '사과로 배를 산다'는 의미가 되어 어색합니다.\n[Sources]\n- Local topic1 curriculum repository, q1_r2"}
+{"kind":"slide","id":"sl/2gb73p","slide":38,"title":"문제 01","textShapes":10}
+{"kind":"shape","id":"sh/snyp4vel","slide":38,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/szqpgfax","slide":38,"name":"q-q3_r1-number","text":"문제 01","textPreview":"문제 01","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/t0zqpkri","slide":38,"name":"q-q3_r1-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/u187ips3","slide":38,"name":"q-q3_r1-text","text":"다음 글을 읽고 중심 생각(주제)으로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textPreview":"다음 글을 읽고 중심 생각(주제)으로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textChars":50,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/f2h8ru9o","slide":38,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/g3qpkza9","slide":38,"name":"q-q3_r1-passage","text":"저는 어제 자전거를 새로 샀습니다. 자전거를 타는 것이 아주 재미있습니다. 빨리 주말이 와서 근처 공원에서 자전거를 타고 싶습니다.","textPreview":"저는 어제 자전거를 새로 샀습니다. 자전거를 타는 것이 아주 재미있습니다. 빨리 주말이 와서 근처 공원에서 자전거를 타고 싶습니다.","textChars":73,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/h4jqtkre","slide":38,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/a5o76lsz","slide":38,"name":"q-q3_r1-option-1","text":"①  저는 자전거를 타고 출근합니다.","textPreview":"①  저는 자전거를 타고 출근합니다.","textChars":20,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/v6xofqt4","slide":38,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/fq9ofqxw","slide":38,"name":"q-q3_r1-option-2","text":"②  저는 자전거를 사고 싶습니다.","textPreview":"②  저는 자전거를 사고 싶습니다.","textChars":19,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/epg76lwr","slide":38,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/1sr6h0f2","slide":38,"name":"q-q3_r1-option-3","text":"③  저는 자전거 타는 것이 즐겁습니다.","textPreview":"③  저는 자전거 타는 것이 즐겁습니다.","textChars":22,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/grip8veh","slide":38,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/rmpobqx0","slide":38,"name":"q-q3_r1-option-4","text":"④  저는 주말마다 너무 바쁩니다.","textPreview":"④  저는 주말마다 너무 바쁩니다.","textChars":19,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/6lg72lwf","slide":38,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/to76dgf6","slide":38,"name":"footer-page","text":"3회차 · 1/13","textPreview":"3회차 · 1/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/2gb73p","slide":38,"text":"정답: 3번\n해설: 자전거를 사서 그것을 타는 행위가 '아주 재미있다'고 했고, 주말이 와서 빨리 타고 싶다는 기대감을 표현하고 있으므로, 글쓴이의 중심 생각은 **자전거 타는 것이 즐겁다**는 내용인 ③번이 확실합니다.\n보기 해설:\n① 자전거를 타고 출근합니다 (X) - 목적지가 공원이므로 틀립니다.\n② 자전거를 사고 싶습니다 (X) - 어제 새로 샀으므로 희망사항과 반대됩니다.\n③ 자전거 타는 것이 즐겁습니다 (O) - 자전거를 타는 일이 재미있다는 서술과 완벽히 호환됩니다.\n④ 주말마다 너무 바쁩니다 (X) - 주말을 대기하며 타고 싶어 할 뿐 바쁘다는 얘기가 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q3_r1"}
+{"kind":"slide","id":"sl/0lewd4","slide":39,"title":"문제 02","textShapes":10}
+{"kind":"shape","id":"sh/ja9cr6hk","slide":39,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/dsfetc76","slide":39,"name":"q-q3_r2-number","text":"문제 02","textPreview":"문제 02","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/sr6dk76l","slide":39,"name":"q-q3_r2-category","text":"읽기 (Reading) 기출","textPreview":"읽기 (Reading) 기출","textChars":15,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/jmdwn2p4","slide":39,"name":"q-q3_r2-text","text":"다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)","textPreview":"다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)","textChars":46,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/il4vexoj","slide":39,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/5ofeps7u","slide":39,"name":"q-q3_r2-passage","text":"우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다. 그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다.","textPreview":"우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다. 그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다.","textChars":92,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/4n6dg769","slide":39,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/vydwjips","slide":39,"name":"q-q3_r2-option-1","text":"①  우리 동네는 사람들이 많아 시끄럽습니다.","textPreview":"①  우리 동네는 사람들이 많아 시끄럽습니다.","textChars":25,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/ux4vado7","slide":39,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/8fid4vy1","slide":39,"name":"q-q3_r2-option-2","text":"②  우리 동네 주변에는 산이 전혀 없습니다.","textPreview":"②  우리 동네 주변에는 산이 전혀 없습니다.","textChars":25,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/tgrux0zm","slide":39,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/6d0v2lgb","slide":39,"name":"q-q3_r2-option-3","text":"③  주말에 사람들이 우리 동네 산에 옵니다.","textPreview":"③  주말에 사람들이 우리 동네 산에 옵니다.","textChars":25,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/7e9cvqhw","slide":39,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/kbid0by5","slide":39,"name":"q-q3_r2-option-4","text":"④  저는 주말마다 등산을 하러 다른 동네로 갑니다.","textPreview":"④  저는 주말마다 등산을 하러 다른 동네로 갑니다.","textChars":29,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/lcrutgzq","slide":39,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/y9gvy10z","slide":39,"name":"footer-page","text":"3회차 · 2/13","textPreview":"3회차 · 2/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/0lewd4","slide":39,"text":"정답: 3번\n해설: 글의 마지막 문장인 '주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다'를 통해 주말에 외부 사람들이 동네 산을 찾는다는 것을 유추할 수 있습니다. 따라서 정답은 ③번입니다.\n보기 해설:\n① 시끄럽습니다 (X) - 동네가 아주 조용하다고 진술했습니다.\n② 산이 전혀 없습니다 (X) - 근처에 큰 산이 있다고 말했습니다.\n③ 주말에 사람들이 우리 동네 산에 옵니다 (O) - 타지 사람들이 산에 찾아온다는 마지막 대목과 일치합니다.\n④ 다른 동네로 갑니다 (X) - 자신이 타 동네로 등산하러 원정을 간다는 묘사가 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q3_r2"}
+{"kind":"slide","id":"sl/3lq97l","slide":40,"title":"문제 03","textShapes":9}
+{"kind":"shape","id":"sh/8v6xsvyt","slide":40,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/rqlsjq10","slide":40,"name":"q-q3_r3-number","text":"문제 03","textPreview":"문제 03","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/qpcral0f","slide":40,"name":"q-q3_r3-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/po3qhgju","slide":40,"name":"q-q3_r3-text","text":"다음 그림을 보고 상황에 맞는 문장으로 가장 알맞은 것을 고르십시오.","textPreview":"다음 그림을 보고 상황에 맞는 문장으로 가장 알맞은 것을 고르십시오.","textChars":38,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/3ml8f61o","slide":40,"bbox":[490,222,708,70]}
+{"kind":"textbox","id":"sh/2lsr6l03","slide":40,"name":"q-q3_r3-option-1","text":"①  학교에서 수업을 듣습니다.","textPreview":"①  학교에서 수업을 듣습니다.","textChars":17,"textLines":1,"bbox":[508,228,672,58]}
+{"kind":"shape","id":"sh/9knatkzy","slide":40,"bbox":[490,302,708,70]}
+{"kind":"textbox","id":"sh/oje9kfid","slide":40,"name":"q-q3_r3-option-2","text":"②  영화관에서 팝콘을 먹습니다.","textPreview":"②  영화관에서 팝콘을 먹습니다.","textChars":18,"textLines":1,"bbox":[508,308,672,58]}
+{"kind":"shape","id":"sh/uxofu5wz","slide":40,"bbox":[490,382,708,70]}
+{"kind":"textbox","id":"sh/vyxg3ax4","slide":40,"name":"q-q3_r3-option-3","text":"③  병원에서 진료를 대기합니다.","textPreview":"③  병원에서 진료를 대기합니다.","textChars":18,"textLines":1,"bbox":[508,388,672,58]}
+{"kind":"shape","id":"sh/wz6xwfep","slide":40,"bbox":[490,462,708,70]}
+{"kind":"textbox","id":"sh/h0fy5kfa","slide":40,"name":"q-q3_r3-option-4","text":"④  은행에서 카드를 만듭니다.","textPreview":"④  은행에서 카드를 만듭니다.","textChars":17,"textLines":1,"bbox":[508,468,672,58]}
+{"kind":"textbox","id":"sh/m94fq5gn","slide":40,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/nadwzax8","slide":40,"name":"footer-page","text":"3회차 · 3/13","textPreview":"3회차 · 3/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"image","id":"im/up0bepkz","slide":40,"name":"","geometry":"roundRect","bbox":[115,222,300,300]}
+{"kind":"notes","id":"nt/3lq97l","slide":40,"text":"정답: 1번\n해설: 그림은 넓은 운동장이 있는 학교 전경을 묘사하고 있으므로, 학교 내 활동 상황인 ①번이 정답입니다.\n보기 해설:\n① 학교에서 수업을 듣습니다 (O) - 학교라는 특수 공간에서 일어나는 통상 활동에 완벽히 정합합니다.\n② 영화관에서 팝콘을 먹습니다 (X) - 상영관의 정경이 아닙니다.\n③ 병원에서 진료를 대기합니다 (X) - 환자 대기실 정경과 거리가 멉니다.\n④ 은행에서 카드를 만듭니다 (X) - 금융 창구 데스크 묘사가 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q3_r3"}
+{"kind":"slide","id":"sl/ad899u","slide":41,"title":"문제 04","textShapes":10}
+{"kind":"shape","id":"sh/jih4z6dw","slide":41,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/54nmd0zu","slide":41,"name":"q-q3_r4-number","text":"문제 04","textPreview":"문제 04","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/k3elkvy9","slide":41,"name":"q-q3_r4-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/ve547qhs","slide":41,"name":"q-q3_r4-text","text":"다음 빈칸에 들어갈 문법 표현으로 가장 알맞은 것을 고르십시오.","textPreview":"다음 빈칸에 들어갈 문법 표현으로 가장 알맞은 것을 고르십시오.","textChars":35,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/adc3elg7","slide":41,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/xgnm90zi","slide":41,"name":"q-q3_r4-passage","text":"내일은 즐거운 주말(         ) 회사에 출근하지 않고 집에서 푹 쉴 것입니다.","textPreview":"내일은 즐거운 주말(         ) 회사에 출근하지 않고 집에서 푹 쉴 것입니다.","textChars":47,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/wfelgvyx","slide":41,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/fap4juhw","slide":41,"name":"q-q3_r4-option-1","text":"①  이어서","textPreview":"①  이어서","textChars":6,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/e9gnqpgb","slide":41,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/s7alwbud","slide":41,"name":"q-q3_r4-option-2","text":"②  이라서","textPreview":"②  이라서","textChars":6,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/t8jm5gvy","slide":41,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/6ls3u1cn","slide":41,"name":"q-q3_r4-option-3","text":"③  이거나","textPreview":"③  이거나","textChars":6,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/r61436ds","slide":41,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/kjalsbuh","slide":41,"name":"q-q3_r4-option-4","text":"④  이지만","textPreview":"④  이지만","textChars":6,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/5kjm1wv2","slide":41,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/ih83q1wb","slide":41,"name":"footer-page","text":"3회차 · 4/13","textPreview":"3회차 · 4/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/ad899u","slide":41,"text":"정답: 2번\n해설: 회사에 가지 않고 집에서 쉬는 이유가 뒤이어 나오는 인과적 어미인 **이라서**(주말이기 때문에)가 결합해야 자연스럽습니다.\n보기 해설:\n① 이어서 (X) - 행동이나 상태가 이어진다는 뜻이므로 인과성에 어긋납니다.\n② 이라서 (O) - 주말이라는 조건이 원인이 되어 쉰다는 표현이 매끄럽습니다.\n③ 이거나 (X) - 대상을 선택 나열하는 어미입니다.\n④ 이지만 (X) - 양보/대조의 어미로 '회사에 간다'는 문장과 결합해야 합니다.\n[Sources]\n- Local topic1 curriculum repository, q3_r4"}
+{"kind":"slide","id":"sl/npkazz","slide":42,"title":"문제 05","textShapes":10}
+{"kind":"shape","id":"sh/d83ed0v6","slide":42,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/ryd4ne9k","slide":42,"name":"q-q3_r5-number","text":"문제 05","textPreview":"문제 05","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/6xknut8z","slide":42,"name":"q-q3_r5-category","text":"읽기 (Reading) 추가 기출","textPreview":"읽기 (Reading) 추가 기출","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/14v6t8rm","slide":42,"name":"q-q3_r5-text","text":"다음 글의 내용과 일치하는 것(같은 것)을 고르십시오.","textPreview":"다음 글의 내용과 일치하는 것(같은 것)을 고르십시오.","textChars":30,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/g3m503q1","slide":42,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/f2d4ry9w","slide":42,"name":"q-q3_r5-passage","text":"우리 동네에는 아주 크고 예쁜 카페가 있습니다. 커피 맛도 정말 훌륭하고 조용합니다. 저는 오늘 오후에 그 카페에 가서 커피를 마시며 재미있는 소설책을 읽을 계획입니다.","textPreview":"우리 동네에는 아주 크고 예쁜 카페가 있습니다. 커피 맛도 정말 훌륭하고 조용합니다. 저는 오늘 오후에 그 카페에 가서 커피를 마시며 재미있는 소설책을 읽을 계획입니다.","textChars":94,"textLines":1,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/e14nyt8b","slide":42,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/h8bmh4ri","slide":42,"name":"q-q3_r5-option-1","text":"①  저는 오늘 동네 카페에 갈 계획입니다.","textPreview":"①  저는 오늘 동네 카페에 갈 계획입니다.","textChars":24,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/w725ozqx","slide":42,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/2hsvy1cj","slide":42,"name":"q-q3_r5-option-2","text":"②  동네 카페는 커피가 맛이 없습니다.","textPreview":"②  동네 카페는 커피가 맛이 없습니다.","textChars":22,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/3i1w76d4","slide":42,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/ojad0bup","slide":42,"name":"q-q3_r5-option-3","text":"③  저는 오늘 카페에서 친구를 만날 것입니다.","textPreview":"③  저는 오늘 카페에서 친구를 만날 것입니다.","textChars":26,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/pkje9gvu","slide":42,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/q5sv2lcf","slide":42,"name":"q-q3_r5-option-4","text":"④  우리 동네 카페는 가격이 너무 비쌉니다.","textPreview":"④  우리 동네 카페는 가격이 너무 비쌉니다.","textChars":25,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/b61wbqd0","slide":42,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/c7ux4vul","slide":42,"name":"footer-page","text":"3회차 · 5/13","textPreview":"3회차 · 5/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/npkazz","slide":42,"text":"정답: 1번\n해설: 글쓴이가 오늘 오후에 동네 카페에 방문하여 독서를 할 생각이라고 계획을 밝혔으므로, ①번 '저는 오늘 동네 카페에 갈 계획이다'가 완벽하게 일치합니다.\n보기 해설:\n① 오늘 동네 카페에 갈 계획입니다 (O) - 오늘 오후 독서 방문 계획 서술과 확실히 호환됩니다.\n② 커피가 맛이 없습니다 (X) - '커피 맛도 정말 훌륭하다'고 극찬했으므로 모순됩니다.\n③ 카페에서 친구를 만납니다 (X) - 친구에 관한 약속 진술은 없습니다.\n④ 가격이 너무 비쌉니다 (X) - 가격 정보는 글 속에 명시되어 있지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q3_r5"}
+{"kind":"slide","id":"sl/s6yjf0","slide":43,"title":"문제 06","textShapes":9}
+{"kind":"shape","id":"sh/1cv29obi","slide":43,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/dkbu1g7m","slide":43,"name":"q-q3_l1-number","text":"문제 06","textPreview":"문제 06","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/cj2t8bq1","slide":43,"name":"q-q3_l1-category","text":"듣기 (Listening) 기출","textPreview":"듣기 (Listening) 기출","textChars":17,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/3e9cv6pk","slide":43,"name":"q-q3_l1-text","text":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textPreview":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textChars":44,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/2d0b218z","slide":43,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/pgruxw7q","slide":43,"name":"q-q3_l1-option-1","text":"①  주말에 날씨가 아주 좋았어요.","textPreview":"①  주말에 날씨가 아주 좋았어요.","textChars":19,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/4fit4rq5","slide":43,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/nadc7qpo","slide":43,"name":"q-q3_l1-option-2","text":"②  집에서 재미있는 책을 읽을 거예요.","textPreview":"②  집에서 재미있는 책을 읽을 거예요.","textChars":22,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/m9kvel8j","slide":43,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/of6l4jat","slide":43,"name":"q-q3_l1-option-3","text":"③  지난주에 친구를 만나 영화를 봤어요.","textPreview":"③  지난주에 친구를 만나 영화를 봤어요.","textChars":23,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/pgfmdobe","slide":43,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/2do329sn","slide":43,"name":"q-q3_l1-option-4","text":"④  영화관이 우리 집에서 아주 멀어요.","textPreview":"④  영화관이 우리 집에서 아주 멀어요.","textChars":22,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/3exkbet8","slide":43,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/gbml0jax","slide":43,"name":"footer-page","text":"3회차 · 6/13","textPreview":"3회차 · 6/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/s6yjf0","slide":43,"text":"정답: 2번\n해설: 남자가 '주말에 뭐 할 거예요?'라며 미래 계획을 물어보았으므로, 자신의 주말 예정 활동을 '~을 거예요' 시제로 답하는 '집에서 책을 읽을 거예요.'(②)가 유일하게 알맞은 대답입니다.\n듣기 대본:\n남: 수진 씨, 이번 주말에 뭐 할 거예요?\n보기 해설:\n① 좋았어요 (X) - 과거 시제 서술이므로 미래 계획 대답으로 안 맞습니다.\n② 책을 읽을 거예요 (O) - 미래에 계획하는 행동을 자연스럽게 답변하는 격조입니다.\n③ 영화를 봤어요 (X) - 과거 행동을 나타내므로 시제가 어긋납니다.\n④ 아주 멀어요 (X) - 거리 정보 설명은 주말 계획과 무관합니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l1"}
+{"kind":"slide","id":"sl/be9ncc","slide":44,"title":"문제 07","textShapes":9}
+{"kind":"shape","id":"sh/md0j2tgf","slide":44,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/x8zq5cn2","slide":44,"name":"q-q3_l2-number","text":"문제 07","textPreview":"문제 07","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/w7q9w7mh","slide":44,"name":"q-q3_l2-category","text":"듣기 (Listening) 기출","textPreview":"듣기 (Listening) 기출","textChars":17,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/jah87m58","slide":44,"name":"q-q3_l2-text","text":"다음을 듣고 대화가 끝난 후 두 사람이 할 행동으로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textPreview":"다음을 듣고 대화가 끝난 후 두 사람이 할 행동으로 가장 알맞은 것을 고르십시오. (TOPIK I 기출)","textChars":58,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/5czq9wne","slide":44,"bbox":[490,222,708,70]}
+{"kind":"textbox","id":"sh/4bq90rmt","slide":44,"name":"q-q3_l2-option-1","text":"①  편의점에 우산을 사러 갑니다.","textPreview":"①  편의점에 우산을 사러 갑니다.","textChars":19,"textLines":1,"bbox":[508,228,672,58]}
+{"kind":"shape","id":"sh/ry18bm5k","slide":44,"bbox":[490,302,708,70]}
+{"kind":"textbox","id":"sh/6dsr2h4z","slide":44,"name":"q-q3_l2-option-2","text":"②  공원에 가서 운동을 합니다.","textPreview":"②  공원에 가서 운동을 합니다.","textChars":18,"textLines":1,"bbox":[508,308,672,58]}
+{"kind":"shape","id":"sh/0bi10jyp","slide":44,"bbox":[490,382,708,70]}
+{"kind":"textbox","id":"sh/1cr2tofa","slide":44,"name":"q-q3_l2-option-3","text":"③  도서관에서 책을 빌립니다.","textPreview":"③  도서관에서 책을 빌립니다.","textChars":17,"textLines":1,"bbox":[508,388,672,58]}
+{"kind":"shape","id":"sh/e90jy9gj","slide":44,"bbox":[490,462,708,70]}
+{"kind":"textbox","id":"sh/za9krex4","slide":44,"name":"q-q3_l2-option-4","text":"④  친구에게 우산을 빌려줍니다.","textPreview":"④  친구에게 우산을 빌려줍니다.","textChars":18,"textLines":1,"bbox":[508,468,672,58]}
+{"kind":"textbox","id":"sh/ofi143yl","slide":44,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/9gr2x8f6","slide":44,"name":"footer-page","text":"3회차 · 7/13","textPreview":"3회차 · 7/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"image","id":"im/cr2tgbit","slide":44,"name":"","geometry":"roundRect","bbox":[70,226.4,390,291.2]}
+{"kind":"notes","id":"nt/be9ncc","slide":44,"text":"정답: 1번\n해설: 갑자기 비가 내리기 시작해 두 사람 모두 우산이 없는 상태입니다. 여자가 편의점에 우산을 사러 같이 가자고 제안했고 남자가 이에 수락했으므로 대화 직후 두 사람의 행동은 **우산을 사러 편의점에 가는 것**이 확실합니다. 따라서 정답은 ①번입니다.\n듣기 대본:\n여: 민수 씨, 지금 밖에 비가 많이 와요. 혹시 우산이 있어요?\n남: 아니요, 안 가져왔어요. 수진 씨는 우산이 있어요?\n여: 저도 없어요. 그럼 우리 아래층 편의점에 가서 우산을 같이 사요.\n남: 네, 좋아요. 지금 같이 내려가요.\n보기 해설:\n① 편의점에 우산을 사러 갑니다 (O) - 대화 마무리 단계에서 약속한 내용에 정확히 부합합니다.\n② 공원에 가서 운동을 합니다 (X) - 비가 쏟아지고 있으므로 어색합니다.\n③ 도서관에서 책을 빌립니다 (X) - 독서 활동 제안은 들리지 않습니다.\n④ 우산을 빌려줍니다 (X) - 둘 다 우산이 없어 사러 가는 판이므로 불가합니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l2"}
+{"kind":"slide","id":"sl/s2yrm3","slide":45,"title":"문제 08","textShapes":9}
+{"kind":"shape","id":"sh/3eh8na5w","slide":45,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/rql036t8","slide":45,"name":"q-q3_l3-number","text":"문제 08","textPreview":"문제 08","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/qpcjulc3","slide":45,"name":"q-q3_l3-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/1gni90bq","slide":45,"name":"q-q3_l3-text","text":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오.","textPreview":"다음을 듣고 이어질 대화로 가장 알맞은 것을 고르십시오.","textChars":31,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/0fe10vu5","slide":45,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/fe507qtk","slide":45,"name":"q-q3_l3-option-1","text":"①  좋아요. 아침 여덟 시에 입구에서 만나요.","textPreview":"①  좋아요. 아침 여덟 시에 입구에서 만나요.","textChars":26,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/edwjylcz","slide":45,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/hk3ixwb6","slide":45,"name":"q-q3_l3-option-2","text":"②  도서관에 책이 아주 많이 꽂혀 있어요.","textPreview":"②  도서관에 책이 아주 많이 꽂혀 있어요.","textChars":24,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/gja1orul","slide":45,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/u9ora5oz","slide":45,"name":"q-q3_l3-option-3","text":"③  네, 도서관은 우리 집에서 무척 멀어요.","textPreview":"③  네, 도서관은 우리 집에서 무척 멀어요.","textChars":25,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/fah8jq5k","slide":45,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/gbq9cv65","slide":45,"name":"q-q3_l3-option-4","text":"④  아니요, 저는 오늘 그 소설책을 다 읽었습니다.","textPreview":"④  아니요, 저는 오늘 그 소설책을 다 읽었습니다.","textChars":29,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/hczql0nq","slide":45,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/2d8re5ob","slide":45,"name":"footer-page","text":"3회차 · 8/13","textPreview":"3회차 · 8/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/s2yrm3","slide":45,"text":"정답: 1번\n해설: 남자가 같이 도서관에 가자고 제안(갈래요?)했으므로 수락하며 시간과 장소를 약속하는 ①번이 가장 적절합니다.\n듣기 대본:\n남: 수진 씨, 내일 아침에 도서관에 공부하러 같이 갈래요?\n보기 해설:\n① 좋아요. 아침 여덟 시에 만나요 (O) - 제안을 흔쾌히 수락하고 약속 세부 정보를 확정하는 대화입니다.\n② 책이 많이 꽂혀 있어요 (X) - 도서관의 시설 현황을 설명하는 엉뚱한 대답입니다.\n③ 도서관은 멀어요 (X) - 제안에 거절하는 어조로 '네'로 동의하며 멀다고 하는 모순된 문장입니다.\n④ 오늘 소설책을 다 읽었습니다 (X) - 도서관 학습 제안의 논지와 매칭이 안 됩니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l3"}
+{"kind":"slide","id":"sl/ddt52k","slide":46,"title":"문제 09","textShapes":9}
+{"kind":"shape","id":"sh/dwba98ru","slide":46,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/pczi9c7m","slide":46,"name":"q-q3_l4-number","text":"문제 09","textPreview":"문제 09","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/obq107qh","slide":46,"name":"q-q3_l4-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/be10b2ps","slide":46,"name":"q-q3_l4-text","text":"다음을 듣고 두 사람이 대화하는 장소로 가장 알맞은 곳을 고르십시오.","textPreview":"다음을 듣고 두 사람이 대화하는 장소로 가장 알맞은 곳을 고르십시오.","textChars":38,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/ad8j2h87","slide":46,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/xgjidc7y","slide":46,"name":"q-q3_l4-option-1","text":"①  병원","textPreview":"①  병원","textChars":5,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/cfa147qd","slide":46,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/zi10fmp4","slide":46,"name":"q-q3_l4-option-2","text":"②  약국","textPreview":"②  약국","textChars":5,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/yhsj6h8j","slide":46,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/47i9c3qx","slide":46,"name":"q-q3_l4-option-3","text":"③  기차 안","textPreview":"③  기차 안","textChars":7,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/58ra58ri","slide":46,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/i50rat8r","slide":46,"name":"q-q3_l4-option-4","text":"④  서점","textPreview":"④  서점","textChars":5,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/369s3y9c","slide":46,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/sv2tgnq9","slide":46,"name":"footer-page","text":"3회차 · 9/13","textPreview":"3회차 · 9/13","textChars":10,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/ddt52k","slide":46,"text":"정답: 3번\n해설: 승무원과 승객이 대화를 나누며 가방 적재를 안내하고 있고, '기차가 출발한다'고 하였으므로 **기차 안**이 확실합니다.\n듣기 대본:\n여: 승무원님, 이 가방을 통로 쪽에 놓아도 괜찮을까요?\n남: 아니요, 승객님. 통로는 위험하니 머리 위 선반에 올리시거나 안고 타셔야 합니다. 기차가 곧 출발합니다.\n보기 해설:\n① 병원 (X) - 환자 및 진료 행위가 들리지 않습니다.\n② 약국 (X) - 복약 지도 상황이 아닙니다.\n③ 기차 안 (O) - 출발을 앞둔 기차 객실 정황과 안내 멘트가 완벽히 증명됩니다.\n④ 서점 (X) - 도서 검색 및 판매 상황이 아닙니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l4"}
+{"kind":"slide","id":"sl/ohsddh","slide":47,"title":"문제 10","textShapes":9}
+{"kind":"shape","id":"sh/tsj2d4ve","slide":47,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/p8jatkjy","slide":47,"name":"q-q3_l5-number","text":"문제 10","textPreview":"문제 10","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/o7a9kfid","slide":47,"name":"q-q3_l5-category","text":"듣기 (Listening) 추가 기출","textPreview":"듣기 (Listening) 추가 기출","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/fih8nq1w","slide":47,"name":"q-q3_l5-text","text":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오.","textPreview":"다음을 듣고 대화 내용과 일치하는 것(같은 내용)을 고르십시오.","textChars":35,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/eh8rel0b","slide":47,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/14jqp0j2","slide":47,"name":"q-q3_l5-option-1","text":"①  두 사람은 내일 등산을 강행할 것입니다.","textPreview":"①  두 사람은 내일 등산을 강행할 것입니다.","textChars":25,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/g3a9gvih","slide":47,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/zelszu10","slide":47,"name":"q-q3_l5-option-2","text":"②  비가 오면 미술관에 가기로 약속을 변경합니다.","textPreview":"②  비가 오면 미술관에 가기로 약속을 변경합니다.","textChars":28,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/ydcrqp0f","slide":47,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/gvaloze5","slide":47,"name":"q-q3_l5-option-3","text":"③  두 사람은 내일 도서관에서 만나기로 약속했습니다.","textPreview":"③  두 사람은 내일 도서관에서 만나기로 약속했습니다.","textChars":30,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/1wj2h4va","slide":47,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/uts3m9wz","slide":47,"name":"q-q3_l5-option-4","text":"④  남자는 내일 비가 오지 않기를 간절히 바라고 있습니다.","textPreview":"④  남자는 내일 비가 오지 않기를 간절히 바라고 있습니다.","textChars":33,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/fu1kfedk","slide":47,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/s7alkzet","slide":47,"name":"footer-page","text":"3회차 · 10/13","textPreview":"3회차 · 10/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/ohsddh","slide":47,"text":"정답: 2번\n해설: 비가 오면 등산로가 미끄러워 취소하는 대신, 주말 일정을 미술관 관람으로 변경하자는 남자의 제안이 있으므로 ②번이 확실한 일치 진술입니다.\n듣기 대본:\n여: 민수 씨, 내일 비가 오면 등산 약속을 미뤄야 할까요?\n남: 네, 산길이 미끄러우니 위험해요. 대신 주말 약속을 미술관 관람으로 변경해요.\n보기 해설:\n① 등산을 강행할 것입니다 (X) - 위험하기 때문에 미루고 변경하자고 하였습니다.\n② 비가 오면 미술관에 가기로 약속을 변경합니다 (O) - 대화 속 제안 사실과 완벽하게 부합합니다.\n③ 도서관에서 만납니다 (X) - 변경 목적지는 도서관이 아닌 미술관입니다.\n④ 비가 오지 않기를 바라고 있습니다 (X) - 기상 예측에 대한 심리적 서술은 없습니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l5"}
+{"kind":"slide","id":"sl/pinhui","slide":48,"title":"문제 11","textShapes":10}
+{"kind":"shape","id":"sh/0rqp03ap","slide":48,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/w3etsvil","slide":48,"name":"q-q3_r6-number","text":"문제 11","textPreview":"문제 11","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/x4nu10j6","slide":48,"name":"q-q3_r6-category","text":"읽기 (Reading) 추가 실전","textPreview":"읽기 (Reading) 추가 실전","textChars":18,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/mxcbml0j","slide":48,"name":"q-q3_r6-text","text":"다음 일정표의 내용과 같은 것을 고르십시오.","textPreview":"다음 일정표의 내용과 같은 것을 고르십시오.","textChars":24,"textLines":1,"bbox":[64,88,1148,76]}
+{"kind":"shape","id":"sh/nylcvq14","slide":48,"bbox":[64,170,1148,145]}
+{"kind":"textbox","id":"sh/8zutovip","slide":48,"name":"q-q3_r6-passage","text":"[토요일 계획]\n오전 10시: 병원\n오후 1시: 점심 약속\n오후 4시: 도서관","textPreview":"[토요일 계획] | 오전 10시: 병원 | 오후 1시: 점심 약속 | 오후 4시: 도서관","textChars":43,"textLines":4,"bbox":[84,182,1108,121]}
+{"kind":"shape","id":"sh/903ux0ja","slide":48,"bbox":[64,338,567,78]}
+{"kind":"textbox","id":"sh/6twvyp0n","slide":48,"name":"q-q3_r6-option-1","text":"①  아침에 도서관에 갑니다.","textPreview":"①  아침에 도서관에 갑니다.","textChars":16,"textLines":1,"bbox":[82,344,531,66]}
+{"kind":"shape","id":"sh/7upc7a18","slide":48,"bbox":[645,338,567,78]}
+{"kind":"textbox","id":"sh/r2xo3y98","slide":48,"name":"q-q3_r6-option-2","text":"②  점심을 먹은 후 병원에 갑니다.","textPreview":"②  점심을 먹은 후 병원에 갑니다.","textChars":20,"textLines":1,"bbox":[663,344,531,66]}
+{"kind":"shape","id":"sh/q1o7utsn","slide":48,"bbox":[64,430,567,78]}
+{"kind":"textbox","id":"sh/d4f658re","slide":48,"name":"q-q3_r6-option-3","text":"③  오후 네 시에 도서관에 갑니다.","textPreview":"③  오후 네 시에 도서관에 갑니다.","textChars":20,"textLines":1,"bbox":[82,436,531,66]}
+{"kind":"shape","id":"sh/s36pw3at","slide":48,"bbox":[645,430,567,78]}
+{"kind":"textbox","id":"sh/fqxo7y9k","slide":48,"name":"q-q3_r6-option-4","text":"④  토요일에는 약속이 없습니다.","textPreview":"④  토요일에는 약속이 없습니다.","textChars":18,"textLines":1,"bbox":[663,436,531,66]}
+{"kind":"textbox","id":"sh/e5o7ydsz","slide":48,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/1sz698ra","slide":48,"name":"footer-page","text":"3회차 · 11/13","textPreview":"3회차 · 11/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/pinhui","slide":48,"text":"정답: 3번\n해설: 일정표에 오후 4시 도서관 방문이 적혀 있으므로 정답은 ③번입니다.\n보기 해설:\n① 아침에 도서관에 갑니다 (X) - 아침에는 병원에 갑니다.\n② 점심 후 병원에 갑니다 (X) - 병원은 오전 일정입니다.\n③ 오후 네 시에 도서관에 갑니다 (O) - 일정표의 내용과 같습니다.\n④ 약속이 없습니다 (X) - 오후 1시에 점심 약속이 있습니다.\n[Sources]\n- Local topic1 curriculum repository, q3_r6"}
+{"kind":"slide","id":"sl/24xs6x","slide":49,"title":"문제 12","textShapes":9}
+{"kind":"shape","id":"sh/g3ydcfyh","slide":49,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/eh03e1o3","slide":49,"name":"q-q3_l6-number","text":"문제 12","textPreview":"문제 12","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/fi9476po","slide":49,"name":"q-q3_l6-category","text":"듣기 (Listening) 추가 실전","textPreview":"듣기 (Listening) 추가 실전","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/o7ilkb65","slide":49,"name":"q-q3_l6-text","text":"다음을 듣고 남자의 내일 계획을 고르십시오.","textPreview":"다음을 듣고 남자의 내일 계획을 고르십시오.","textChars":24,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/p8rmdg7q","slide":49,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/2503iloz","slide":49,"name":"q-q3_l6-option-1","text":"①  회사에서 야근합니다.","textPreview":"①  회사에서 야근합니다.","textChars":14,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/3694bqpk","slide":49,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/4byl8r61","slide":49,"name":"q-q3_l6-option-2","text":"②  친구와 저녁을 먹습니다.","textPreview":"②  친구와 저녁을 먹습니다.","textChars":16,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/5c7m1w7m","slide":49,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/t07uh0fq","slide":49,"name":"q-q3_l6-option-3","text":"③  집에서 혼자 쉽니다.","textPreview":"③  집에서 혼자 쉽니다.","textChars":14,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/sfet8fy5","slide":49,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/re5cfah0","slide":49,"name":"q-q3_l6-option-4","text":"④  친구에게 책을 빌립니다.","textPreview":"④  친구에게 책을 빌립니다.","textChars":16,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/6dwb65gf","slide":49,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/147ulkf2","slide":49,"name":"footer-page","text":"3회차 · 12/13","textPreview":"3회차 · 12/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/24xs6x","slide":49,"text":"정답: 2번\n해설: 남자는 친구 생일을 맞아 내일 저녁에 친구와 함께 식사할 계획입니다.\n듣기 대본:\n여: 내일 회사가 끝난 후에 뭐 할 거예요?\n남: 친구 생일이라서 저녁에 같이 밥을 먹을 거예요.\n보기 해설:\n① 야근합니다 (X) - 회사가 끝난 후의 계획을 말하고 있습니다.\n② 친구와 저녁을 먹습니다 (O) - 남자가 말한 내일 계획과 같습니다.\n③ 집에서 쉽니다 (X) - 친구를 만날 예정입니다.\n④ 책을 빌립니다 (X) - 책에 대한 언급이 없습니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l6"}
+{"kind":"slide","id":"sl/c62nnp","slide":50,"title":"문제 13","textShapes":9}
+{"kind":"shape","id":"sh/2587y90f","slide":50,"bbox":[38,24,1204,650]}
+{"kind":"textbox","id":"sh/c7eds36t","slide":50,"name":"q-q3_l7-number","text":"문제 13","textPreview":"문제 13","textChars":5,"textLines":1,"bbox":[62,42,180,38]}
+{"kind":"textbox","id":"sh/d87el87e","slide":50,"name":"q-q3_l7-category","text":"듣기 (Listening) 추가 실전","textPreview":"듣기 (Listening) 추가 실전","textChars":20,"textLines":1,"bbox":[835,42,370,38]}
+{"kind":"textbox","id":"sh/y9gvudoz","slide":50,"name":"q-q3_l7-text","text":"다음을 듣고 두 사람이 약속을 바꾼 이유를 고르십시오.","textPreview":"다음을 듣고 두 사람이 약속을 바꾼 이유를 고르십시오.","textChars":30,"textLines":1,"bbox":[64,88,1148,110]}
+{"kind":"shape","id":"sh/zapwnipk","slide":50,"bbox":[64,232,567,78]}
+{"kind":"textbox","id":"sh/0bydwn6p","slide":50,"name":"q-q3_l7-option-1","text":"①  여자가 아파서","textPreview":"①  여자가 아파서","textChars":10,"textLines":1,"bbox":[82,238,531,66]}
+{"kind":"shape","id":"sh/lc7ep87a","slide":50,"bbox":[645,232,567,78]}
+{"kind":"textbox","id":"sh/edcvi98f","slide":50,"name":"q-q3_l7-option-2","text":"②  공원이 문을 닫아서","textPreview":"②  공원이 문을 닫아서","textChars":13,"textLines":1,"bbox":[663,238,531,66]}
+{"kind":"shape","id":"sh/felcbep0","slide":50,"bbox":[64,324,567,78]}
+{"kind":"textbox","id":"sh/buh8behc","slide":50,"name":"q-q3_l7-option-3","text":"③  오전에 비가 와서","textPreview":"③  오전에 비가 와서","textChars":12,"textLines":1,"bbox":[82,330,531,66]}
+{"kind":"shape","id":"sh/q987290r","slide":50,"bbox":[645,324,567,78]}
+{"kind":"textbox","id":"sh/dwjqdoz2","slide":50,"name":"q-q3_l7-option-4","text":"④  남자가 바빠서","textPreview":"④  남자가 바빠서","textChars":10,"textLines":1,"bbox":[663,330,531,66]}
+{"kind":"textbox","id":"sh/cvqp4jix","slide":50,"name":"footer-brand","text":"TOPIK-Edu Smart Academy","textPreview":"TOPIK-Edu Smart Academy","textChars":23,"textLines":1,"bbox":[52,682,340,22]}
+{"kind":"textbox","id":"sh/36h87eh0","slide":50,"name":"footer-page","text":"3회차 · 13/13","textPreview":"3회차 · 13/13","textChars":11,"textLines":1,"bbox":[1000,682,228,22]}
+{"kind":"notes","id":"nt/c62nnp","slide":50,"text":"정답: 3번\n해설: 오전에 비가 많이 온다는 예보 때문에 만나는 시간을 오후 3시로 변경했습니다.\n듣기 대본:\n남: 내일 오전에 공원에서 만날까요?\n여: 오전에는 비가 많이 온대요. 비가 그치는 오후 세 시에 만나요.\n보기 해설:\n① 여자가 아파서 (X) - 건강 상태에 대한 말이 없습니다.\n② 공원이 문을 닫아서 (X) - 공원 운영 시간은 언급되지 않았습니다.\n③ 오전에 비가 와서 (O) - 약속 시간을 바꾼 직접적인 이유입니다.\n④ 남자가 바빠서 (X) - 남자의 일정 문제는 나오지 않습니다.\n[Sources]\n- Local topic1 curriculum repository, q3_l7"}

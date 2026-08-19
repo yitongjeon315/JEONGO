@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/topic/assets/favicon-Bs_r76O8.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TOPIK II 3~6급 실전 아카데미</title>
+    <!-- Stylesheet -->
+    <script type="module" crossorigin src="/topic/assets/index-lMNwe4H5.js"></script>
+    <link rel="stylesheet" crossorigin href="/topic/assets/index-CAPmKui9.css">
+  </head>
+  <body>
+    <div id="app">
+      <!-- Header -->
+      <header>
+        <div class="header-container">
+          <div class="logo">
+            <span>TOPIK-Edu</span> Smart Academy
+          </div>
+
+          <div class="header-controls">
+            <a class="zoom-toggle-btn jeongo-home-btn" href="/" aria-label="JEONGO 메인으로 돌아가기">
+              ← JEONGO로 돌아가기
+            </a>
+
+            <!-- Instructor mode toggle -->
+            <button class="zoom-toggle-btn" id="instructor-toggle" style="background: linear-gradient(135deg, #10b981, #059669);">
+              🔑 강사 모드 OFF
+            </button>
+
+            <!-- Live translation popup -->
+            <button class="zoom-toggle-btn" id="translation-popup-btn" style="background: linear-gradient(135deg, #0f766e, #0891b2);">
+              🌐 실시간 번역
+            </button>
+
+            <!-- PDF Download -->
+            <button class="zoom-toggle-btn" id="pdf-print-btn" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+              📄 PDF 다운로드
+            </button>
+
+            <!-- Offline PowerPoint Download -->
+            <a class="zoom-toggle-btn" id="ppt-download-btn" href="./TOPIK-I-3-session-lesson.pptx" download="TOPIK-I-3회-완성-교안.pptx" title="1·2단계를 포함한 전체 교안을 내려받아 오프라인 수업에 사용할 수 있습니다." style="background: linear-gradient(135deg, #ea580c, #c2410c); text-decoration: none;">
+              📊 PPT 다운로드
+            </a>
+
+            <!-- Reset edits -->
+            <button class="zoom-toggle-btn" id="reset-btn" style="background: linear-gradient(135deg, #6b7280, #4b5563);">
+              🔄 교안 초기화
+            </button>
+
+            <!-- Zoom Presentation Mode Toggle -->
+            <button class="zoom-toggle-btn" id="zoom-toggle">
+              🖥️ 줌 화면 공유 모드 ON
+            </button>
+
+            <div class="progress-wrapper">
+              <div class="progress-text" id="progress-percent">회차 진도: 33%</div>
+              <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progress-bar" style="width: 33.33%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Hero Banner -->
+      <section class="hero">
+        <div class="hero-content">
+          <h1>TOPIK II 3~6급 실전 아카데미</h1>
+          <p>3급부터 6급까지 읽기·듣기·쓰기 전략을 단계적으로 훈련합니다. TOPIK I 과정은 기초 보충 자료로 제공합니다.</p>
+        </div>
+      </section>
+
+      <!-- Main Contents -->
+      <div class="main-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+          <h3 class="nav-title">강의 커리큘럼</h3>
+          <ul class="nav-list" id="curriculum-nav">
+            <!-- Nav buttons will be injected by JS -->
+          </ul>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main class="content-area" id="session-content">
+          <!-- Session components will be injected by JS -->
+        </main>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        <p>&copy; 2026 TOPIK-Edu Smart Academy. All rights reserved.</p>
+        <p style="font-size: 0.8rem; margin-top: 0.5rem;">본 플랫폼은 TOPIK II PBT 문항 유형과 공식 쓰기 기준을 참고해 자체 제작한 학습 자료이며, 실제 기출문제를 제공하지 않습니다.</p>
+      </footer>
+    </div>
+
+    <nav id="presentation-controls" class="presentation-controls" aria-label="수업 슬라이드 이동" hidden>
+      <button id="presentation-prev" type="button" aria-label="이전 슬라이드">← 이전</button>
+      <strong id="presentation-counter" class="presentation-counter" aria-live="polite">학습 화면 1 / 1</strong>
+      <button id="presentation-next" type="button" aria-label="다음 슬라이드">다음 →</button>
+      <span class="presentation-key-hint">← → 키로 이동 · ESC 종료</span>
+    </nav>
+
+    <aside id="translation-dialog" class="translation-dialog" aria-labelledby="translation-dialog-title" hidden>
+      <div class="translation-dialog-header">
+        <div>
+          <strong id="translation-dialog-title">🌐 TOPIK 실시간 번역 수업방</strong>
+          <p>이 부분을 끌어서 옮길 수 있습니다.</p>
+        </div>
+        <button id="translation-dialog-close" class="translation-dialog-close" type="button" aria-label="번역 팝업 닫기">✕</button>
+      </div>
+
+      <div id="translation-connect-panel" class="translation-connect-panel">
+        <div class="translation-connect-icon" aria-hidden="true">🔗</div>
+        <h2>번역 수업방 연결</h2>
+        <p>최초 한 번만 번역 웹앱을 연결하면, 다음부터는 이 창에서 바로 한국어를 입력하고 번역할 수 있습니다.</p>
+        <label for="translation-app-url">번역 웹앱 주소</label>
+        <div class="translation-url-row">
+          <input id="translation-app-url" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+          <button id="translation-url-save" type="button">연결하기</button>
+        </div>
+        <p id="translation-url-status" class="translation-url-status" role="status"></p>
+      </div>
+
+      <div id="translation-frame-panel" class="translation-frame-panel" hidden>
+        <div class="translation-frame-actions">
+          <button id="translation-url-change" type="button">주소 변경</button>
+          <a id="translation-new-window" href="#" target="_blank" rel="noopener noreferrer">새 창으로 열기 ↗</a>
+        </div>
+        <iframe id="translation-frame" title="TOPIK 실시간 번역 수업방" allow="clipboard-write" loading="lazy"></iframe>
+      </div>
+    </aside>
+
+    <!-- Main JavaScript Entry -->
+  </body>
+</html>

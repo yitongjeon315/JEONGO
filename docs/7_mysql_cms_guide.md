@@ -76,3 +76,19 @@ npm run test:e2e
 - `npm run test:e2e`: 브라우저에서 주요 화면과 기존 학습 흐름이 깨지지 않았는지 검사합니다.
 
 자동 테스트는 MySQL 드라이버 자체를 흉내 내어 권한과 API 로직을 빠르게 검사합니다. 실제 MySQL 저장 여부는 위의 수동 테스트로 최종 확인합니다.
+
+## AI 튜터와 현실 보상 환경 변수
+
+다음 값은 서버 전용 `.env.local`에 설정합니다. 브라우저에 노출되는 `NEXT_PUBLIC_` 변수로 만들면 안 됩니다.
+
+```dotenv
+# AI 자유 대화, 음성 전사, 누락 어휘 번역
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-5.6-luna
+OPENAI_TRANSCRIBE_MODEL=gpt-transcribe
+
+# 환전 전화번호 AES 암호화용 24자 이상의 임의 비밀값
+REDEMPTION_ENCRYPTION_KEY=
+```
+
+`OPENAI_API_KEY`가 없으면 AI 튜터는 작성된 시나리오 대체 응답과 브라우저 음성 인식을 사용합니다. `REDEMPTION_ENCRYPTION_KEY`가 없으면 개인정보가 평문 저장되지 않도록 현실 보상 신청 API가 요청을 거부합니다.

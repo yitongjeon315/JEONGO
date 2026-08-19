@@ -1,0 +1,821 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/twb2lg7e",
+    "id": "twb2lg7e",
+    "slide": 39,
+    "layoutId": "/ppt/slideLayouts/slideLayout1.xml",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#0F172A",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "fontScheme": {
+      "name": "Office",
+      "majorFont": {
+        "latinTypeface": "Calibri Light",
+        "eastAsianTypeface": "Calibri Light",
+        "complexScriptTypeface": "Calibri Light"
+      },
+      "minorFont": {
+        "latinTypeface": "Calibri",
+        "eastAsianTypeface": "Calibri",
+        "complexScriptTypeface": "Calibri"
+      }
+    },
+    "typefaces": [
+      "Calibri",
+      "Calibri Light"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "/ppt/slideLayouts/slideLayout1.xml",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "/ppt/slideMasters/slideMaster1.xml",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "/ppt/slideMasters/slideMaster1.xml",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmx8z21o",
+      "id": "17",
+      "bbox": [
+        38,
+        24,
+        1204,
+        650
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#1E293B",
+      "lineColor": "#334155",
+      "lineWidth": 1
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/50769kvu",
+      "id": "2",
+      "name": "q-q3_r2-number",
+      "bbox": [
+        62,
+        42,
+        180,
+        38
+      ],
+      "geometry": "rect",
+      "text": "문제 02",
+      "textPreview": "문제 02",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "문제 02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "문제 02",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#C7D2FE",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "문제 02",
+              "fontSize": 18,
+              "color": "#C7D2FE",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4ze50fu9",
+      "id": "3",
+      "name": "q-q3_r2-category",
+      "bbox": [
+        835,
+        42,
+        370,
+        38
+      ],
+      "geometry": "rect",
+      "text": "읽기 (Reading) 기출",
+      "textPreview": "읽기 (Reading) 기출",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "읽기 (Reading) 기출"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "읽기 (Reading) 기출",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#5EEAD4",
+            "bold": true,
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "읽기 (Reading) 기출",
+              "fontSize": 17,
+              "color": "#5EEAD4",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2pobudk",
+      "id": "4",
+      "name": "q-q3_r2-text",
+      "bbox": [
+        64,
+        88,
+        1148,
+        76
+      ],
+      "geometry": "rect",
+      "text": "다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)",
+      "textPreview": "다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)",
+          "resolvedTextStyle": {
+            "fontSize": 35,
+            "color": "#FFFFFF",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "다음 글을 읽고 내용과 같은 것(일치하는 것)을 고르십시오. (TOPIK I 기출)",
+              "fontSize": 35,
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1gn2pcf",
+      "id": "5",
+      "bbox": [
+        64,
+        170,
+        1148,
+        145
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#111827",
+      "lineColor": "#475569",
+      "lineWidth": 1
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/do76d4vq",
+      "id": "6",
+      "name": "q-q3_r2-passage",
+      "bbox": [
+        84,
+        182,
+        1108,
+        121
+      ],
+      "geometry": "rect",
+      "text": "우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다. 그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다.",
+      "textPreview": "우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다. 그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 1,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "top",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다."
+          },
+          {
+            "index": 2,
+            "text": "그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다. 그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다.",
+          "resolvedTextStyle": {
+            "fontSize": 25,
+            "color": "#FFFFFF"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "우리 동네는 공기가 맑고 아주 조용합니다. 근처에 큰 산이 있어서 등산을 하기에 매우 좋습니다. 그래서 주말에는 다른 동네 사람들도 우리 동네 산에 많이 찾아옵니다.",
+              "fontSize": 25,
+              "color": "#FFFFFF"
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/snyp4zu5",
+      "id": "7",
+      "bbox": [
+        64,
+        338,
+        567,
+        78
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#111827",
+      "lineColor": "#475569",
+      "lineWidth": 1
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/76lozqdg",
+      "id": "8",
+      "name": "q-q3_r2-option-1",
+      "bbox": [
+        82,
+        344,
+        531,
+        66
+      ],
+      "geometry": "rect",
+      "text": "①  우리 동네는 사람들이 많아 시끄럽습니다.",
+      "textPreview": "①  우리 동네는 사람들이 많아 시끄럽습니다.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "①  우리 동네는 사람들이 많아 시끄럽습니다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "①  우리 동네는 사람들이 많아 시끄럽습니다.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#FFFFFF",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "①  우리 동네는 사람들이 많아 시끄럽습니다.",
+              "fontSize": 24,
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/65cnq5cv",
+      "id": "9",
+      "bbox": [
+        645,
+        338,
+        567,
+        78
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#111827",
+      "lineColor": "#475569",
+      "lineWidth": 1
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/sjmpon2x",
+      "id": "10",
+      "name": "q-q3_r2-option-2",
+      "bbox": [
+        663,
+        344,
+        531,
+        66
+      ],
+      "geometry": "rect",
+      "text": "②  우리 동네 주변에는 산이 전혀 없습니다.",
+      "textPreview": "②  우리 동네 주변에는 산이 전혀 없습니다.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "②  우리 동네 주변에는 산이 전혀 없습니다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "②  우리 동네 주변에는 산이 전혀 없습니다.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#FFFFFF",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "②  우리 동네 주변에는 산이 전혀 없습니다.",
+              "fontSize": 24,
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dkvqxsji",
+      "id": "11",
+      "bbox": [
+        64,
+        430,
+        567,
+        78
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#111827",
+      "lineColor": "#475569",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qx47mdkr",
+      "id": "12",
+      "name": "q-q3_r2-option-3",
+      "bbox": [
+        82,
+        436,
+        531,
+        66
+      ],
+      "geometry": "rect",
+      "text": "③  주말에 사람들이 우리 동네 산에 옵니다.",
+      "textPreview": "③  주말에 사람들이 우리 동네 산에 옵니다.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "③  주말에 사람들이 우리 동네 산에 옵니다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "③  주말에 사람들이 우리 동네 산에 옵니다.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#FFFFFF",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "③  주말에 사람들이 우리 동네 산에 옵니다.",
+              "fontSize": 24,
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rid8vi1c",
+      "id": "13",
+      "bbox": [
+        645,
+        430,
+        567,
+        78
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#111827",
+      "lineColor": "#475569",
+      "lineWidth": 1
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0n6psni9",
+      "id": "14",
+      "name": "q-q3_r2-option-4",
+      "bbox": [
+        663,
+        436,
+        531,
+        66
+      ],
+      "geometry": "rect",
+      "text": "④  저는 주말마다 등산을 하러 다른 동네로 갑니다.",
+      "textPreview": "④  저는 주말마다 등산을 하러 다른 동네로 갑니다.",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "④  저는 주말마다 등산을 하러 다른 동네로"
+          },
+          {
+            "index": 2,
+            "text": "갑니다."
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "④  저는 주말마다 등산을 하러 다른 동네로 갑니다.",
+          "resolvedTextStyle": {
+            "fontSize": 24,
+            "color": "#FFFFFF",
+            "bold": true
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "④  저는 주말마다 등산을 하러 다른 동네로 갑니다.",
+              "fontSize": 24,
+              "color": "#FFFFFF",
+              "bold": true
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1ofq1sje",
+      "id": "15",
+      "name": "footer-brand",
+      "bbox": [
+        52,
+        682,
+        340,
+        22
+      ],
+      "geometry": "rect",
+      "text": "TOPIK-Edu Smart Academy",
+      "textPreview": "TOPIK-Edu Smart Academy",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "TOPIK-Edu Smart Academy"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "TOPIK-Edu Smart Academy",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#94A3B8"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "TOPIK-Edu Smart Academy",
+              "fontSize": 14,
+              "color": "#94A3B8"
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/el47qxk3",
+      "id": "16",
+      "name": "footer-page",
+      "bbox": [
+        1000,
+        682,
+        228,
+        22
+      ],
+      "geometry": "rect",
+      "text": "3회차 · 2/13",
+      "textPreview": "3회차 · 2/13",
+      "resolvedFontSize": 24,
+      "resolvedTextStyle": {
+        "anchor": 2,
+        "fontSize": 24,
+        "typeface": "Calibri",
+        "color": "tx1",
+        "alignment": "left",
+        "verticalAlignment": "middle",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "3회차 · 2/13"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "3회차 · 2/13",
+          "resolvedTextStyle": {
+            "fontSize": 14,
+            "color": "#94A3B8",
+            "alignment": "right"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "3회차 · 2/13",
+              "fontSize": 14,
+              "color": "#94A3B8"
+            }
+          ],
+          "bulletCharacter": "",
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

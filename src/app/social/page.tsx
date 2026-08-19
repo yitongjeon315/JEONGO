@@ -1,17 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '@/context/AppContext';
-import { Users, Swords, Trophy, ShieldAlert, Sparkles, Send, Coins, Flame, ArrowUp, ArrowDown } from 'lucide-react';
+import { Users, Swords, Trophy, ArrowUp, ArrowDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { LeagueMember } from '@/lib/social';
 
 export default function SocialPage() {
-  const { stats, activeLeague, guildInfo, contributeToGuild } = useApp();
+  const { stats, activeLeague, guildInfo, contributeToGuild, session } = useApp();
   const [activeTab, setActiveTab] = useState<'league' | 'guild'>('league');
   const [attackEffect, setAttackEffect] = useState(false);
 
-  // Mock League Data
-  const leagueMembers = [
+  const sampleLeagueMembers: LeagueMember[] = [
     { rank: 1, name: '베이징짜장', level: 12, xp: 2450, status: 'promote' },
     { rank: 2, name: '중드매니아', level: 9, xp: 1980, status: 'promote' },
     { rank: 3, name: '나 (학습자)', level: stats.level, xp: stats.xp + (stats.level * 100), status: 'current', isUser: true },
@@ -20,20 +20,76 @@ export default function SocialPage() {
     { rank: 6, name: '왕초보탈출', level: 3, xp: 320, status: 'demote' }
   ];
 
-  // Guild Members List
-  const guildMembers = [
+  const sampleGuildMembers = [
     { name: '길드마스터 (김만두)', rank: 'Master', contrib: 1200, status: 'online' },
     { name: '나 (학습자)', rank: 'Member', contrib: guildInfo.contribution, status: 'online', isUser: true },
     { name: '훠궈빌런', rank: 'Member', contrib: 450, status: 'offline' },
     { name: '중국어독학러', rank: 'Member', contrib: 180, status: 'online' }
   ];
+  const [leagueMembers, setLeagueMembers] = useState<LeagueMember[]>(sampleLeagueMembers);
+  const [guildMembers, setGuildMembers] = useState(sampleGuildMembers);
+  const [serverGuild, setServerGuild] = useState<typeof guildInfo | null>(null);
+  const [hasGuild, setHasGuild] = useState(false);
+  const [guildRecommendations, setGuildRecommendations] = useState<Array<{ id: string; name: string; level: number; memberCount: number }>>([]);
+  const [socialError, setSocialError] = useState('');
+  const displayedGuild = serverGuild ?? guildInfo;
 
-  const handleGuildContribution = () => {
-    if (stats.gold < 100) return;
+  useEffect(() => {
+    if (!session) return;
+    let cancelled = false;
+    void fetch('/api/social', { cache: 'no-store' }).then(async (response) => {
+      if (!response.ok) throw new Error('SOCIAL_LOOKUP_FAILED');
+      const data = (await response.json()) as {
+        leagueMembers: LeagueMember[];
+        guild?: { name: string; level: number; exp: number; expNeeded: number; bossHp: number; bossMaxHp: number };
+        guildMembers: Array<{ name: string; contribution: number; isUser?: boolean }>;
+        recommendations: Array<{ id: string; name: string; level: number; memberCount: number }>;
+      };
+      if (cancelled) return;
+      setLeagueMembers(data.leagueMembers);
+      setHasGuild(Boolean(data.guild));
+      setServerGuild(data.guild ? { ...data.guild, contribution: data.guildMembers.find((member) => member.isUser)?.contribution ?? 0 } : null);
+      setGuildRecommendations(data.recommendations);
+      setGuildMembers(data.guildMembers.map((member) => ({ name: member.isUser ? '나 (학습자)' : member.name, rank: 'Member', contrib: member.contribution, status: 'online', isUser: member.isUser })));
+      setSocialError('');
+    }).catch(() => {
+      if (!cancelled) setSocialError('서버 소셜 정보를 불러오지 못해 연습용 데이터를 표시합니다.');
+    });
+    return () => { cancelled = true; };
+  }, [session]);
+
+  const joinGuild = async (guildId: string) => {
+    const response = await fetch('/api/social', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'join', guildId }) });
+    if (!response.ok) { const body = (await response.json()) as { error?: string }; setSocialError(body.error ?? '길드에 가입하지 못했습니다.'); return; }
+    window.location.reload();
+  };
+
+  const leaveGuild = async () => {
+    const response = await fetch('/api/social', { method: 'DELETE' });
+    if (!response.ok) { const body = (await response.json()) as { error?: string }; setSocialError(body.error ?? '길드에서 탈퇴하지 못했습니다.'); return; }
+    setHasGuild(false); setServerGuild(null); setGuildMembers([]);
+  };
+
+  const handleGuildContribution = async () => {
+    if (stats.gold < 100 || !session) {
+      setSocialError(!session ? '길드 공동 레이드는 로그인이 필요합니다.' : '골드가 부족합니다.');
+      return;
+    }
+    const response = await fetch('/api/social', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ gold: 100 }),
+    });
+    if (!response.ok) {
+      const body = (await response.json()) as { error?: string };
+      setSocialError(body.error ?? '길드 기여를 저장하지 못했습니다.');
+      return;
+    }
     
     // Attack effect trigger
     setAttackEffect(true);
     contributeToGuild(100);
+    setServerGuild((current) => current ? { ...current, exp: current.exp + 50, contribution: current.contribution + 100, bossHp: Math.max(0, current.bossHp - 300) } : current);
     
     setTimeout(() => {
       setAttackEffect(false);
@@ -70,6 +126,7 @@ export default function SocialPage() {
           길드 보스 레이드 (Guild)
         </button>
       </div>
+      {socialError && <p role="status" className="rounded-xl border border-cyber-yellow/20 bg-cyber-yellow/10 p-2 text-[10px] text-cyber-yellow">{socialError}</p>}
 
       <AnimatePresence mode="wait">
         {/* League Tab */}
@@ -157,15 +214,20 @@ export default function SocialPage() {
             exit={{ opacity: 0, y: -15 }}
             className="flex flex-col gap-4"
           >
+            {!session ? <div className="glass-panel rounded-2xl p-5 text-center text-xs text-gray-400">길드 가입과 공동 레이드는 로그인 후 이용할 수 있습니다.</div> : !hasGuild ? <section className="glass-panel rounded-2xl p-4">
+              <h3 className="text-sm font-extrabold">가입할 길드를 선택하세요</h3>
+              <p className="mt-1 text-[10px] text-gray-400">길드는 언제든 탈퇴하거나 다른 길드로 옮길 수 있습니다.</p>
+              {guildRecommendations.map((guild) => <div key={guild.id} className="mt-3 flex items-center justify-between rounded-xl border border-white/10 p-3"><div><strong className="text-xs">{guild.name}</strong><p className="text-[9px] text-gray-500">Lv.{guild.level} · {guild.memberCount}명</p></div><button type="button" onClick={() => void joinGuild(guild.id)} className="rounded-lg bg-neon-cyan px-3 py-2 text-[10px] font-bold text-dark-bg">가입</button></div>)}
+            </section> : <>
             {/* Guild General Info */}
             <div className="glass-panel border-white/10 rounded-2xl p-4 flex justify-between items-center">
               <div>
                 <h3 className="text-sm font-extrabold text-white flex items-center gap-1.5">
                   <Users size={16} className="text-neon-cyan" />
-                  {guildInfo.name}
+                  {displayedGuild.name}
                 </h3>
                 <p className="text-[10px] text-gray-400 mt-0.5">
-                  길드 등급: Lv.{guildInfo.level} | 기여도 공헌: {guildInfo.contribution}G
+                  길드 등급: Lv.{displayedGuild.level} | 기여도 공헌: {displayedGuild.contribution}G
                 </p>
               </div>
               <div className="text-right flex flex-col gap-1 w-24">
@@ -173,9 +235,10 @@ export default function SocialPage() {
                 <div className="h-1 bg-white/5 rounded-full overflow-hidden border border-white/5">
                   <div
                     className="h-full bg-neon-cyan rounded-full transition-all"
-                    style={{ width: `${(guildInfo.exp / guildInfo.expNeeded) * 100}%` }}
+                    style={{ width: `${(displayedGuild.exp / displayedGuild.expNeeded) * 100}%` }}
                   />
                 </div>
+                <button type="button" onClick={() => void leaveGuild()} className="mt-2 text-[8px] text-gray-500 hover:text-neon-rose">길드 탈퇴</button>
               </div>
             </div>
 
@@ -204,12 +267,12 @@ export default function SocialPage() {
                 {/* Boss Health Bar */}
                 <div className="w-full mt-2 flex justify-between text-[10px] font-bold">
                   <span className="text-gray-400">보스 체력 (HP)</span>
-                  <span className="text-neon-rose">{guildInfo.bossHp.toLocaleString()} / {guildInfo.bossMaxHp.toLocaleString()}</span>
+                  <span className="text-neon-rose">{displayedGuild.bossHp.toLocaleString()} / {displayedGuild.bossMaxHp.toLocaleString()}</span>
                 </div>
                 <div className="w-full h-3 rounded-full bg-white/5 border border-white/5 overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-red-600 to-neon-rose transition-all duration-300"
-                    style={{ width: `${(guildInfo.bossHp / guildInfo.bossMaxHp) * 100}%` }}
+                    style={{ width: `${(displayedGuild.bossHp / displayedGuild.bossMaxHp) * 100}%` }}
                   />
                 </div>
               </div>
@@ -217,15 +280,15 @@ export default function SocialPage() {
               {/* Action Button: Raid Attack */}
               <button
                 onClick={handleGuildContribution}
-                disabled={stats.gold < 100 || guildInfo.bossHp <= 0}
+                disabled={stats.gold < 100 || displayedGuild.bossHp <= 0 || !session}
                 className={`w-full mt-5 py-3 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 transition-all ${
-                  stats.gold < 100 || guildInfo.bossHp <= 0
+                  stats.gold < 100 || displayedGuild.bossHp <= 0 || !session
                     ? 'bg-white/5 border border-white/5 text-gray-500'
                     : 'bg-neon-rose hover:bg-rose-500 text-white shadow-lg shadow-neon-rose/20 hover:scale-105 active:scale-95'
                 }`}
               >
                 <Swords size={16} />
-                {guildInfo.bossHp <= 0 ? '보스 퇴치 완료!' : '보스 습격 (기여: 100G 투척)'}
+                {displayedGuild.bossHp <= 0 ? '보스 퇴치 완료!' : !session ? '로그인 후 공동 레이드 참여' : '보스 습격 (기여: 100G 투척)'}
               </button>
             </div>
 
@@ -250,6 +313,7 @@ export default function SocialPage() {
                 ))}
               </div>
             </div>
+            </>}
           </motion.div>
         )}
       </AnimatePresence>

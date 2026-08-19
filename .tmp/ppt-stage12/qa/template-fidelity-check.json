@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-08-13T09:34:29.706Z",
+  "workspace": "C:\\JEONGO\\.tmp\\ppt-stage12",
+  "finalPptx": "C:\\JEONGO\\services\\topic1\\public\\TOPIK-I-3-session-lesson.pptx",
+  "starterPptx": "C:\\JEONGO\\.tmp\\ppt-stage12\\template-starter.pptx",
+  "mapPath": "C:\\JEONGO\\.tmp\\ppt-stage12\\template-frame-map.json",
+  "starterLayoutDir": "C:\\JEONGO\\.tmp\\ppt-stage12\\template-starter-layout",
+  "finalLayoutDir": "C:\\JEONGO\\.tmp\\ppt-stage12\\final-layout",
+  "editDir": "C:\\JEONGO\\.tmp\\ppt-stage12",
+  "issueCount": 0,
+  "issues": []
+}

@@ -1,0 +1,2 @@
+Six slides are added by duplicating source slide 4. Only inherited text is rewritten; no new shapes, images, or layouts are introduced.
+The existing question slides are otherwise preserved exactly and shift later in the output sequence because of the insertions.

@@ -23,7 +23,7 @@ export default function LoginPage() {
     try {
       if (mode === 'login') await login(email, password);
       else await register(email, name, password);
-      router.push('/home');
+      router.push(mode === 'register' ? '/onboarding' : '/home');
       router.refresh();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : '요청을 처리하지 못했습니다.');
@@ -89,9 +89,7 @@ export default function LoginPage() {
       <button type="button" disabled={pending || authStatus === 'loading'} onClick={() => void submit()} className="rounded-xl bg-neon-cyan text-dark-bg font-extrabold py-3 disabled:opacity-50">
         {pending ? '처리 중...' : mode === 'login' ? '로그인하고 학습 시작' : '계정 만들고 학습 시작'}
       </button>
-      <form action="/home" method="get">
-        <button type="submit" className="w-full rounded-xl border border-white/10 py-3 text-sm font-bold text-gray-300">게스트로 계속하기</button>
-      </form>
+      <a href="/home" role="button" className="rounded-xl border border-white/10 py-3 text-center text-sm font-bold text-gray-300">게스트로 계속하기</a>
       <p className="text-[10px] text-gray-500">게스트 기록은 이 브라우저에만 저장됩니다. 계정으로 로그인하면 서버 기록을 불러옵니다.</p>
     </section>
   );

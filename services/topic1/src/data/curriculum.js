@@ -1,3 +1,5 @@
+import { advancedCurriculumData } from './advancedCurriculum.js';
+
 export const curriculumData = [
   {
     id: 1,
@@ -66,7 +68,7 @@ export const curriculumData = [
           words: [
             { word: "가다", definition: "To go", example: "저는 오늘 시장에 갑니다.", image: "topik_go_scene.jpg" },
             { word: "오다", definition: "To come", example: "비가 오면 우산을 씁니다.", image: "topik_come_scene.jpg" },
-            { word: "하다", definition: "To do", example: "동생은 매일 운동을 합니다.", image: "topik_student_scene.jpg" },
+            { word: "하다", definition: "To do", example: "동생은 매일 운동을 합니다.", image: "topik_hada_exercise_scene_v2.png" },
             { word: "먹다", definition: "To eat", example: "아침에 사과를 먹었습니다.", image: "topik_restaurant_scene.jpg" }
           ]
         }
@@ -174,21 +176,21 @@ export const curriculumData = [
         question: "다음을 듣고 그림과 어울리는 올바른 대화 상황을 고르십시오. (TOPIK I 기출)",
         image: "topik_cafe_scene.jpg",
         audioScript: [
-          { speaker: "여", text: "여기 커피 두 잔하고 케이크 하나 주세요." },
-          { speaker: "남", text: "네, 알겠습니다. 저기 테이블에서 잠시만 기다려 주세요." }
+          { speaker: "여", text: "커피 맛이 어때요?" },
+          { speaker: "남", text: "아주 맛있어요. 커피를 마시면서 같이 이야기해요." }
         ],
         options: [
           "병원에서 의사와 간호사가 환자를 만납니다.",
-          "카페에서 여자가 음료와 디저트를 주문합니다.",
+          "카페에서 남자와 여자가 커피를 마시며 이야기합니다.",
           "은행에서 남자가 카드를 넣어 돈을 찾습니다.",
           "서점에서 남자가 직원에게 책 위치를 묻습니다."
         ],
         correct: 1,
-        explanation: "여자가 주문을 하고 점원(남자)이 대답을 하는 장소는 카페입니다. 카페에서 두 사람이 커피를 나누고 주문하는 장면이므로 ②번이 그림 상황과 완벽히 부합합니다.",
-        instructorGuide: "<strong>[듣기 1번 교수 시나리오]</strong><br>- <strong>오디오 청취 전 지도:</strong> 그림 속에 테이블, 찻잔, 웃으며 대화하는 모습이 보임을 공유하고 카페 관련 단어(커피, 차, 주문, 잔)가 나올 것임을 예측하게 하세요.",
+        explanation: "그림에는 카페 테이블에 앉은 남자와 여자가 각자 커피잔을 들고 이야기하는 모습이 보입니다. 대사에서도 커피 맛을 묻고 함께 마시며 이야기하자고 하므로 ②번이 정확합니다.",
+        instructorGuide: "<strong>[듣기 1번 교수 시나리오]</strong><br>- <strong>오디오 청취 전 지도:</strong> 그림 속 두 사람이 테이블에 앉아 커피잔을 들고 웃으며 대화하는 모습을 확인하게 하세요. '커피를 마시다', '이야기하다'라는 행동 표현을 예상한 뒤 음성을 듣도록 지도하세요.",
         optionExplanations: [
           "① 병원에서 환자를 만납니다 (X) - 대화가 진료나 주사 등 병원과 무관합니다.",
-          "② 카페에서 음료와 디저트를 주문합니다 (O) - 여자가 커피 두 잔과 케이크를 달라고 주문하며 남자가 서빙을 대기하라고 하는 내용이므로 카페 그림에 정확히 일치합니다.",
+          "② 카페에서 커피를 마시며 이야기합니다 (O) - 두 사람이 커피잔을 들고 대화하는 그림과 음성 내용이 정확히 일치합니다.",
           "③ 은행에서 돈을 찾습니다 (X) - 금융 기기나 카드, 통장에 관한 언급이 전혀 없습니다.",
           "④ 서점에서 책 위치를 묻습니다 (X) - 책장이나 도서 검색 등에 대한 얘기가 아닙니다."
         ]
@@ -1109,5 +1111,6 @@ export const curriculumData = [
         { word: "걸리다", meaning: "To catch (cold) / take (time)" }
       ]
     }
-  }
+  },
+  ...advancedCurriculumData
 ];

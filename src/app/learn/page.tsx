@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getAttackDamage, getDungeonMaxHp, getStrengthBonusDamage } from '@/lib/character-growth';
 import { getLocalizedMeaning } from '@/lib/vocab-i18n';
+import { prioritizeReviewQueue } from '@/lib/learning';
 
 interface WritingQuest {
   korean: string;
@@ -14,12 +15,15 @@ interface WritingQuest {
   pinyin: string;
 }
 
+type HskDungeonLevel = 'hsk1' | 'hsk2' | 'hsk3' | 'hsk4' | 'hsk5' | 'hsk6';
+
 export default function LearnPage() {
   const { vocabList, updateSrsWord, stats, spendGold, addXP, addGold, recordLearningEvent } = useApp();
   
   // Lobby Selection States
-  const [selectedHsk, setSelectedHsk] = useState<'hsk12' | 'hsk34' | 'hsk56'>('hsk12');
+  const [selectedHsk, setSelectedHsk] = useState<HskDungeonLevel>('hsk1');
   const [selectedMode, setSelectedMode] = useState<'vocab' | 'writing'>('vocab');
+  const [lobbyError, setLobbyError] = useState('');
   
   // Game Play States
   const [gameState, setGameState] = useState<'lobby' | 'playing' | 'cleared'>('lobby');
@@ -57,23 +61,35 @@ export default function LearnPage() {
 
   // Writing quests mapping by HSK level
   const WRITING_QUESTS = {
-    hsk12: [
+    hsk1: [
       { korean: '나는 사과를 먹는 것을 좋아해.', correctCards: ['我', '喜欢', '吃', '苹果'], pinyin: 'Wǒ xǐhuan chī píngguǒ.' },
-      { korean: '우리는 학교에서 중국어를 공부해.', correctCards: ['我们', '在学校', '学习', '中文'], pinyin: 'Wǒmen zài xuéxiào xuéxí Zhōngwén.' },
-      { korean: '그는 내 좋은 친구야.', correctCards: ['他', '是', '我的', '好朋友'], pinyin: 'Tā shì wǒ de hǎo péngyou.' },
+      { korean: '그는 내 친구야.', correctCards: ['他', '是', '我的', '朋友'], pinyin: 'Tā shì wǒ de péngyou.' },
     ],
-    hsk34: [
+    hsk2: [
+      { korean: '우리는 학교에서 중국어를 공부해.', correctCards: ['我们', '在学校', '学习', '中文'], pinyin: 'Wǒmen zài xuéxiào xuéxí Zhōngwén.' },
+      { korean: '오늘은 어제보다 더워.', correctCards: ['今天', '比昨天', '热'], pinyin: 'Jīntiān bǐ zuótiān rè.' },
+    ],
+    hsk3: [
       { korean: '이 햄버거는 정말 맛있어.', correctCards: ['这个', '汉堡包', '很好吃'], pinyin: 'Zhège hànbǎobāo hěn hǎochī.' },
       { korean: '중국인은 새해에 만두를 먹어.', correctCards: ['中国人', '过年', '吃', '饺子'], pinyin: 'Zhōngguórén guònián chī jiǎozi.' },
     ],
-    hsk56: [
+    hsk4: [
+      { korean: '우리는 교통 체증을 피하려고 일찍 출발했다.', correctCards: ['我们', '为了避免堵车', '提前出发了'], pinyin: 'Wǒmen wèile bìmiǎn dǔchē tíqián chūfā le.' },
+      { korean: '그녀는 새로운 환경에 빠르게 적응했다.', correctCards: ['她', '很快', '适应了', '新环境'], pinyin: 'Tā hěn kuài shìyìng le xīn huánjìng.' },
+    ],
+    hsk5: [
       { korean: '이번 채용은 매우 중요해.', correctCards: ['这次', '招聘', '非常', '关键'], pinyin: 'Zhècì zhāopìn fēicháng guānjiàn.' },
       { korean: '그의 말은 논리에 맞지 않아.', correctCards: ['他的话', '不符合', '逻辑'], pinyin: 'Tā de huà bù fúhé luójí.' },
-    ]
+    ],
+    hsk6: [
+      { korean: '위험 때문에 혁신을 포기해서는 안 된다.', correctCards: ['不能', '因为风险', '放弃创新'], pinyin: 'Bùnéng yīnwèi fēngxiǎn fàngqì chuàngxīn.' },
+      { korean: '장단점을 따진 뒤 결정해야 한다.', correctCards: ['应该', '权衡利弊以后', '再作决定'], pinyin: 'Yīnggāi quánhéng lìbì yǐhòu zài zuò juédìng.' },
+    ],
   };
 
   // Start Dungeon Play
   const startDungeon = () => {
+    setLobbyError('');
     setXpEarned(0);
     setGoldEarned(0);
     setIncorrectCount(0);
@@ -88,21 +104,16 @@ export default function LearnPage() {
     if (selectedMode === 'vocab') {
       // Filter words based on selected HSK level, prioritizing learned words
       const koreanVocabList = vocabList.filter((item) => !getLocalizedMeaning(item, 'ko').isFallback);
-      let pool: VocabItem[] = [];
-      if (selectedHsk === 'hsk12') {
-        pool = koreanVocabList.filter(item => item.isLearned && (item.hsk === 'HSK 1' || item.hsk === 'HSK 2'));
-        if (pool.length === 0) pool = koreanVocabList.filter(item => item.hsk === 'HSK 1' || item.hsk === 'HSK 2');
-      } else if (selectedHsk === 'hsk34') {
-        pool = koreanVocabList.filter(item => item.isLearned && (item.hsk === 'HSK 3' || item.hsk === 'HSK 4'));
-        if (pool.length === 0) pool = koreanVocabList.filter(item => item.hsk === 'HSK 3' || item.hsk === 'HSK 4');
-      } else {
-        pool = koreanVocabList.filter(item => item.isLearned && (item.hsk === 'HSK 5' || item.hsk === 'HSK 6'));
-        if (pool.length === 0) pool = koreanVocabList.filter(item => item.hsk === 'HSK 5' || item.hsk === 'HSK 6');
-      }
+      const hskLabel = `HSK ${selectedHsk.slice(3)}`;
+      let pool = koreanVocabList.filter((item) => item.isLearned && item.hsk === hskLabel);
+      if (pool.length === 0) pool = koreanVocabList.filter((item) => item.hsk === hskLabel);
       
-      // Shuffle and take max 4 words
-      const queue = [...pool].sort(() => 0.5 - Math.random()).slice(0, Math.min(pool.length, 4));
-      if (queue.length === 0) return;
+      // Serve overdue reviews before future/new words.
+      const queue = prioritizeReviewQueue(pool).slice(0, Math.min(pool.length, 4));
+      if (queue.length === 0) {
+        setLobbyError(`${hskLabel} 한국어 어휘를 불러오지 못했습니다. 데이터를 새로고침한 뒤 다시 시도하세요.`);
+        return;
+      }
       setCurrentVocabQueue(queue);
       
       const calculatedHp = getDungeonMaxHp('vocab', queue.length, stats.str);
@@ -246,10 +257,7 @@ export default function LearnPage() {
       setXpEarned(prev => prev + 15);
       setGoldEarned(prev => prev + 8);
       
-      // Update SRS only if it belongs to client database
-      if (word.id < 100) {
-        updateSrsWord(word.id, 5);
-      }
+      updateSrsWord(word.id, 5);
     } else {
       setComboCount(0);
       setIncorrectCount(prev => prev + 1);
@@ -259,9 +267,7 @@ export default function LearnPage() {
         text: '빗나감! 반격 0 데미지',
         isCrit: false
       });
-      if (word.id < 100) {
-        updateSrsWord(word.id, 2);
-      }
+      updateSrsWord(word.id, 2);
     }
     
     setTimeout(() => {
@@ -305,7 +311,7 @@ export default function LearnPage() {
         total: totalQuests,
         xp: xpEarned,
         gold: goldEarned,
-        hskLevel: selectedHsk.toUpperCase(),
+        hskLevel: `HSK ${selectedHsk.slice(3)}`,
         weakItems: missedItems,
       });
     } else {
@@ -320,9 +326,11 @@ export default function LearnPage() {
 
   const getDungeonVisuals = () => {
     switch (selectedHsk) {
-      case 'hsk34':
+      case 'hsk3':
+      case 'hsk4':
         return { name: '상하이 타워 던전 (중급)', bg: 'from-cyan-950/20 to-transparent border-cyan-500/20', monster: '👹' };
-      case 'hsk56':
+      case 'hsk5':
+      case 'hsk6':
         return { name: '자금성 황제 던전 (고급)', bg: 'from-yellow-950/20 to-transparent border-yellow-500/20', monster: '👑' };
       default:
         return { name: '만리장성 관문 던전 (초급)', bg: 'from-emerald-950/20 to-transparent border-emerald-500/20', monster: '🐉' };
@@ -362,9 +370,12 @@ export default function LearnPage() {
               <span className="text-sm font-bold text-gray-300 px-1">1단계: 던전 난이도(HSK 등급) 지정</span>
               <div className="grid grid-cols-3 gap-2">
                 {([
-                  { id: 'hsk12', label: '1-2급 (초급)', name: '만리장성' },
-                  { id: 'hsk34', label: '3-4급 (중급)', name: '상하이' },
-                  { id: 'hsk56', label: '5-6급 (고급)', name: '자금성' }
+                  { id: 'hsk1', label: '1급', name: '기초' },
+                  { id: 'hsk2', label: '2급', name: '초급' },
+                  { id: 'hsk3', label: '3급', name: '초중급' },
+                  { id: 'hsk4', label: '4급', name: '중급' },
+                  { id: 'hsk5', label: '5급', name: '중고급' },
+                  { id: 'hsk6', label: '6급', name: '고급' }
                 ] as const).map(level => (
                   <button
                     key={level.id}
@@ -433,6 +444,7 @@ export default function LearnPage() {
             >
               던전 침공 개시 (전투 시작)
             </button>
+            {lobbyError && <p role="alert" className="rounded-xl border border-neon-rose/30 bg-neon-rose/10 p-3 text-xs text-neon-rose">{lobbyError}</p>}
           </motion.div>
         )}
 
@@ -491,7 +503,7 @@ export default function LearnPage() {
                   <span className="text-[9px] font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded text-neon-cyan uppercase">
                     {currentVocabQueue[currentIndex]?.hsk}
                   </span>
-                  <h1 className="text-3xl font-extrabold text-white mt-1 select-none">
+                  <h1 lang="zh-CN" className="font-hanzi text-3xl font-semibold text-white mt-1 select-none">
                     {currentVocabQueue[currentIndex]?.hanzi}
                   </h1>
                   <p className="text-xs text-gray-400 font-mono font-medium">
@@ -560,7 +572,8 @@ export default function LearnPage() {
                       key={idx}
                       onClick={() => handleCardClick(card, false)}
                       disabled={isAnswered}
-                      className="px-3.5 py-1.5 bg-violet-500/20 border border-violet-500/40 text-violet-400 rounded-lg text-xs font-bold hover:scale-95 transition-all"
+                      className="font-hanzi px-3.5 py-1.5 bg-violet-500/20 border border-violet-500/40 text-violet-400 rounded-lg text-xs font-semibold hover:scale-95 transition-all"
+                      lang="zh-CN"
                     >
                       {card}
                     </button>
@@ -577,7 +590,8 @@ export default function LearnPage() {
                       key={idx}
                       onClick={() => handleCardClick(card, true)}
                       disabled={isAnswered}
-                      className="px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg text-xs font-medium hover:scale-105 active:scale-95 transition-all"
+                      className="font-hanzi px-3.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-lg text-xs font-medium hover:scale-105 active:scale-95 transition-all"
+                      lang="zh-CN"
                     >
                       {card}
                     </button>
@@ -669,7 +683,7 @@ export default function LearnPage() {
               <div className="flex justify-between text-xs mt-1">
                 <span className="text-gray-400 font-medium">클리어 던전 등급</span>
                 <span className="text-neon-cyan font-bold">
-                  {selectedHsk === 'hsk12' ? 'HSK 1-2급 (초급)' : selectedHsk === 'hsk34' ? 'HSK 3-4급 (중급)' : 'HSK 5-6급 (고급)'}
+                  HSK {selectedHsk.slice(3)}급
                 </span>
               </div>
               <div className="flex justify-between text-xs">

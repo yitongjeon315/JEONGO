@@ -3,7 +3,7 @@ import { prePracticeBySession } from './data/prePractice.js';
 
 // Application State
 let activeCurriculum = []; // Holds edited/customized curriculum
-let currentSessionIndex = 0;
+let currentSessionIndex = 3; // TOPIK II 3급 과정부터 시작
 const selectedAnswers = {}; // Tracks user's selections: { questionId: selectedIndex }
 const submittedQuestions = new Set(); // Tracks submitted/graded questions
 let currentUtterances = []; // To track SpeechSynthesisUtterance instances
@@ -13,7 +13,6 @@ let activeAudioQuestionId = null; // Tracks which question's audio is playing
 let selectedGameCards = []; // Tracks two currently clicked game cards: [ {el, word, type} ]
 let matchedPairsCount = 0;
 let totalPairsCount = 6; // Number of pairs to match in step 1 minigame
-let currentShuffledCards = []; // Active shuffled game cards list
 
 // UI States
 let isZoomMode = false;
@@ -23,6 +22,7 @@ let isInstructorMode = false; // Instructor guide hidden by default
 let presentationSlideIndex = 0;
 let presentationReturnScrollY = 0;
 let translationDragState = null;
+const WRITING_DRAFT_STORAGE_KEY = 'topik_writing_drafts_v1';
 
 const vocabVisuals = {
   '옷': '👕', '신발': '👟', '과일': '🍎', '우산': '☂️',
@@ -35,9 +35,14 @@ const vocabVisuals = {
 
 const requiredQuestionCorrections = {
   q1_r3: ['options', 'optionExplanations'],
+  q1_l1: ['audioScript', 'options', 'explanation', 'instructorGuide', 'optionExplanations'],
   q2_r1: ['explanation'],
   q2_r2: ['question'],
-  q3_l4: ['audioScript', 'optionExplanations']
+  q3_l4: ['audioScript', 'optionExplanations'],
+  q6_w1: ['question', 'modelAnswer', 'minChars', 'maxChars', 'officialQuestion'],
+  q6_w2: ['question', 'modelAnswer', 'minChars', 'maxChars', 'officialQuestion'],
+  q7_w1: ['question', 'modelAnswer', 'minChars', 'maxChars', 'officialQuestion'],
+  q7_w2: ['question', 'modelAnswer', 'minChars', 'maxChars', 'officialQuestion']
 };
 
 const isUnbundledSource = Array.from(document.scripts).some((script) => {
@@ -85,7 +90,7 @@ const TRANSLATION_POSITION_STORAGE_KEY = 'topik_translation_panel_position';
 function init() {
   loadLocalCurriculum();
   renderSidebar();
-  loadSession(0);
+  loadSession(currentSessionIndex);
   bindGlobalEvents();
 }
 
@@ -95,6 +100,13 @@ function loadLocalCurriculum() {
   if (saved) {
     try {
       activeCurriculum = JSON.parse(saved);
+
+      // Preserve a teacher's existing edits while adding newly released sessions.
+      curriculumData.forEach((freshSession) => {
+        if (!activeCurriculum.some((session) => session.id === freshSession.id)) {
+          activeCurriculum.push(JSON.parse(JSON.stringify(freshSession)));
+        }
+      });
 
       // Hot-patch to sync new properties (q3_l2 and Korean-to-Image vocabGamePairs)
       activeCurriculum.forEach((session, idx) => {
@@ -172,6 +184,14 @@ function loadLocalCurriculum() {
                 question[field] = JSON.parse(JSON.stringify(freshQuestion[field]));
               });
             }
+            if (freshQuestion?.source) {
+              question.source = JSON.parse(JSON.stringify(freshQuestion.source));
+            }
+            if (freshQuestion?.type === 'writing') {
+              question.minChars = freshQuestion.minChars;
+              question.maxChars = freshQuestion.maxChars;
+              question.officialQuestion = freshQuestion.officialQuestion;
+            }
           });
         }
 
@@ -223,7 +243,9 @@ function saveLocalCurriculum() {
 }
 
 function getPresentationSlides() {
-  return Array.from(contentContainer.querySelectorAll('.quiz-card'));
+  return Array.from(contentContainer.querySelectorAll(
+    '.vocab-warmup-card, .pre-practice-card, .quiz-card, .writing-card, .vocab-mastery-card'
+  ));
 }
 
 function showPresentationSlide(index) {
@@ -247,7 +269,8 @@ function showPresentationSlide(index) {
   activeSlide.closest('.quiz-section')?.classList.add('presentation-section-active');
   activeSlide.scrollTop = 0;
 
-  presentationCounter.textContent = `문제 ${presentationSlideIndex + 1} / ${slides.length}`;
+  const slideTitle = activeSlide.dataset.presentationTitle || '학습 화면';
+  presentationCounter.textContent = `${slideTitle} · ${presentationSlideIndex + 1} / ${slides.length}`;
   presentationPrevBtn.disabled = presentationSlideIndex === 0;
   presentationNextBtn.disabled = presentationSlideIndex === slides.length - 1;
   window.scrollTo(0, 0);
@@ -479,7 +502,18 @@ function bindGlobalEvents() {
 // Render Sidebar Navigation
 function renderSidebar() {
   navContainer.innerHTML = '';
-  activeCurriculum.forEach((session, index) => {
+  const orderedSessions = [
+    ...activeCurriculum.map((session, index) => ({ session, index })).filter(({ session }) => session.id >= 4),
+    ...activeCurriculum.map((session, index) => ({ session, index })).filter(({ session }) => session.id < 4),
+  ];
+
+  orderedSessions.forEach(({ session, index }, orderedIndex) => {
+    if (orderedIndex === 0 || (orderedIndex > 0 && orderedSessions[orderedIndex - 1].session.id >= 4 && session.id < 4)) {
+      const heading = document.createElement('li');
+      heading.className = 'nav-group-title';
+      heading.textContent = session.id >= 4 ? '주 과정 · TOPIK II 3~6급' : '기초 보충 · TOPIK I 1~2급';
+      navContainer.appendChild(heading);
+    }
     const li = document.createElement('li');
     li.className = 'nav-item';
 
@@ -487,7 +521,7 @@ function renderSidebar() {
     button.className = `nav-btn ${index === currentSessionIndex ? 'active' : ''}`;
     button.dataset.index = index;
     button.innerHTML = `
-      <span class="session-num">Session 0${index + 1} (${session.duration})</span>
+      <span class="session-num">Session ${String(session.id).padStart(2, '0')} (${session.duration})</span>
       <span class="session-title">${session.title.split(': ')[1]}</span>
     `;
 
@@ -495,8 +529,8 @@ function renderSidebar() {
       stopSpeech();
       currentSessionIndex = index;
 
-      document.querySelectorAll('.nav-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === index);
+      document.querySelectorAll('.nav-btn').forEach((btn) => {
+        btn.classList.toggle('active', Number(btn.dataset.index) === index);
       });
 
       loadSession(index);
@@ -515,7 +549,7 @@ function renderPrePractice(area, data, stepNumber) {
   const languageTitle = isReading ? '조사·문법 핵심' : '듣기에 나오는 핵심 표현';
 
   return `
-    <section class="pre-practice-card ${area}" aria-labelledby="${area}-prep-title">
+    <section class="pre-practice-card ${area}" data-presentation-title="${stepNumber}단계 · ${isReading ? '읽기 준비' : '듣기 준비'}" aria-labelledby="${area}-prep-title">
       <div class="pre-practice-heading">
         <span class="learning-step-badge">${stepNumber}단계 · ${isReading ? '읽기 준비' : '듣기 준비'}</span>
         <h3 id="${area}-prep-title">${isReading ? '📘' : '🎧'} ${data.title}</h3>
@@ -602,7 +636,7 @@ function loadSession(index) {
             <p contenteditable="true" data-type="intro" data-field="target" style="font-size: calc(0.95rem * var(--font-scale)); color: var(--text-muted);">${intro.target}</p>
           </div>
 
-          <h4 style="font-size: calc(1.05rem * var(--font-scale)); margin-bottom: 0.5rem; font-weight: 700;">📈 TOPIK I 평가 등급 및 합격 기준</h4>
+          <h4 style="font-size: calc(1.05rem * var(--font-scale)); margin-bottom: 0.5rem; font-weight: 700;">📈 ${intro.levelTitle || 'TOPIK I 평가 등급 및 합격 기준'}</h4>
           <table class="timeline-table" style="margin-bottom: 1.5rem;">
             <thead>
               <tr>
@@ -717,7 +751,8 @@ function loadSession(index) {
                   <div class="vocab-card-front" style="padding: 0; overflow: hidden;">
                     <span class="word-badge" style="position: absolute; top: 8px; left: 8px; z-index: 10; margin-bottom: 0;">${cat.name.split(' ')[0]}</span>
                     ${vocabVisuals[w.word]
-                      ? `<div class="vocab-card-front-symbol" role="img" aria-label="${w.word} 연상 기호">${vocabVisuals[w.word]}</div>`
+                      || w.symbol
+                      ? `<div class="vocab-card-front-symbol" role="img" aria-label="${w.word} 연상 기호">${w.symbol || vocabVisuals[w.word]}</div>`
                       : `<img src="${resolveAssetPath(w.image)}" class="vocab-card-front-img" alt="${w.word} 단어 힌트 그림" />`}
                     <button class="vocab-audio-btn" data-word="${w.word}" style="position: absolute; bottom: 8px; right: 8px; z-index: 10;">🔊</button>
                   </div>
@@ -748,7 +783,7 @@ function loadSession(index) {
     `;
 
     html += `
-      <div class="vocab-warmup-card">
+      <div class="vocab-warmup-card" data-presentation-title="1단계 · 핵심 어휘">
         <h3 contenteditable="true" data-type="warmup" data-field="title">📖 ${warmUp.title}</h3>
         <p class="desc" contenteditable="true" data-type="warmup" data-field="description">${warmUp.description}</p>
 
@@ -761,10 +796,11 @@ function loadSession(index) {
 
   // 사전 지식 학습 후 영역별 실전 훈련
   if (session.practiceQuestions && session.practiceQuestions.length > 0) {
-    const knowledge = prePracticeBySession[session.id];
+    const knowledge = prePracticeBySession[session.id] || session.prePractice;
     const indexedQuestions = session.practiceQuestions.map((question, questionIndex) => ({ question, questionIndex }));
     const readingQuestions = indexedQuestions.filter(({ question }) => question.type === 'reading');
     const listeningQuestions = indexedQuestions.filter(({ question }) => question.type === 'listening');
+    const writingQuestions = indexedQuestions.filter(({ question }) => question.type === 'writing');
 
     html += `
       ${renderPrePractice('reading', knowledge?.reading, 2)}
@@ -786,6 +822,17 @@ function loadSession(index) {
         </div>
         ${listeningQuestions.map(({ question, questionIndex }) => renderQuizCard(question, questionIndex)).join('')}
       </div>
+
+      ${writingQuestions.length ? `
+        <div class="quiz-section writing-section">
+          <div class="practice-transition writing">
+            <span>이해 완료 → 직접 생산</span>
+            <h3 class="section-title-quiz">🖊️ 6단계: 쓰기 문제 연습</h3>
+            <p>먼저 직접 작성한 뒤 자가 점검표를 확인하고, 마지막에 모범답안과 비교하세요.</p>
+          </div>
+          ${writingQuestions.map(({ question, questionIndex }) => renderWritingCard(question, questionIndex)).join('')}
+        </div>
+      ` : ''}
     `;
   }
 
@@ -793,8 +840,8 @@ function loadSession(index) {
   if (session.vocabularyMastery) {
     const mastery = session.vocabularyMastery;
     html += `
-      <div class="vocab-mastery-card">
-        <span class="learning-step-badge review">6단계 · 마무리 복습</span>
+      <div class="vocab-mastery-card" data-presentation-title="${session.practiceQuestions?.some((question) => question.type === 'writing') ? '7' : '6'}단계 · 마무리 복습">
+        <span class="learning-step-badge review">${session.practiceQuestions?.some((question) => question.type === 'writing') ? '7' : '6'}단계 · 마무리 복습</span>
         <h3 contenteditable="true" data-type="mastery" data-field="title">🎯 ${mastery.title}</h3>
         <p class="desc" contenteditable="true" data-type="mastery" data-field="description">문제를 푼 뒤 틀린 문항의 명사·조사·핵심 표현을 다시 확인하세요. ${mastery.description}</p>
 
@@ -853,6 +900,80 @@ function loadSession(index) {
   }
 
   if (isZoomMode) requestAnimationFrame(() => showPresentationSlide(0));
+}
+
+function renderSourceNotice(question) {
+  if (!question.source) return '';
+  return `
+    <div class="question-source" title="${question.source.reviewed}">
+      <strong>${question.source.kind}</strong>
+      <span>${question.source.basis}</span>
+      <span>실제 기출 아님</span>
+    </div>
+  `;
+}
+
+function getWritingRubric(question) {
+  if (question.officialQuestion === 53) {
+    return [
+      ['내용 및 과제 수행', 7],
+      ['글의 전개 구조', 7],
+      ['언어 사용', 16],
+    ];
+  }
+  if (question.officialQuestion === 54) {
+    return [
+      ['내용 및 과제 수행', 12],
+      ['글의 전개 구조', 12],
+      ['언어 사용', 26],
+    ];
+  }
+  return [];
+}
+
+function renderWritingCard(question, index) {
+  const rubric = getWritingRubric(question);
+  const targetText = question.minChars && question.maxChars
+    ? `${question.minChars}~${question.maxChars}자`
+    : '분량 제한 없음';
+  return `
+    <article class="writing-card" data-presentation-title="6단계 · 쓰기 문제 ${String(index + 1).padStart(2, '0')}">
+      <div class="quiz-header">
+        <span class="question-num">문제 ${String(index + 1).padStart(2, '0')}</span>
+        <span class="question-category" contenteditable="true" data-type="quiz" data-qid="${question.id}" data-field="category">${question.category}</span>
+      </div>
+      ${renderSourceNotice(question)}
+      <div class="question-text" contenteditable="true" data-type="quiz" data-qid="${question.id}" data-field="question">${question.question}</div>
+      <label class="writing-label" for="writing-answer-${question.id}">내 답안</label>
+      <textarea id="writing-answer-${question.id}" class="writing-answer" rows="9" placeholder="여기에 직접 답안을 작성하세요."></textarea>
+      <div class="writing-count-row">
+        <span>공백 포함 글자 수</span>
+        <strong class="writing-char-count" data-min="${question.minChars || 0}" data-max="${question.maxChars || 0}">0자 / ${targetText}</strong>
+      </div>
+      ${rubric.length ? `
+        <div class="official-rubric">
+          <strong>공식 TOPIK II 채점 기준 · 총 ${rubric.reduce((sum, [, score]) => sum + score, 0)}점</strong>
+          <div>${rubric.map(([label, score]) => `<span>${label} ${score}점</span>`).join('')}</div>
+          <small>자가 점검용 안내이며 실제 채점 결과가 아닙니다.</small>
+        </div>
+      ` : ''}
+      <div class="writing-checklist">
+        <strong>제출 전 자가 점검</strong>
+        ${question.checklist.map((item, checklistIndex) => `
+          <label><input type="checkbox" /> <span>${checklistIndex + 1}. ${item}</span></label>
+        `).join('')}
+      </div>
+      <div class="writing-actions">
+        <button type="button" class="submit-btn writing-save-btn" data-qid="${question.id}">답안 저장 및 자가점검 제출</button>
+        <p class="writing-save-status" id="writing-status-${question.id}" role="status"></p>
+      </div>
+      <details class="writing-model-answer">
+        <summary>모범답안과 작성 전략 확인</summary>
+        <div class="model-answer" contenteditable="true" data-type="quiz" data-qid="${question.id}" data-field="modelAnswer">${question.modelAnswer}</div>
+        <p><strong>작성 전략:</strong> <span contenteditable="true" data-type="quiz" data-qid="${question.id}" data-field="explanation">${question.explanation}</span></p>
+      </details>
+    </article>
+  `;
 }
 
 // Render Quiz Card
@@ -957,11 +1078,12 @@ function renderQuizCard(q, index) {
   }
 
   return `
-    <div class="quiz-card ${isSubmitted ? 'answered' : ''}" id="quiz-card-${q.id}">
+    <div class="quiz-card ${isSubmitted ? 'answered' : ''}" id="quiz-card-${q.id}" data-presentation-title="${q.type === 'reading' ? '3단계 · 읽기 문제' : '5단계 · 듣기 문제'} ${String(index + 1).padStart(2, '0')}">
       <div class="quiz-header">
         <span class="question-num">문제 ${String(index + 1).padStart(2, '0')}</span>
         <span class="question-category" contenteditable="true" data-type="quiz" data-qid="${q.id}" data-field="category">${q.category}</span>
       </div>
+      ${renderSourceNotice(q)}
       ${audioPlayerHtml}
       ${mediaHtml}
       <div class="question-text" contenteditable="true" data-type="quiz" data-qid="${q.id}" data-field="question">${q.question}</div>
@@ -980,6 +1102,51 @@ function renderQuizCard(q, index) {
 
 // Bind Events inside currently loaded Session
 function bindSessionEvents(session) {
+  let writingDrafts = {};
+  try {
+    writingDrafts = JSON.parse(localStorage.getItem(WRITING_DRAFT_STORAGE_KEY) || '{}');
+  } catch {
+    localStorage.removeItem(WRITING_DRAFT_STORAGE_KEY);
+  }
+  document.querySelectorAll('.writing-card').forEach((card) => {
+    const questionId = card.querySelector('.writing-save-btn')?.dataset.qid;
+    const textarea = card.querySelector('.writing-answer');
+    const status = card.querySelector('.writing-save-status');
+    const count = card.querySelector('.writing-char-count');
+    const updateCount = () => {
+      if (!textarea || !count) return;
+      const length = Array.from(textarea.value.replace(/\r?\n/g, '')).length;
+      const min = Number(count.dataset.min || 0);
+      const max = Number(count.dataset.max || 0);
+      count.textContent = `${length}자 / ${min && max ? `${min}~${max}자` : '분량 제한 없음'}`;
+      count.classList.toggle('is-valid', Boolean(min && max && length >= min && length <= max));
+      count.classList.toggle('is-invalid', Boolean(min && max && length > 0 && (length < min || length > max)));
+    };
+    textarea?.addEventListener('input', updateCount);
+    const saved = questionId ? writingDrafts[questionId] : null;
+    if (saved && textarea) {
+      textarea.value = saved.answer || '';
+      card.querySelectorAll('.writing-checklist input').forEach((checkbox, index) => {
+        checkbox.checked = Boolean(saved.checks?.[index]);
+      });
+      if (status) status.textContent = `저장된 답안 복원 · ${new Date(saved.savedAt).toLocaleString()}`;
+    }
+    updateCount();
+    card.querySelector('.writing-save-btn')?.addEventListener('click', () => {
+      if (!questionId || !textarea) return;
+      const checks = Array.from(card.querySelectorAll('.writing-checklist input')).map((checkbox) => checkbox.checked);
+      if (!textarea.value.trim()) {
+        if (status) status.textContent = '답안을 먼저 작성해 주세요.';
+        textarea.focus();
+        return;
+      }
+      writingDrafts[questionId] = { answer: textarea.value, checks, savedAt: new Date().toISOString() };
+      localStorage.setItem(WRITING_DRAFT_STORAGE_KEY, JSON.stringify(writingDrafts));
+      const checkedCount = checks.filter(Boolean).length;
+      if (status) status.textContent = `저장 완료 · 자가점검 ${checkedCount}/${checks.length}개 충족`;
+    });
+  });
+
   // 0. TOPIK Intro Accordion Toggle handler
   const introToggleBtn = document.getElementById('intro-toggle-btn');
   const introContent = document.getElementById('intro-table-content');
@@ -1008,7 +1175,7 @@ function bindSessionEvents(session) {
   document.querySelectorAll('.vocab-card-wrapper').forEach(wrapper => {
     const toggleVocabCard = (e) => {
       // If user is editing text (contenteditable), do not flip
-      if (e.target.hasAttribute('contenteditable')) return;
+      if (e.target instanceof HTMLElement && e.target.isContentEditable) return;
 
       // If user clicked the speak audio button, trigger speech and block card flipping
       if (e.target.classList.contains('vocab-audio-btn') || e.target.closest('.vocab-audio-btn')) {
@@ -1036,7 +1203,7 @@ function bindSessionEvents(session) {
   // 1. Option click handlers
   document.querySelectorAll('.option-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      if (e.target.hasAttribute('contenteditable')) return;
+      if (e.target instanceof HTMLElement && e.target.isContentEditable) return;
 
       const qid = btn.dataset.qid;
       const oidx = parseInt(btn.dataset.oidx, 10);
@@ -1074,6 +1241,7 @@ function bindSessionEvents(session) {
           cardElement.replaceWith(newCard);
 
           rebindCardEvents(qid, question, session);
+          if (isZoomMode) showPresentationSlide(presentationSlideIndex);
         }
       }
     });
@@ -1102,7 +1270,7 @@ function bindSessionEvents(session) {
   // 4. Flashcard flip handlers (3단계 마무리 장악)
   document.querySelectorAll('.flashcard-wrapper').forEach(wrapper => {
     const toggleMasteryCard = (e) => {
-      if (e.target.hasAttribute('contenteditable')) return;
+      if (e.target instanceof HTMLElement && e.target.isContentEditable) return;
       const card = wrapper.querySelector('.flashcard');
       if (card) {
         card.classList.toggle('flipped');
@@ -1292,8 +1460,6 @@ function setupVocabGame(session) {
     const j = Math.floor(Math.random() * (i + 1));
     [cards[i], cards[j]] = [cards[j], cards[i]];
   }
-
-  currentShuffledCards = cards;
 
   // Render cards to game grid
   cards.forEach((card, index) => {

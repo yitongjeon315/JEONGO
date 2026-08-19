@@ -1,11 +1,17 @@
 'use client';
 
 import React from 'react';
+import { usePathname } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { ArrowUpRight, Coins, Flame, GraduationCap } from 'lucide-react';
+import { ArrowUpRight, Coins, Flame, GraduationCap, Sparkles } from 'lucide-react';
+
+const BEFORE_JEONGO_URL = process.env.NEXT_PUBLIC_BEFORE_JEONGO_URL ?? 'http://localhost:3002';
 
 const Header = () => {
+  const pathname = usePathname();
   const { stats } = useApp();
+
+  if (pathname === '/vocab-book') return null;
 
   // Calculate XP percentage
   const xpPercent = Math.min(100, Math.max(0, (stats.xp / stats.xpNeeded) * 100));
@@ -76,24 +82,43 @@ const Header = () => {
         </span>
       </div>
 
-      <a
-        href="/topic/"
-        className="group flex min-h-11 items-center justify-between gap-3 rounded-xl border border-sky-300/25 bg-gradient-to-r from-sky-500/15 via-cyan-400/10 to-violet-500/15 px-3 py-2 shadow-sm transition hover:border-sky-300/45 hover:bg-sky-400/15 active:scale-[0.99]"
-        aria-label="한국어 TOPIK 학습 서비스 열기"
-      >
-        <span className="flex min-w-0 items-center gap-2.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-300/15 text-sky-200">
-            <GraduationCap size={18} />
-          </span>
-          <span className="min-w-0">
-            <strong className="block truncate text-xs font-extrabold text-white sm:text-sm">한국어 TOPIK 학습</strong>
-            <span className="hidden truncate text-[10px] text-sky-100/70 min-[370px]:block">TOPIK I 수업과 실전 연습 열기</span>
-          </span>
-        </span>
-        <span className="flex shrink-0 items-center gap-1 text-[10px] font-bold text-sky-200 sm:text-xs">
-          시작하기 <ArrowUpRight size={14} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-        </span>
-      </a>
+      {pathname === '/home' && (
+        <div className="grid gap-2 sm:grid-cols-2">
+          <a
+            href={BEFORE_JEONGO_URL}
+            className="group flex min-h-12 items-center justify-between gap-3 rounded-xl border border-neon-cyan/30 bg-gradient-to-r from-neon-cyan/15 via-cyan-400/10 to-violet-500/15 px-3 py-2 shadow-sm transition hover:border-neon-cyan/55 hover:bg-neon-cyan/15 active:scale-[0.99]"
+            aria-label="BEFORE JEONGO 병음 입문 앱 열기"
+          >
+            <span className="flex min-w-0 items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-neon-cyan/15 text-neon-cyan">
+                <Sparkles size={18} />
+              </span>
+              <span className="min-w-0">
+                <strong className="block truncate text-xs font-extrabold text-white sm:text-sm">BEFORE JEONGO</strong>
+                <span className="block truncate text-[10px] text-cyan-100/70">병음이 처음이라면 여기서 시작</span>
+              </span>
+            </span>
+            <ArrowUpRight size={15} className="shrink-0 text-neon-cyan transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </a>
+
+          <a
+            href="/topic/index.html"
+            className="group flex min-h-12 items-center justify-between gap-3 rounded-xl border border-sky-300/25 bg-gradient-to-r from-sky-500/15 via-cyan-400/10 to-violet-500/15 px-3 py-2 shadow-sm transition hover:border-sky-300/45 hover:bg-sky-400/15 active:scale-[0.99]"
+            aria-label="한국어 TOPIK 학습 서비스 열기"
+          >
+            <span className="flex min-w-0 items-center gap-2.5">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-sky-300/15 text-sky-200">
+                <GraduationCap size={18} />
+              </span>
+              <span className="min-w-0">
+                <strong className="block truncate text-xs font-extrabold text-white sm:text-sm">한국어 TOPIK 학습</strong>
+                <span className="block truncate text-[10px] text-sky-100/70">TOPIK 수업과 실전 연습 열기</span>
+              </span>
+            </span>
+            <ArrowUpRight size={15} className="shrink-0 text-sky-200 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </a>
+        </div>
+      )}
     </header>
   );
 };

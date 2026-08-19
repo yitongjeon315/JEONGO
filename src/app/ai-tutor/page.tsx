@@ -1,15 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useApp } from '@/context/AppContext';
-import { Sparkles, MessageSquare, Mic, Volume2, Check, X, ShieldAlert, Award, Star, RefreshCw, ChevronRight } from 'lucide-react';
+import { Sparkles, Mic, Volume2, Check, X, Award, Star, RefreshCw, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-interface VocabScore {
-  word: string;
-  status: 'ok' | 'bad';
-  reason?: string;
-}
+import { createChineseSpeechRecognition, isSpeechRecognitionSupported, speakChinese, type SpeechRecognitionController } from '@/lib/browser-speech';
+import { evaluatePronunciation, type PronunciationCorrection, type PronunciationEvaluation, type PronunciationWordScore } from '@/lib/pronunciation';
 
 interface ScenarioTurn {
   aiText: string;
@@ -17,9 +14,7 @@ interface ScenarioTurn {
   userPrompt: string;
   userPinyin: string;
   userTrans: string;
-  simulatedUserPitch: number[];
-  simulatedNativePitch: number[];
-  vocabScores: VocabScore[];
+  keywords: string[];
 }
 
 interface Scenario {
@@ -35,12 +30,12 @@ interface TutorInfo {
   desc: string;
 }
 
-interface EvaluationReport {
-  score: number;
-  vocabScores: VocabScore[];
-  userPitch: number[];
-  nativePitch: number[];
-  pinyinWords: string[];
+interface EvaluationReport extends PronunciationEvaluation {
+  transcript: string;
+  inputMethod: 'voice' | 'text';
+  pronunciationScore?: number;
+  fluencyScore?: number;
+  precisionAnalysis?: boolean;
 }
 
 interface Message {
@@ -52,7 +47,7 @@ interface Message {
 }
 
 export default function AiTutorPage() {
-  const { stats, addXP, addGold, recordLearningEvent } = useApp();
+  const { addXP, addGold, recordLearningEvent, rewardPronunciationGrowth } = useApp();
   
   // Game states
   const [sessionState, setSessionState] = useState<'lobby' | 'chatting' | 'summary'>('lobby');
@@ -65,9 +60,22 @@ export default function AiTutorPage() {
   const [isRecording, setIsRecording] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [recordDuration, setRecordDuration] = useState(0);
-  const [showPitchChart, setShowPitchChart] = useState(false);
+  const [showEvaluation, setShowEvaluation] = useState(false);
   const [evaluationReport, setEvaluationReport] = useState<EvaluationReport | null>(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState<boolean | null>(null);
+  const [recognizedText, setRecognizedText] = useState('');
+  const [manualText, setManualText] = useState('');
+  const [speechError, setSpeechError] = useState('');
+  const [sessionRewards, setSessionRewards] = useState({ xp: 0, gold: 0 });
+  const [isTutorReplyLoading, setIsTutorReplyLoading] = useState(false);
+  const recognitionRef = useRef<SpeechRecognitionController | null>(null);
+  const recognizedTextRef = useRef('');
+  const evaluationStartedRef = useRef(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const mediaStreamRef = useRef<MediaStream | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const serverAudioPendingRef = useRef(false);
 
   // Track recording duration
   useEffect(() => {
@@ -81,6 +89,18 @@ export default function AiTutorPage() {
     }
     return () => clearInterval(interval);
   }, [isRecording]);
+
+  useEffect(() => {
+    const supportCheck = window.setTimeout(() => setSpeechSupported(isSpeechRecognitionSupported()), 0);
+    return () => {
+      window.clearTimeout(supportCheck);
+      evaluationStartedRef.current = true;
+      recognitionRef.current?.abort();
+      mediaRecorderRef.current?.stop();
+      mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+    };
+  }, []);
   
   // Simulated speech input text they are supposed to read
   const [targetSentence, setTargetSentence] = useState({
@@ -105,14 +125,7 @@ export default function AiTutorPage() {
           userPrompt: '我们两个人，想要一个麻辣火锅。',
           userPinyin: 'Wǒmen liǎng gè rén, xiǎng yào yí gè málà huǒguō.',
           userTrans: '우리 두 명입니다, 마라 훠궈 하나 주세요.',
-          simulatedUserPitch: [120, 110, 150, 140, 220, 120, 110, 140, 120, 180],
-          simulatedNativePitch: [125, 115, 160, 140, 240, 120, 115, 145, 125, 230],
-          vocabScores: [
-            { word: '我们', status: 'ok' },
-            { word: '想要', status: 'ok' },
-            { word: '麻辣', status: 'bad', reason: '麻(má)의 2성 상승조가 너무 평평하게 발음됨.' },
-            { word: '火锅', status: 'ok' }
-          ]
+          keywords: ['我们', '想要', '麻辣', '火锅'],
         },
         {
           aiText: '好的，麻辣火锅。请问需要加些饮料吗？',
@@ -120,13 +133,7 @@ export default function AiTutorPage() {
           userPrompt: '我要两杯冰可乐，谢谢。',
           userPinyin: 'Wǒ yào liǎng bēi bīng kělè, xièxie.',
           userTrans: '아이스 콜라 두 잔 주세요, 감사합니다.',
-          simulatedUserPitch: [110, 220, 150, 250, 250, 110, 200, 110, 100],
-          simulatedNativePitch: [115, 230, 155, 250, 250, 115, 210, 115, 105],
-          vocabScores: [
-            { word: '两杯', status: 'ok' },
-            { word: '可乐', status: 'ok' },
-            { word: '谢谢', status: 'ok' }
-          ]
+          keywords: ['两杯', '可乐', '谢谢'],
         },
         {
           aiText: '没问题，菜马上就来！请慢用。',
@@ -134,13 +141,7 @@ export default function AiTutorPage() {
           userPrompt: '太好了，非常感谢！',
           userPinyin: 'Tài hǎo le, fēicháng gǎnxiè!',
           userTrans: '좋네요, 정말 감사합니다!',
-          simulatedUserPitch: [220, 110, 100, 250, 180, 110, 220],
-          simulatedNativePitch: [240, 115, 100, 250, 185, 115, 230],
-          vocabScores: [
-            { word: '太好了', status: 'ok' },
-            { word: '非常', status: 'ok' },
-            { word: '感谢', status: 'ok' }
-          ]
+          keywords: ['太好了', '非常', '感谢'],
         }
       ]
     },
@@ -153,13 +154,7 @@ export default function AiTutorPage() {
           userPrompt: '我是来旅游的，计划待一个星期。',
           userPinyin: 'Wǒ shì lái lǚyóu de, jìhuà dāi yí gè xīngqī.',
           userTrans: '저는 관광하러 온 것이고, 일주일 머물 예정입니다.',
-          simulatedUserPitch: [110, 220, 150, 120, 180, 100, 225, 115, 250, 250, 250],
-          simulatedNativePitch: [115, 230, 155, 120, 185, 100, 240, 115, 250, 250, 250],
-          vocabScores: [
-            { word: '旅游', status: 'ok' },
-            { word: '计划', status: 'ok' },
-            { word: '星期', status: 'bad', reason: '星期(xīngqī)의 1성 고음 발음 시 떨림 현상 감지.' }
-          ]
+          keywords: ['旅游', '计划', '星期'],
         }
       ]
     }
@@ -185,86 +180,222 @@ export default function AiTutorPage() {
     });
     
     setSessionState('chatting');
-    setShowPitchChart(false);
+    setShowEvaluation(false);
     setEvaluationReport(null);
+    setRecognizedText('');
+    setManualText('');
+    setSpeechError('');
+    setSessionRewards({ xp: 0, gold: 0 });
+    speakChinese(firstTurn.aiText);
   };
 
-  // Simulating Voice Recording and Pitch Analysis (User-Controlled Toggle)
-  const triggerSimulatedRecording = () => {
-    if (!isRecording) {
-      // Start Recording
-      setRecordDuration(0);
-      setIsRecording(true);
-    } else {
-      // Stop Recording & Start Analysis
-      setIsRecording(false);
-      setIsAnalyzing(true);
-      
-      setTimeout(() => {
-        setIsAnalyzing(false);
-        
-        const selectedScenarioData = scenarios[selectedScenario];
-        const activeTurn = selectedScenarioData.turns[turnIndex];
-        
-        // Calculate random high-fidelity score
-        const hasErrors = activeTurn.vocabScores.some((w: VocabScore) => w.status === 'bad');
-        const score = hasErrors ? Math.floor(Math.random() * 10) + 72 : Math.floor(Math.random() * 10) + 88;
-        
-        setEvaluationReport({
-          score,
-          vocabScores: activeTurn.vocabScores,
-          userPitch: activeTurn.simulatedUserPitch,
-          nativePitch: activeTurn.simulatedNativePitch,
-          pinyinWords: activeTurn.userPinyin.split(' ')
-        });
-        
-        setShowPitchChart(true);
-        
-        // Update message listing
-        setMessages(prev => [
-          ...prev,
-          {
-            sender: 'user',
-            text: activeTurn.userPrompt,
-            pinyin: activeTurn.userPinyin,
-            translation: activeTurn.userTrans,
-            score
-          }
-        ]);
-        
-        // Add XP & Gold on speaking success
-        addXP(20);
-        addGold(15);
+  const analyzeTranscript = (transcript: string, inputMethod: 'voice' | 'text', precision?: { pronunciationScore: number; fluencyScore: number }) => {
+    const cleanedTranscript = transcript.trim();
+    if (!cleanedTranscript || evaluationStartedRef.current) {
+      if (!cleanedTranscript) setSpeechError('인식된 문장이 없습니다. 다시 말하거나 아래 텍스트 연습을 이용해 주세요.');
+      return;
+    }
+    evaluationStartedRef.current = true;
+    setIsRecording(false);
+    setIsAnalyzing(true);
+    setSpeechError('');
+
+    window.setTimeout(() => {
+      const activeTurn = scenarios[selectedScenario].turns[turnIndex];
+      const transcriptEvaluation = evaluatePronunciation(activeTurn.userPrompt, cleanedTranscript, activeTurn.keywords);
+      const evaluation = precision ? { ...transcriptEvaluation, score: Math.round((precision.pronunciationScore + precision.fluencyScore) / 2) } : transcriptEvaluation;
+      setEvaluationReport({ ...evaluation, transcript: cleanedTranscript, inputMethod, ...precision, precisionAnalysis: Boolean(precision) });
+      setShowEvaluation(true);
+      setIsAnalyzing(false);
+      setMessages((previous) => [
+        ...previous,
+        {
+          sender: 'user',
+          text: cleanedTranscript,
+          pinyin: activeTurn.userPinyin,
+          translation: activeTurn.userTrans,
+          score: evaluation.score,
+        },
+      ]);
+
+      if (inputMethod === 'voice') {
+        const xp = evaluation.score >= 80 ? 20 : 5;
+        const gold = evaluation.score >= 80 ? 15 : 0;
+        addXP(xp);
+        if (gold > 0) addGold(gold);
+        if (precision) rewardPronunciationGrowth(precision.pronunciationScore, precision.fluencyScore);
+        setSessionRewards((current) => ({ xp: current.xp + xp, gold: current.gold + gold }));
         recordLearningEvent({
           type: 'pronunciation',
-          correct: score >= 80 ? 1 : 0,
+          correct: evaluation.score >= 80 ? 1 : 0,
           total: 1,
-          xp: 20,
-          gold: 15,
-          toneScore: score,
-          weakItems: activeTurn.vocabScores.filter((item) => item.status === 'bad').map((item) => item.word),
+          xp,
+          gold,
+          toneScore: evaluation.score,
+          weakItems: evaluation.wordScores.filter((item) => item.status === 'bad').map((item) => item.word),
         });
-        
-      }, 1500); // 1.5s simulated processing delay
+      }
+    }, 350);
+  };
+
+  const recognitionErrorMessage = (error: string) => {
+    if (error === 'not-allowed' || error === 'service-not-allowed') return '마이크 권한이 차단되었습니다. 브라우저 주소창의 마이크 권한을 허용해 주세요.';
+    if (error === 'no-speech') return '목소리를 듣지 못했습니다. 마이크 가까이에서 다시 말해 주세요.';
+    if (error === 'audio-capture') return '사용 가능한 마이크를 찾지 못했습니다.';
+    if (error === 'network') return '브라우저 음성인식 서비스에 연결하지 못했습니다.';
+    return '음성인식을 완료하지 못했습니다. 다시 시도해 주세요.';
+  };
+
+  const transcribeRecordedAudio = async (blob: Blob) => {
+    try {
+      const form = new FormData();
+      form.set('audio', new File([blob], 'speech.webm', { type: blob.type || 'audio/webm' }));
+      form.set('prompt', targetSentence.hanzi);
+      const response = await fetch('/api/ai/transcribe', { method: 'POST', body: form });
+      if (response.ok) {
+        const data = (await response.json()) as { transcript?: string; pronunciationScore?: number; fluencyScore?: number; source?: string };
+        if (data.transcript) {
+          setRecognizedText(data.transcript);
+          const precision = data.source === 'pronunciation-provider' && typeof data.pronunciationScore === 'number' && typeof data.fluencyScore === 'number'
+            ? { pronunciationScore: data.pronunciationScore, fluencyScore: data.fluencyScore }
+            : undefined;
+          analyzeTranscript(data.transcript, 'voice', precision);
+          return;
+        }
+      }
+    } catch {
+      // Browser speech recognition below remains the no-key/offline fallback.
+    }
+    analyzeTranscript(recognizedTextRef.current, 'voice');
+  };
+
+  const startRecognition = async () => {
+    setRecordDuration(0);
+    setRecognizedText('');
+    setManualText('');
+    setSpeechError('');
+    recognizedTextRef.current = '';
+    evaluationStartedRef.current = false;
+    serverAudioPendingRef.current = false;
+
+    const recognition = createChineseSpeechRecognition({
+      onUpdate: ({ transcript }) => {
+        recognizedTextRef.current = transcript;
+        setRecognizedText(transcript);
+      },
+      onError: (error) => {
+        evaluationStartedRef.current = true;
+        setSpeechError(recognitionErrorMessage(error));
+        setIsRecording(false);
+        setIsAnalyzing(false);
+      },
+      onEnd: () => {
+        setIsRecording(false);
+        recognitionRef.current = null;
+        if (mediaRecorderRef.current?.state === 'recording') {
+          serverAudioPendingRef.current = true;
+          mediaRecorderRef.current.stop();
+        } else if (!evaluationStartedRef.current && !serverAudioPendingRef.current) {
+          analyzeTranscript(recognizedTextRef.current, 'voice');
+        }
+      },
+    });
+
+    if (!recognition) {
+      setSpeechSupported(false);
+      setSpeechError('이 브라우저는 음성인식을 지원하지 않습니다. Chrome 또는 Edge에서 열거나 텍스트 연습을 이용해 주세요.');
+      return;
+    }
+
+    recognitionRef.current = recognition;
+    try {
+      if (navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== 'undefined') {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaStreamRef.current = stream;
+          audioChunksRef.current = [];
+          const recorder = new MediaRecorder(stream);
+          mediaRecorderRef.current = recorder;
+          recorder.addEventListener('dataavailable', (event) => {
+            if (event.data.size > 0) audioChunksRef.current.push(event.data);
+          });
+          recorder.addEventListener('stop', () => {
+            const blob = new Blob(audioChunksRef.current, { type: recorder.mimeType || 'audio/webm' });
+            mediaRecorderRef.current = null;
+            mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+            mediaStreamRef.current = null;
+            void transcribeRecordedAudio(blob).finally(() => { serverAudioPendingRef.current = false; });
+          }, { once: true });
+          recorder.start();
+        } catch {
+          mediaStreamRef.current = null;
+          mediaRecorderRef.current = null;
+        }
+      }
+      recognition.start();
+      setIsRecording(true);
+    } catch {
+      recognitionRef.current = null;
+      setSpeechError('음성인식을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.');
     }
   };
 
-  const advanceConversation = () => {
+  const toggleRecognition = () => {
+    if (isRecording) {
+      setIsRecording(false);
+      if (mediaRecorderRef.current?.state === 'recording') {
+        serverAudioPendingRef.current = true;
+        mediaRecorderRef.current.stop();
+      }
+      recognitionRef.current?.stop();
+      return;
+    }
+    void startRecognition();
+  };
+
+  const evaluateManualText = () => {
+    evaluationStartedRef.current = false;
+    setRecognizedText(manualText);
+    analyzeTranscript(manualText, 'text');
+  };
+
+  const advanceConversation = async () => {
     const selectedScenarioData = scenarios[selectedScenario];
     const nextTurnIdx = turnIndex + 1;
     
     if (nextTurnIdx >= selectedScenarioData.turns.length) {
       setSessionState('summary');
     } else {
+      setIsTutorReplyLoading(true);
       setTurnIndex(nextTurnIdx);
       const nextTurn = selectedScenarioData.turns[nextTurnIdx];
-      
+      let tutorReply = { text: nextTurn.aiText, translation: nextTurn.aiTrans };
+      try {
+        const response = await fetch('/api/ai/tutor', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            scenario: selectedScenarioData.title,
+            tutorName: tutors[selectedTutor].name,
+            personality: tutors[selectedTutor].personality,
+            userText: evaluationReport?.transcript ?? recognizedText,
+            history: messages.map(({ sender, text }) => ({ sender, text })),
+          }),
+        });
+        if (response.ok) {
+          const data = (await response.json()) as { reply?: { text?: string; translation?: string } };
+          if (data.reply?.text && data.reply.translation) tutorReply = { text: data.reply.text, translation: data.reply.translation };
+        }
+      } catch {
+        // Keep the authored scenario reply when the server is unreachable.
+      }
+
       setMessages(prev => [
         ...prev,
         {
           sender: 'ai',
-          text: nextTurn.aiText,
-          translation: nextTurn.aiTrans
+          text: tutorReply.text,
+          translation: tutorReply.translation
         }
       ]);
       
@@ -274,9 +405,27 @@ export default function AiTutorPage() {
         meaning: nextTurn.userTrans
       });
       
-      setShowPitchChart(false);
+      setShowEvaluation(false);
       setEvaluationReport(null);
+      setRecognizedText('');
+      setManualText('');
+      setSpeechError('');
+      evaluationStartedRef.current = false;
+      setIsTutorReplyLoading(false);
+      speakChinese(tutorReply.text);
     }
+  };
+
+  const endScenario = () => {
+    evaluationStartedRef.current = true;
+    recognitionRef.current?.abort();
+    recognitionRef.current = null;
+    if (mediaRecorderRef.current?.state === 'recording') mediaRecorderRef.current.stop();
+    mediaStreamRef.current?.getTracks().forEach((track) => track.stop());
+    setIsRecording(false);
+    setIsAnalyzing(false);
+    setSessionState('lobby');
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) window.speechSynthesis.cancel();
   };
 
   return (
@@ -298,8 +447,9 @@ export default function AiTutorPage() {
               </div>
               <h3 className="text-base font-bold mt-4 text-white">AI 튜터 성조 매칭 대화방</h3>
               <p className="text-xs text-gray-400 text-center px-4 mt-1 font-medium">
-                원하는 성격의 AI 튜터를 배정받아 현지 상황극 롤플레이 대화를 진행합니다.
+                실제 중국어 음성인식으로 현지 상황극 문장을 연습하고 인식 정확도를 확인합니다.
               </p>
+              {speechSupported === false && <p className="mt-2 text-[10px] text-cyber-yellow">현재 브라우저는 마이크 음성인식을 지원하지 않아 텍스트 연습 모드가 제공됩니다.</p>}
             </div>
 
             {/* Selector: Tutor */}
@@ -316,11 +466,7 @@ export default function AiTutorPage() {
                   >
                     <div className="relative w-12 h-12 rounded-xl border border-white/10 overflow-hidden shrink-0 bg-white/5 flex items-center justify-center">
                       {tutor.image ? (
-                        <img 
-                          src={tutor.image} 
-                          alt={tutor.name} 
-                          className="w-full h-full object-cover"
-                        />
+                        <Image src={tutor.image} alt={tutor.name} fill sizes="48px" className="object-cover" />
                       ) : (
                         <span className="text-3xl">{tutor.emoji}</span>
                       )}
@@ -402,7 +548,7 @@ export default function AiTutorPage() {
                   {showHistory ? '로그 닫기' : '이전 대화 로그'}
                 </button>
                 <button
-                  onClick={() => setSessionState('lobby')}
+                  onClick={endScenario}
                   className="text-[10px] text-gray-400 border border-white/10 hover:border-white/20 px-2.5 py-1 rounded-lg transition-all"
                 >
                   통화 종료
@@ -411,13 +557,25 @@ export default function AiTutorPage() {
             </div>
 
             {/* Immersive AI Tutor Video Call Screen */}
-            <div className="relative w-full aspect-square rounded-3xl overflow-hidden border border-white/10 bg-dark-bg shadow-2xl flex items-center justify-center">
-              {/* Tutor Full Portrait Image */}
-              <img 
+            <div className="relative w-full aspect-square sm:aspect-auto sm:h-[clamp(420px,58vh,640px)] rounded-3xl overflow-hidden border border-white/10 bg-dark-bg shadow-2xl flex items-center justify-center">
+              {/* On wide screens, a soft background fills the sides without enlarging the tutor. */}
+              <Image
+                src={tutors[selectedTutor].image}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 100vw, 1200px"
+                className="object-cover object-center scale-110 blur-xl opacity-35"
+              />
+
+              {/* Keep the tutor's full head and body visible on laptops and desktops. */}
+              <Image
                 src={tutors[selectedTutor].image}
                 alt={tutors[selectedTutor].name}
-                className={`w-full h-full object-cover object-top transition-all duration-700 ${
-                  isRecording ? 'scale-105 filter brightness-75 blur-[1px]' : 'scale-100'
+                fill
+                preload
+                sizes="(max-width: 639px) 100vw, (max-height: 900px) 58vh, 640px"
+                className={`object-contain object-center transition-all duration-700 ${
+                  isRecording ? 'scale-[1.02] filter brightness-75 blur-[1px]' : 'scale-100'
                 }`}
               />
               
@@ -449,21 +607,21 @@ export default function AiTutorPage() {
                       <Mic size={20} className="animate-pulse" />
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-neon-rose tracking-wide mt-3 animate-pulse">실시간 목소리 수신 중... [00:{recordDuration < 10 ? '0' : ''}{recordDuration}]</span>
+                  <span className="text-xs font-bold text-neon-rose tracking-wide mt-3 animate-pulse">중국어 음성 인식 중... [00:{recordDuration < 10 ? '0' : ''}{recordDuration}]</span>
                   <span className="text-[9px] text-gray-400 mt-1">완료하려면 아래 버튼을 눌러주세요</span>
                 </div>
               )}
 
               {/* Center Overlay: Analyzing Loader */}
-              {isAnalyzing && (
+              {(isAnalyzing || isTutorReplyLoading) && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm z-10">
                   <RefreshCw size={36} className="text-neon-cyan animate-spin glow-cyan" />
-                  <span className="text-xs font-bold text-neon-cyan tracking-wide mt-3 animate-pulse">성조 주파수 대조 분석 중...</span>
+                  <span className="text-xs font-bold text-neon-cyan tracking-wide mt-3 animate-pulse">{isTutorReplyLoading ? 'AI 튜터가 답변을 만드는 중...' : '인식 문장과 목표 문장 비교 중...'}</span>
                 </div>
               )}
 
               {/* Subtitles: What the tutor just said */}
-              {!isRecording && !isAnalyzing && (
+              {!isRecording && !isAnalyzing && !isTutorReplyLoading && (
                 <div className="absolute bottom-4 left-4 right-16 flex flex-col gap-1 pr-4 z-10 animate-fade-in">
                   <span className="text-[9px] font-bold text-neon-cyan uppercase tracking-wider">AI 대화 자막</span>
                   <p className="text-sm md:text-base font-extrabold text-white drop-shadow-md leading-normal">
@@ -481,15 +639,14 @@ export default function AiTutorPage() {
                 </div>
               )}
 
-              {/* AI Speaking Sound wave indicator */}
-              {!isRecording && !isAnalyzing && !showPitchChart && (
-                <div className="absolute bottom-4 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10 z-10">
-                  <div className="flex items-end gap-0.5 h-3">
-                    <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '60%', animationDelay: '0.1s' }} />
-                    <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '100%', animationDelay: '0.3s' }} />
-                    <div className="w-0.5 bg-neon-cyan animate-bounce" style={{ height: '40%', animationDelay: '0.5s' }} />
-                  </div>
-                </div>
+              {/* Replay the tutor's latest actual browser-generated speech. */}
+              {!isRecording && !isAnalyzing && !isTutorReplyLoading && !showEvaluation && (
+                <button type="button" aria-label="튜터 문장 다시 듣기" onClick={() => {
+                  const latestTutorMessage = [...messages].reverse().find((message) => message.sender === 'ai');
+                  if (latestTutorMessage) speakChinese(latestTutorMessage.text);
+                }} className="absolute bottom-4 right-3 z-10 rounded-full border border-white/10 bg-black/60 p-2 text-neon-cyan backdrop-blur-md">
+                  <Volume2 size={14} />
+                </button>
               )}
             </div>
 
@@ -534,7 +691,7 @@ export default function AiTutorPage() {
 
             {/* Target Shadowing Guide Panel */}
             <AnimatePresence>
-              {!showPitchChart && (
+              {!showEvaluation && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -542,13 +699,16 @@ export default function AiTutorPage() {
                   className="glass-panel border-neon-cyan/20 rounded-2xl p-5 flex flex-col gap-2.5 bg-gradient-to-r from-neon-cyan/5 to-transparent shadow-lg"
                 >
                   <span className="text-[8px] font-bold text-neon-cyan uppercase tracking-wider">🎙️ 섀도잉 제시 구절</span>
-                  <h2 className="text-xl font-extrabold text-white leading-snug tracking-wide">{targetSentence.hanzi}</h2>
+                  <h2 lang="zh-CN" className="font-hanzi text-xl font-semibold text-white leading-snug tracking-wide">{targetSentence.hanzi}</h2>
                   <p className="text-xs text-gray-400 font-mono font-medium">{targetSentence.pinyin}</p>
                   <p className="text-[11px] text-gray-400 font-semibold mt-0.5">뜻: {targetSentence.meaning}</p>
-                  
-                  {/* Microphone Button with ambient glow */}
+                  <button type="button" onClick={() => speakChinese(targetSentence.hanzi)} className="flex items-center justify-center gap-1.5 rounded-lg border border-white/10 py-2 text-[10px] font-bold text-gray-300">
+                    <Volume2 size={13} /> 원어민 발음 듣기
+                  </button>
+
                   <button
-                    onClick={triggerSimulatedRecording}
+                    type="button"
+                    onClick={toggleRecognition}
                     disabled={isAnalyzing}
                     className={`mt-2 py-3.5 font-extrabold rounded-xl text-xs flex items-center justify-center gap-2 shadow-lg hover:scale-102 active:scale-98 transition-all w-full ${
                       isRecording 
@@ -561,83 +721,95 @@ export default function AiTutorPage() {
                     {isRecording ? (
                       <>
                         <Mic size={16} />
-                        <span>말하기 완료 (녹음 종료 및 성조 분석) [00:{recordDuration < 10 ? '0' : ''}{recordDuration}]</span>
+                        <span>말하기 완료 (음성 인식 종료) [00:{recordDuration < 10 ? '0' : ''}{recordDuration}]</span>
                       </>
                     ) : isAnalyzing ? (
                       <>
                         <RefreshCw size={16} className="animate-spin" />
-                        <span>성조 주파수 분석 중...</span>
+                        <span>인식 문장 비교 중...</span>
                       </>
                     ) : (
                       <>
                         <Mic size={16} />
-                        <span>발화 개시 (마이크 녹음 시작)</span>
+                        <span>{speechSupported === false ? '마이크 음성인식 미지원' : '중국어 말하기 시작'}</span>
                       </>
                     )}
                   </button>
+                  {recognizedText && !isAnalyzing && <p className="rounded-lg bg-white/5 p-2 text-[11px] text-gray-300" role="status">인식 중: {recognizedText}</p>}
+                  {speechError && <p className="rounded-lg border border-neon-rose/20 bg-neon-rose/10 p-2 text-[10px] text-neon-rose" role="alert">{speechError}</p>}
+
+                  <div className="mt-1 border-t border-white/10 pt-3">
+                    <label className="text-[10px] font-bold text-gray-400">
+                      마이크를 사용할 수 없나요? 인식 결과를 직접 입력해 연습할 수 있습니다.
+                      <input
+                        aria-label="발음 연습 문장 직접 입력"
+                        value={manualText}
+                        onChange={(event) => setManualText(event.target.value)}
+                        placeholder="중국어 문장을 입력하세요"
+                        className="mt-2 w-full rounded-lg border border-white/10 bg-white/5 p-2 text-xs text-white placeholder:text-gray-600"
+                      />
+                    </label>
+                    <button type="button" onClick={evaluateManualText} disabled={!manualText.trim() || isAnalyzing} className="mt-2 w-full rounded-lg border border-white/10 py-2 text-[10px] font-bold text-gray-300 disabled:opacity-40">
+                      텍스트로 비교하기 · 보상 없음
+                    </button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Tone Pitch Analysis Chart View */}
+            {/* Actual speech-recognition comparison report */}
             <AnimatePresence>
-              {showPitchChart && evaluationReport && (
+              {showEvaluation && evaluationReport && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0 }}
                   className="glass-panel border-white/10 rounded-2xl p-4 flex flex-col gap-3 bg-white/2"
                 >
-                  {/* Analysis Header */}
                   <div className="flex justify-between items-center">
                     <span className="text-xs font-bold text-white flex items-center gap-1">
                       <Star size={14} className="text-cyber-yellow" />
-                      성조 피치 대조 분석 리포트
+                      {evaluationReport.inputMethod === 'text' ? '타이핑 문장 정확도 리포트' : '음성 인식 문장 일치도 리포트'}
                     </span>
                     <span className={`text-base font-extrabold ${evaluationReport.score >= 80 ? 'text-neon-green' : 'text-neon-rose'}`}>
                       {evaluationReport.score} 점
                     </span>
                   </div>
 
-                  {/* SVG-based line chart comparing User vs Native pitch */}
-                  <div className="h-28 bg-dark-bg/60 border border-white/5 rounded-xl relative p-2 overflow-hidden flex items-center justify-center">
-                    <svg className="w-full h-full" viewBox="0 0 100 30" preserveAspectRatio="none">
-                      {/* Native Pitch Line (dotted, blue) */}
-                      <path
-                        d="M 5,20 Q 25,12 50,15 T 95,5"
-                        fill="none"
-                        stroke="#06b6d4"
-                        strokeWidth="1.2"
-                        strokeDasharray="2,2"
-                        className="opacity-60"
-                      />
-                      {/* User Pitch Line (solid, red/green) */}
-                      <path
-                        d="M 5,20 Q 25,18 50,22 T 95,8"
-                        fill="none"
-                        stroke={evaluationReport.score >= 80 ? '#10b981' : '#f43f5e'}
-                        strokeWidth="1.8"
-                      />
-                    </svg>
-                    
-                    {/* SVG Legend */}
-                    <div className="absolute top-1 right-2 flex gap-3 text-[7px] font-bold">
-                      <span className="text-neon-cyan">● 원어민 피치 가이드</span>
-                      <span className={evaluationReport.score >= 80 ? 'text-neon-green' : 'text-neon-rose'}>
-                        ● 내 음성 피칭
-                      </span>
+                  <div className="rounded-xl border border-white/5 bg-dark-bg/60 p-3 text-[10px]">
+                    <p className="text-gray-500">목표 문장</p>
+                    <p lang="zh-CN" className="font-hanzi mt-1 font-semibold text-white">{targetSentence.hanzi}</p>
+                    <p className="mt-3 text-gray-500">{evaluationReport.inputMethod === 'voice' ? '실제 음성 인식 결과' : '직접 입력한 연습 문장'}</p>
+                    <p lang="zh-CN" className="font-hanzi mt-1 font-semibold text-neon-cyan" data-testid="recognized-speech">{evaluationReport.transcript}</p>
+                    <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/5">
+                      <div className={`h-full ${evaluationReport.score >= 80 ? 'bg-neon-green' : 'bg-neon-rose'}`} style={{ width: `${evaluationReport.score}%` }} />
                     </div>
-                    
-                    {/* Chart axis label */}
-                    <span className="absolute bottom-1 left-1.5 text-[7px] text-gray-500 font-bold font-mono">PITCH (Hz)</span>
-                    <span className="absolute bottom-1 right-1.5 text-[7px] text-gray-500 font-bold font-mono">TIME (s)</span>
+                    <p className="mt-1 text-gray-500">
+                      정확히 일치 {evaluationReport.matchedCharacters}자 · 수정할 곳 {evaluationReport.corrections.length}개
+                    </p>
                   </div>
+                  {evaluationReport.corrections.length > 0 && (
+                    <div className="rounded-xl border border-neon-rose/20 bg-neon-rose/10 p-3">
+                      <p className="text-[10px] font-bold text-neon-rose">틀린 부분</p>
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {evaluationReport.corrections.map((correction: PronunciationCorrection, index: number) => (
+                          <span key={`${correction.type}-${index}`} className="rounded-md bg-black/25 px-2 py-1 text-[10px] text-gray-200">
+                            {correction.type === 'extra' && <>추가 입력: <strong className="text-neon-rose">{correction.actual}</strong></>}
+                            {correction.type === 'missing' && <>빠진 글자: <strong className="text-cyber-yellow">{correction.expected}</strong></>}
+                            {correction.type === 'replace' && <>교체: <strong className="text-neon-rose">{correction.actual}</strong> → <strong className="text-neon-green">{correction.expected}</strong></>}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {evaluationReport.precisionAnalysis ? <p className="rounded-lg bg-neon-cyan/10 p-2 text-[9px] text-neon-cyan">정밀 분석 · 발음 {evaluationReport.pronunciationScore}점 · 유창성 {evaluationReport.fluencyScore}점 · 통과 시 INT/DEX 성장 반영</p> : <p className="text-[9px] leading-relaxed text-gray-500">이 점수는 음성 인식 엔진이 전사한 문장과 목표 문장의 일치도입니다. 정밀 성조 공급자를 연결하면 음높이와 유창성 평가가 활성화됩니다.</p>}
+                  {evaluationReport.inputMethod === 'text' && <p className="rounded-lg bg-cyber-yellow/10 p-2 text-[9px] text-cyber-yellow">텍스트 대체 연습에는 XP와 골드가 지급되지 않습니다.</p>}
 
                   {/* Word Feedback Summary */}
                   <div className="flex flex-col gap-1.5 mt-1">
-                    <h5 className="text-[10px] font-bold text-gray-400">단어별 발음 교정 정보</h5>
+                    <h5 className="text-[10px] font-bold text-gray-400">핵심 표현 인식 결과</h5>
                     <div className="flex flex-col gap-1 text-[10px]">
-                      {evaluationReport.vocabScores.map((item: VocabScore, idx: number) => (
+                      {evaluationReport.wordScores.map((item: PronunciationWordScore, idx: number) => (
                         <div
                           key={idx}
                           className={`flex items-start gap-1.5 p-2 rounded-lg border ${
@@ -682,7 +854,7 @@ export default function AiTutorPage() {
             </div>
             <h3 className="text-base font-bold mt-4 text-white">회화 롤플레이 완료!</h3>
             <p className="text-xs text-gray-400 text-center px-4 mt-1 font-medium">
-              AI 튜터와의 상황극 스피킹 세션을 무사히 수행하여 스피킹 유창성 스펙이 상승하였습니다.
+              실제 음성 인식 결과를 바탕으로 상황극 스피킹 세션을 완료했습니다.
             </p>
 
             {/* Rewards Summary */}
@@ -691,20 +863,16 @@ export default function AiTutorPage() {
               <hr className="border-white/5" />
               <div className="flex justify-between text-xs mt-1">
                 <span className="text-gray-400 font-medium">획득 경험치 (XP)</span>
-                <span className="text-neon-cyan font-bold">+60 XP</span>
+                <span className="text-neon-cyan font-bold">+{sessionRewards.xp} XP</span>
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-gray-400 font-medium">획득 골드 (Gold)</span>
-                <span className="text-cyber-yellow font-bold">+45 Gold</span>
-              </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-gray-400 font-medium">상승 스탯</span>
-                <span className="text-violet-400 font-bold">DEX(유창성) +1, INT(성조) +1</span>
+                <span className="text-cyber-yellow font-bold">+{sessionRewards.gold} Gold</span>
               </div>
             </div>
 
             <button
-              onClick={() => setSessionState('lobby')}
+              onClick={endScenario}
               className="w-full mt-6 py-3 bg-neon-cyan hover:bg-cyan-500 text-dark-bg font-extrabold rounded-xl text-xs shadow-lg shadow-neon-cyan/20 hover:scale-105 active:scale-95 transition-all"
             >
               대화 로비로 돌아가기

@@ -89,6 +89,7 @@ export default function ContentAdminPage() {
       <div className="glass-panel rounded-2xl p-5">
         <h1 className="text-lg font-extrabold">콘텐츠 관리 CMS</h1>
         <p className="mt-1 text-xs text-gray-400">단어·퀘스트·보상을 MySQL에 저장하고 모든 사용자에게 반영합니다.</p>
+        <Link href="/admin/redemptions" className="mt-3 inline-block text-xs font-bold text-cyber-yellow">현실 보상 신청 관리 →</Link>
         {message && <p className={`mt-2 text-xs ${message.includes('완료') ? 'text-neon-green' : 'text-neon-rose'}`} role="status">{message}</p>}
       </div>
 

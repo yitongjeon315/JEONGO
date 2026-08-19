@@ -3,6 +3,7 @@ export interface VocabItem {
   hanzi: string;
   pinyin: string;
   meaning: string;
+  meaningEn?: string;
   hsk: string;
   partOfSpeech?: string;
   exampleHanzi?: string;

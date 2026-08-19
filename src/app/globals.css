@@ -23,6 +23,8 @@ html {
   font-size: clamp(16px, 4.2vw, 18px);
   min-width: 320px;
   -webkit-text-size-adjust: 100%;
+  margin: 0;
+  background: var(--background);
 }
 
 body {
@@ -33,6 +35,14 @@ body {
   min-width: 320px;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
+  margin: 0;
+}
+
+/* Use one Simplified Chinese typeface for every Hanzi glyph. This prevents
+   Windows from mixing Korean and legacy Chinese fallback fonts per glyph. */
+.font-hanzi {
+  font-family: "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", "PingFang SC", "SimHei", sans-serif;
+  font-synthesis: none;
 }
 
 button,
