@@ -6,6 +6,6 @@
 npm run dev
 ```
 
-- BEFORE JEONGO: http://localhost:3002
-- JEONGO 연결 기본값: http://localhost:3001
-- 배포 환경에서는 `NEXT_PUBLIC_JEONGO_URL`로 JEONGO 주소를 지정합니다.
+- BEFORE JEONGO: http://localhost:3002/before
+- 운영 주소: https://www.aina365.com/before
+- 같은 도메인의 JEONGO로 돌아가며, 별도 도메인을 쓸 때만 `NEXT_PUBLIC_JEONGO_URL`을 지정합니다.

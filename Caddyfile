@@ -15,6 +15,14 @@ www.aina365.com {
 		file_server
 	}
 
+	handle /before {
+		reverse_proxy 127.0.0.1:3002
+	}
+
+	handle /before/* {
+		reverse_proxy 127.0.0.1:3002
+	}
+
 	handle {
 		reverse_proxy 127.0.0.1:3000
 	}

@@ -13,6 +13,7 @@
     "topic:build": "npm --prefix services/topic1 run build -- --outDir ../../public/topic --emptyOutDir",
     "before:dev": "npm --prefix services/before-jeongo run dev",
     "before:build": "npm --prefix services/before-jeongo run build",
+    "before:start": "npm --prefix services/before-jeongo run start",
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 import { ArrowUpRight, Coins, Flame, GraduationCap, ShieldCheck, Sparkles } from 'lucide-react';
 
-const BEFORE_JEONGO_URL = process.env.NEXT_PUBLIC_BEFORE_JEONGO_URL ?? 'http://localhost:3002';
+const BEFORE_JEONGO_URL = process.env.NEXT_PUBLIC_BEFORE_JEONGO_URL ?? '/before';
 
 const Header = () => {
   const pathname = usePathname();

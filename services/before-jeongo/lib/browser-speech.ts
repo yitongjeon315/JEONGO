@@ -10,7 +10,7 @@ type ToneRecording = {
   segments: Array<{ start: number; duration: number }>;
 };
 
-const TONE_RECORDING_URL = '/audio/ma-four-tones.ogg';
+const TONE_RECORDING_URL = '/before/audio/ma-four-tones.ogg';
 let toneRecordingPromise: Promise<ToneRecording> | null = null;
 let activeToneSource: AudioBufferSourceNode | null = null;
 

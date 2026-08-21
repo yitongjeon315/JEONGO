@@ -43,6 +43,21 @@ if (-not $port3000Open) {
     if (-not $port3000Open) { throw 'JEONGO failed to listen on port 3000.' }
 }
 
+$beforeJeongoRoot = Join-Path $projectRoot 'services\before-jeongo'
+$port3002Open = Test-NetConnection -ComputerName 127.0.0.1 -Port 3002 -InformationLevel Quiet -WarningAction SilentlyContinue
+if (-not $port3002Open) {
+    Start-Process -FilePath 'node.exe' `
+        -ArgumentList @('..\..\node_modules\next\dist\bin\next', 'start', '-H', '127.0.0.1', '-p', '3002') `
+        -WorkingDirectory $beforeJeongoRoot `
+        -WindowStyle Hidden `
+        -RedirectStandardOutput (Join-Path $logDirectory 'before-jeongo.stdout.log') `
+        -RedirectStandardError (Join-Path $logDirectory 'before-jeongo.stderr.log')
+
+    Start-Sleep -Seconds 3
+    $port3002Open = Test-NetConnection -ComputerName 127.0.0.1 -Port 3002 -InformationLevel Quiet -WarningAction SilentlyContinue
+    if (-not $port3002Open) { throw 'BEFORE JEONGO failed to listen on port 3002.' }
+}
+
 $previousErrorActionPreference = $ErrorActionPreference
 $ErrorActionPreference = 'Continue'
 & $caddyPath reload --config $caddyConfig --adapter caddyfile *> $null

@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Flame, Heart, Headphones, LockKeyhole, Pl
 import { playMandarinTone, speakChinese } from '@/lib/browser-speech';
 
 const STORAGE_KEY = 'jeongo_pinyin_bridge_v1';
-const JEONGO_URL = process.env.NEXT_PUBLIC_JEONGO_URL ?? 'http://localhost:3001';
+const JEONGO_URL = process.env.NEXT_PUBLIC_JEONGO_URL ?? '';
 
 type Phase = 'map' | 'tones' | 'pinyin' | 'words' | 'boss' | 'complete';
 

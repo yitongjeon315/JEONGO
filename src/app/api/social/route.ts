@@ -7,43 +7,37 @@ import { rankLeagueMembers } from '@/lib/social';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-interface UserSnapshotRow extends Record<string, unknown> { id: string; name: string; data: string }
+interface LeagueMemberRow extends Record<string, unknown> { id: string; name: string; level: number; weeklyXp: number }
 interface GuildRow extends Record<string, unknown> { id: string; name: string; level: number; exp: number; expNeeded: number; bossHp: number; bossMaxHp: number }
 interface GuildMemberRow extends Record<string, unknown> { userId: string; name: string; contribution: number }
 interface MembershipRow extends Record<string, unknown> { guildId: string }
 interface BalanceRow extends Record<string, unknown> { gold: number }
 interface GuildRecommendationRow extends GuildRow { memberCount: number }
 
-function parseSnapshot(data: UserSnapshotRow['data']) {
-  return typeof data === 'string' ? JSON.parse(data) as Record<string, unknown> : data;
-}
-
-function weeklyXp(snapshot: Record<string, unknown>) {
-  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const events = Array.isArray(snapshot.learningEvents) ? snapshot.learningEvents : [];
-  return events.reduce((sum, event) => {
-    if (!event || typeof event !== 'object') return sum;
-    const item = event as Record<string, unknown>;
-    const occurredAt = typeof item.occurredAt === 'string' ? Date.parse(item.occurredAt) : 0;
-    const xp = typeof item.xp === 'number' && Number.isFinite(item.xp) ? Math.max(0, item.xp) : 0;
-    return occurredAt >= weekAgo ? sum + xp : sum;
-  }, 0);
-}
-
 export async function GET() {
   try {
     const user = await getCurrentUser();
     if (!user) return jsonError('로그인이 필요합니다.', 401);
     const db = getDb();
-    const [snapshots] = await db.execute<UserSnapshotRow[]>(
-      `SELECT u.id, u.name, s.data FROM users u JOIN user_snapshots s ON s.user_id = u.id
-       ORDER BY s.updated_at DESC LIMIT 200`,
+    const [leagueRows] = await db.execute<LeagueMemberRow[]>(
+      `SELECT u.id, u.name, COALESCE(ab.level, 1) AS level,
+              COALESCE(SUM(CASE
+                WHEN ple.occurred_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')
+                THEN ple.awarded_xp ELSE 0 END), 0) AS weeklyXp
+       FROM users u
+       LEFT JOIN account_balances ab ON ab.user_id = u.id
+       LEFT JOIN processed_learning_events ple ON ple.user_id = u.id
+       GROUP BY u.id, u.name, ab.level
+       ORDER BY weeklyXp DESC, u.name
+       LIMIT 200`,
     );
-    const leagueMembers = rankLeagueMembers(snapshots.map((row) => {
-      const snapshot = parseSnapshot(row.data);
-      const stats = snapshot.stats && typeof snapshot.stats === 'object' ? snapshot.stats as Record<string, unknown> : {};
-      return { id: row.id, name: row.name, level: Number(stats.level ?? 1), xp: weeklyXp(snapshot), isUser: row.id === user.id };
-    }), user.id);
+    const leagueMembers = rankLeagueMembers(leagueRows.map((row) => ({
+      id: row.id,
+      name: row.name,
+      level: Number(row.level),
+      xp: Number(row.weeklyXp),
+      isUser: row.id === user.id,
+    })), user.id);
     const [memberships] = await db.execute<MembershipRow[]>('SELECT guild_id AS guildId FROM guild_members WHERE user_id = ? LIMIT 1', [user.id]);
     const guildId = memberships[0]?.guildId;
     const [guilds] = guildId ? await db.execute<GuildRow[]>(
