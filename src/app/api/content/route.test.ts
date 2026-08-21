@@ -60,7 +60,7 @@ describe('content API', () => {
     expect(mocks.replaceContentCatalog).toHaveBeenCalledOnce();
   });
 
-  it('rejects invalid admin input before writing to MySQL', async () => {
+  it('rejects invalid admin input before writing to SQLite', async () => {
     mocks.getCurrentUser.mockResolvedValue({ id: 'admin-1', email: 'admin@example.com', name: '관리자', role: 'admin' });
     const response = await PUT(putRequest({ words: 'invalid', quests: [], rewards: [] }));
     expect(response.status).toBe(400);

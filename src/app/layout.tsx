@@ -8,7 +8,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   interactiveWidget: 'resizes-content',
-  themeColor: '#07090e',
+  themeColor: '#000000',
 };
 
 export const metadata: Metadata = {
@@ -30,9 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full antialiased dark">
-      <body className="h-full bg-[#07090e] text-white flex flex-col justify-start overflow-hidden">
+      <body className="h-full bg-black text-white flex flex-col justify-start overflow-hidden">
         <AppProvider>
-          <div className="w-full max-w-md md:max-w-4xl xl:max-w-6xl mx-auto h-dvh flex flex-col bg-dark-bg sm:border-x sm:border-white/5 relative shadow-2xl overflow-hidden">
+          <div className="w-full max-w-md md:max-w-4xl xl:max-w-6xl mx-auto h-dvh flex flex-col bg-black sm:border-x sm:border-white/5 relative shadow-2xl overflow-hidden">
             <Header />
             <main className="flex-1 min-h-0 px-3 py-3 sm:px-4 sm:py-4 overflow-y-auto overscroll-contain scroll-pb-5">
               {children}

@@ -45,7 +45,7 @@ export default function AdminRedemptionsPage() {
   };
 
   return <div className="flex flex-col gap-4" data-testid="redemption-admin">
-    <header className="glass-panel rounded-2xl p-5"><h1 className="text-lg font-extrabold">현실 보상 신청 관리</h1><p className="mt-1 text-xs text-gray-400">승인 및 실제 발송 후 상태를 기록합니다.</p>{message && <p className="mt-2 text-xs text-cyber-yellow">{message}</p>}</header>
+    <header className="glass-panel rounded-2xl p-5"><Link href="/admin" className="text-[10px] font-bold text-neon-cyan">← 관리자 페이지</Link><h1 className="mt-2 text-lg font-extrabold">현실 보상 신청 관리</h1><p className="mt-1 text-xs text-gray-400">승인 및 실제 발송 후 상태를 기록합니다.</p>{message && <p className="mt-2 text-xs text-cyber-yellow">{message}</p>}</header>
     {items.length === 0 ? <p className="glass-panel rounded-xl p-4 text-xs text-gray-400">신청 내역이 없습니다.</p> : items.map((item) => <article key={item.id} className="glass-panel rounded-xl p-4 text-xs">
       <div className="flex justify-between gap-3"><div><strong>{item.rewardName}</strong><p className="mt-1 text-gray-400">{item.phoneMasked} · {item.cost.toLocaleString()}G</p></div><span className="text-cyber-yellow">{statusLabel[item.status]}</span></div>
       <div className="mt-3 flex gap-2">

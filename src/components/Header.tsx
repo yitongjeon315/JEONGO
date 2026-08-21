@@ -1,15 +1,16 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
-import { ArrowUpRight, Coins, Flame, GraduationCap, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Coins, Flame, GraduationCap, ShieldCheck, Sparkles } from 'lucide-react';
 
 const BEFORE_JEONGO_URL = process.env.NEXT_PUBLIC_BEFORE_JEONGO_URL ?? 'http://localhost:3002';
 
 const Header = () => {
   const pathname = usePathname();
-  const { stats } = useApp();
+  const { stats, session } = useApp();
 
   if (pathname === '/vocab-book') return null;
 
@@ -47,7 +48,25 @@ const Header = () => {
             </span>
           </div>
           <div className="min-w-0">
-            <h2 className="text-sm font-bold text-white/90">학습자님</h2>
+            <div className="flex min-w-0 items-center gap-1.5">
+              <h2 className="truncate text-sm font-bold text-white/90">
+                {session?.name || '학습자님'}
+              </h2>
+              {session?.role === 'admin' && (
+                <Link
+                  href="/admin"
+                  className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-extrabold transition ${
+                    pathname?.startsWith('/admin')
+                      ? 'border-cyber-yellow/60 bg-cyber-yellow text-dark-bg'
+                      : 'border-cyber-yellow/35 bg-cyber-yellow/10 text-cyber-yellow hover:bg-cyber-yellow/20'
+                  }`}
+                  aria-label="관리자 페이지로 이동"
+                >
+                  <ShieldCheck size={11} />
+                  관리자
+                </Link>
+              )}
+            </div>
             <p className="hidden min-[370px]:block text-xs text-gray-400 font-medium truncate">{getSkinName(stats.avatarSkin)}</p>
           </div>
         </div>

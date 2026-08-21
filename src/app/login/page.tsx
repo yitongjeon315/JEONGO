@@ -1,36 +1,88 @@
 'use client';
 
-import { useState } from 'react';
-import { LogIn, ShieldCheck, UserPlus } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { LogIn, ShieldCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useApp } from '@/context/AppContext';
 
-type LoginMode = 'login' | 'register';
+interface GoogleCredentialResponse { credential?: string }
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        id: {
+          initialize: (options: { client_id: string; callback: (response: GoogleCredentialResponse) => void }) => void;
+          renderButton: (element: HTMLElement, options: Record<string, unknown>) => void;
+        };
+      };
+    };
+  }
+}
 
 export default function LoginPage() {
   const router = useRouter();
-  const { authStatus, session, login, register, logout } = useApp();
-  const [mode, setMode] = useState<LoginMode>('login');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const { authStatus, session, logout } = useApp();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const [googleClientId, setGoogleClientId] = useState('');
+  const [googleConfigured, setGoogleConfigured] = useState<boolean | null>(null);
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
-  const submit = async () => {
-    setPending(true);
-    setError('');
-    try {
-      if (mode === 'login') await login(email, password);
-      else await register(email, name, password);
-      router.push(mode === 'register' ? '/onboarding' : '/home');
-      router.refresh();
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : '요청을 처리하지 못했습니다.');
-    } finally {
-      setPending(false);
+  useEffect(() => {
+    void fetch('/api/auth/google/config', { cache: 'no-store' })
+      .then(async (response) => response.json() as Promise<{ configured?: boolean; clientId?: string | null }>)
+      .then((config) => {
+        setGoogleConfigured(Boolean(config.configured && config.clientId));
+        setGoogleClientId(config.clientId ?? '');
+      })
+      .catch(() => setGoogleConfigured(false));
+  }, []);
+
+  useEffect(() => {
+    if (!googleClientId || !googleButtonRef.current) return;
+    let cancelled = false;
+    const initialize = () => {
+      if (cancelled || !window.google || !googleButtonRef.current) return;
+      window.google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: (response) => {
+          if (!response.credential) return;
+          setPending(true);
+          setError('');
+          void fetch('/api/auth/google', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ credential: response.credential }),
+          }).then(async (result) => {
+            const body = (await result.json().catch(() => null)) as { error?: string; created?: boolean } | null;
+            if (!result.ok) throw new Error(body?.error ?? 'Google 로그인을 처리하지 못했습니다.');
+            window.location.assign(body?.created ? '/onboarding' : '/home');
+          }).catch((cause) => {
+            setError(cause instanceof Error ? cause.message : 'Google 로그인을 처리하지 못했습니다.');
+            setPending(false);
+          });
+        },
+      });
+      googleButtonRef.current.replaceChildren();
+      window.google.accounts.id.renderButton(googleButtonRef.current, {
+        type: 'standard', theme: 'filled_black', size: 'large', shape: 'pill', text: 'continue_with', width: 320,
+      });
+    };
+    const existing = document.querySelector<HTMLScriptElement>('script[data-jeongo-google-signin]');
+    if (existing) {
+      if (window.google) initialize();
+      else existing.addEventListener('load', initialize, { once: true });
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.dataset.jeongoGoogleSignin = 'true';
+      script.addEventListener('load', initialize, { once: true });
+      document.head.appendChild(script);
     }
-  };
+    return () => { cancelled = true; };
+  }, [googleClientId]);
 
   if (authStatus === 'authenticated' && session) {
     return (
@@ -57,40 +109,25 @@ export default function LoginPage() {
   return (
     <section className="glass-panel rounded-3xl p-6 border-white/10 flex flex-col gap-5" data-testid="login-page">
       <div className="w-14 h-14 rounded-2xl bg-neon-cyan/15 text-neon-cyan flex items-center justify-center">
-        {mode === 'login' ? <LogIn /> : <UserPlus />}
+        <LogIn />
       </div>
       <div>
-        <h1 className="text-xl font-extrabold">JEONGO 계정</h1>
-        <p className="text-xs text-gray-400 mt-1">학습 기록과 캐릭터 성장을 MySQL 계정에 안전하게 보관합니다.</p>
+        <h1 className="text-xl font-extrabold">Google 로그인·회원가입</h1>
+        <p className="text-xs text-gray-400 mt-1">Google 계정 하나로 가입하거나 로그인하고, 학습 기록과 캐릭터 성장을 회원 DB에 보관합니다.</p>
       </div>
 
-      <div className="grid grid-cols-2 rounded-xl bg-white/5 p-1" aria-label="계정 방식">
-        <button type="button" onClick={() => { setMode('login'); setError(''); }} aria-pressed={mode === 'login'} className={`rounded-lg py-2 text-xs font-bold ${mode === 'login' ? 'bg-neon-cyan text-dark-bg' : 'text-gray-400'}`}>로그인</button>
-        <button type="button" onClick={() => { setMode('register'); setError(''); }} aria-pressed={mode === 'register'} className={`rounded-lg py-2 text-xs font-bold ${mode === 'register' ? 'bg-neon-cyan text-dark-bg' : 'text-gray-400'}`}>회원가입</button>
+      <div className="flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-black p-1">
+        {googleConfigured ? <div ref={googleButtonRef} aria-label="Google 계정으로 계속하기" /> : (
+          <span className="text-xs font-bold text-gray-500">
+            {googleConfigured === null ? 'Google 로그인 확인 중…' : 'Google 로그인 설정 준비 중'}
+          </span>
+        )}
       </div>
-
-      {mode === 'register' && (
-        <label className="text-xs font-bold text-gray-300">
-          이름
-          <input aria-label="이름" autoComplete="name" value={name} onChange={(event) => setName(event.target.value)} className="mt-2 w-full rounded-xl bg-white/5 border border-white/10 p-3 text-white" />
-        </label>
-      )}
-      <label className="text-xs font-bold text-gray-300">
-        이메일
-        <input aria-label="이메일" type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full rounded-xl bg-white/5 border border-white/10 p-3 text-white" />
-      </label>
-      <label className="text-xs font-bold text-gray-300">
-        비밀번호
-        <input aria-label="비밀번호" type="password" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={password} onChange={(event) => setPassword(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') void submit(); }} className="mt-2 w-full rounded-xl bg-white/5 border border-white/10 p-3 text-white" />
-        {mode === 'register' && <span className="block mt-1 text-[10px] font-normal text-gray-500">8자 이상 입력해 주세요.</span>}
-      </label>
 
       {error && <p role="alert" className="rounded-xl bg-neon-rose/10 border border-neon-rose/20 p-3 text-xs text-neon-rose">{error}</p>}
-      <button type="button" disabled={pending || authStatus === 'loading'} onClick={() => void submit()} className="rounded-xl bg-neon-cyan text-dark-bg font-extrabold py-3 disabled:opacity-50">
-        {pending ? '처리 중...' : mode === 'login' ? '로그인하고 학습 시작' : '계정 만들고 학습 시작'}
-      </button>
+      {pending && <p className="text-center text-xs font-bold text-neon-cyan">Google 계정 확인 중...</p>}
       <a href="/home" role="button" className="rounded-xl border border-white/10 py-3 text-center text-sm font-bold text-gray-300">게스트로 계속하기</a>
-      <p className="text-[10px] text-gray-500">게스트 기록은 이 브라우저에만 저장됩니다. 계정으로 로그인하면 서버 기록을 불러옵니다.</p>
+      <p className="text-[10px] text-gray-500">게스트 기록은 기존 규칙대로 이 브라우저에만 저장됩니다. Google 회원으로 로그인하면 회원 DB 기록을 사용합니다.</p>
     </section>
   );
 }

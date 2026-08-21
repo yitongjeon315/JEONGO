@@ -47,6 +47,9 @@ next-env.d.ts
 
 # local tooling and generated artifacts
 /logs/
+/database/*.sqlite
+/database/*.sqlite-*
+/database/backups/
 /test-results/
 /scratch/
 /tools/*.exe

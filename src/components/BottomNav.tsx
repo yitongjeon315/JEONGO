@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Swords, Sparkles, Users, Gift, BarChart3 } from 'lucide-react';
+import { Home, Swords, Sparkles, Users, Gift } from 'lucide-react';
 
 const BottomNav = () => {
   const pathname = usePathname();
@@ -14,11 +14,10 @@ const BottomNav = () => {
     { label: 'AI튜터', path: '/ai-tutor', icon: Sparkles, color: 'text-neon-cyan' },
     { label: '소셜', path: '/social', icon: Users, color: 'text-sky-400' },
     { label: '상점', path: '/shop', icon: Gift, color: 'text-cyber-yellow' },
-    { label: '통계', path: '/analytics', icon: BarChart3, color: 'text-violet-400' },
   ];
 
   return (
-    <nav className="relative z-50 shrink-0 w-full glass-panel border-t border-white/10 px-1.5 sm:px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] grid grid-cols-6 items-center rounded-t-2xl shadow-xl">
+    <nav className="relative z-50 shrink-0 w-full glass-panel border-t border-white/10 px-1.5 sm:px-3 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] grid grid-cols-5 items-center rounded-t-2xl shadow-xl">
       {navItems.map((item) => {
         const Icon = item.icon;
         const isActive = pathname === item.path || (item.path !== '/home' && pathname?.startsWith(item.path));

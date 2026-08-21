@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "db:init": "node scripts/init-db.mjs",
+    "db:backup": "node scripts/backup-db.mjs",
+    "db:verify": "node scripts/verify-sqlite.mjs",
+    "admin:google": "node scripts/set-google-admin.mjs",
     "topic:build": "npm --prefix services/topic1 run build -- --outDir ../../public/topic --emptyOutDir",
     "before:dev": "npm --prefix services/before-jeongo run dev",
     "before:build": "npm --prefix services/before-jeongo run build",
@@ -17,8 +20,8 @@
   },
   "dependencies": {
     "framer-motion": "^12.40.0",
+    "google-auth-library": "^11.0.2",
     "lucide-react": "^1.21.0",
-    "mysql2": "^3.23.3",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -28,7 +31,7 @@
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^20",
+    "@types/node": "^26.2.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.0.5",

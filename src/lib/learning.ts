@@ -11,6 +11,7 @@ export interface LearningEvent {
   hskLevel?: string;
   weakItems?: string[];
   toneScore?: number;
+  rewardKey?: string;
 }
 
 export interface Sm2State {

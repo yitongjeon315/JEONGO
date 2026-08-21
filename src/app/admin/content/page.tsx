@@ -22,7 +22,7 @@ export default function ContentAdminPage() {
     return (
       <div className="glass-panel rounded-2xl p-6">
         <h1 className="text-lg font-extrabold">관리자 CMS</h1>
-        <p className="mt-2 text-xs text-gray-400">MySQL에서 관리자 역할이 부여된 계정이 필요합니다.</p>
+        <p className="mt-2 text-xs text-gray-400">관리자 역할이 부여된 계정이 필요합니다.</p>
         <Link href="/login" className="mt-4 inline-block text-xs font-bold text-neon-cyan">관리자 로그인 →</Link>
       </div>
     );
@@ -87,9 +87,10 @@ export default function ContentAdminPage() {
   return (
     <div className="flex flex-col gap-4" data-testid="content-cms">
       <div className="glass-panel rounded-2xl p-5">
+        <Link href="/admin" className="text-[10px] font-bold text-neon-cyan">← 관리자 페이지</Link>
         <h1 className="text-lg font-extrabold">콘텐츠 관리 CMS</h1>
-        <p className="mt-1 text-xs text-gray-400">단어·퀘스트·보상을 MySQL에 저장하고 모든 사용자에게 반영합니다.</p>
-        <Link href="/admin/redemptions" className="mt-3 inline-block text-xs font-bold text-cyber-yellow">현실 보상 신청 관리 →</Link>
+        <p className="mt-1 text-xs text-gray-400">단어·퀘스트·보상을 저장하고 모든 사용자에게 반영합니다.</p>
+        <div className="mt-3 flex flex-wrap gap-3"><Link href="/admin/members" className="text-xs font-bold text-neon-cyan">회원 관리 →</Link><Link href="/admin/redemptions" className="text-xs font-bold text-cyber-yellow">현실 보상 신청 관리 →</Link></div>
         {message && <p className={`mt-2 text-xs ${message.includes('완료') ? 'text-neon-green' : 'text-neon-rose'}`} role="status">{message}</p>}
       </div>
 

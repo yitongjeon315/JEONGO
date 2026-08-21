@@ -54,7 +54,7 @@ JEONGO 상단의 TOPIK 버튼과 TOPIK 페이지의 돌아가기 버튼을 통�
 ## 서비스 구성
 
 - Next.js와 React 기반의 JEONGO 학습 애플리케이션
-- MySQL 기반 회원, 세션, 학습 스냅샷
+- 무료 SQLite 기반 회원, 세션, 학습 스냅샷과 서버 관리형 골드 거래 이력
 - Vite 기반 TOPIK-Edu 정적 학습 애플리케이션
 - Caddy 기반 HTTPS, 도메인 리디렉션과 경로 분기
 - Vitest와 Playwright 기반 핵심 학습 흐름 검증
@@ -62,3 +62,15 @@ JEONGO 상단의 TOPIK 버튼과 TOPIK 페이지의 돌아가기 버튼을 통�
 ## 프로젝트 성격
 
 JEONGO는 중국어를 처음 시작하는 학습자부터 HSK 고급 어휘를 반복하려는 학습자까지, 학습의 지속성과 성취감을 높이는 것을 목표로 합니다. 정적인 문제집을 그대로 옮기는 대신 학습 행동 자체가 캐릭터의 모험이 되도록 만드는 것이 이 프로젝트의 중심 아이디어입니다.
+
+## SQLite 운영
+
+기본 DB 파일은 `database/jeongo.sqlite`이며 `SQLITE_PATH` 환경변수로 다른 로컬 경로를 지정할 수 있습니다. DB 파일과 백업은 Git에 포함되지 않습니다.
+
+```powershell
+npm run db:init
+npm run db:verify
+npm run db:backup
+```
+
+운영 시작 스크립트는 스키마 확인과 일관된 백업을 먼저 수행합니다. SQLite 파일은 네트워크 공유 폴더가 아닌 JEONGO 서버의 로컬 디스크에 보관해야 합니다.

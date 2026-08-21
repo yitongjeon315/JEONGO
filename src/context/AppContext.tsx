@@ -104,8 +104,6 @@ interface AppContextType {
   contributeToGuild: (goldAmount: number) => void;
   session: UserSession | null;
   authStatus: AuthStatus;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, name: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   learningEvents: LearningEvent[];
   recordLearningEvent: (event: Omit<LearningEvent, 'id' | 'occurredAt'> & { occurredAt?: string }) => void;
@@ -675,45 +673,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   };
 
-  const loadAccountSnapshot = async () => {
-    const response = await fetch('/api/account/snapshot', { cache: 'no-store' });
-    if (!response.ok) throw new Error(await readApiError(response));
-    const { snapshot } = (await response.json()) as { snapshot: AccountSnapshot | null };
-    if (!snapshot || snapshot.version !== 1) return;
-
-    setStats(snapshot.stats);
-    setSkins(snapshot.skins);
-    setDailyQuestState(refreshDailyQuestState(snapshot.dailyQuestState));
-    setGuildInfo(snapshot.guildInfo);
-    setLearningEvents(snapshot.learningEvents);
-    setPlacementResult(snapshot.placementResult);
-    const progress = new Map(snapshot.vocabProgress.map((item) => [item.id, item]));
-    accountVocabProgressRef.current = progress;
-    setVocabList((current) => current.map((word) => ({ ...word, ...progress.get(word.id) })));
-  };
-
-  const authenticate = async (path: '/api/auth/login' | '/api/auth/register', payload: Record<string, string>) => {
-    setAccountSyncReady(false);
-    const response = await fetch(path, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (!response.ok) throw new Error(await readApiError(response));
-
-    const { user } = (await response.json()) as { user: UserSession };
-    setSession(user);
-    setAuthStatus('authenticated');
-    await loadAccountSnapshot();
-    setAccountSyncReady(true);
-    recordLearningEvent({ type: 'login', correct: 0, total: 0, xp: 0, gold: 0 });
-  };
-
-  const login = (email: string, password: string) => authenticate('/api/auth/login', { email, password });
-
-  const register = (email: string, name: string, password: string) =>
-    authenticate('/api/auth/register', { email, name, password });
-
   const logout = async () => {
     const response = await fetch('/api/auth/logout', { method: 'POST' });
     if (!response.ok) throw new Error(await readApiError(response));
@@ -769,7 +728,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     addGold(quest.gold);
     addXP(quest.xp);
-    recordLearningEvent({ type: 'reward', correct: 0, total: 0, xp: quest.xp, gold: quest.gold });
+    recordLearningEvent({ type: 'reward', correct: 0, total: 0, xp: quest.xp, gold: quest.gold, rewardKey: quest.id });
   };
 
   const savePlacementResult = (result: PlacementResult) => {
@@ -813,8 +772,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         contributeToGuild,
         session,
         authStatus,
-        login,
-        register,
         logout,
         learningEvents,
         recordLearningEvent,

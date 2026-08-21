@@ -16,6 +16,9 @@ const eslintConfig = defineConfig([
     ".vibe-diagnosis/**",
     "scratch/**",
     ".tmp/**",
+    // Built assets and independently managed service projects.
+    "public/topic/**",
+    "services/**",
   ]),
 ]);
 

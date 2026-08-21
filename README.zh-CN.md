@@ -54,7 +54,7 @@ JEONGO 顶部的 TOPIK 入口和 TOPIK 页面中的返回按钮，让学习者�
 ## 服务组成
 
 - 基于 Next.js 与 React 的 JEONGO 学习应用
-- 基于 MySQL 的用户、会话与学习快照
+- 基于免费 SQLite 的用户、会话、学习快照与服务器端金币交易记录
 - 基于 Vite 的 TOPIK-Edu 静态学习应用
 - 基于 Caddy 的 HTTPS、域名跳转与路径分流
 - 使用 Vitest 与 Playwright 验证核心学习流程

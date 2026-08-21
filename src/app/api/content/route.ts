@@ -21,7 +21,7 @@ export async function GET() {
 
 export async function PUT(request: Request) {
   if (!isSameOriginRequest(request)) return jsonError('허용되지 않은 요청입니다.', 403);
-  if (!isDatabaseConfigured()) return jsonError('MySQL 연결 설정이 필요합니다.', 503);
+  if (!isDatabaseConfigured()) return jsonError('SQLite 연결 설정이 필요합니다.', 503);
 
   try {
     const user = await getCurrentUser();

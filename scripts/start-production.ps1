@@ -9,25 +9,38 @@ $hostsPath = Join-Path ([Environment]::GetFolderPath('System')) 'drivers\etc\hos
 
 New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
 
+# Ensure the local SQLite schema exists and take a consistent backup before startup.
+& npm.cmd run db:init
+if ($LASTEXITCODE -ne 0) { throw "SQLite initialization failed (exit code $LASTEXITCODE)." }
+& npm.cmd run db:backup
+if ($LASTEXITCODE -ne 0) { throw "SQLite backup failed (exit code $LASTEXITCODE)." }
+
 # Routers without NAT loopback cannot reach the public domain from this PC.
 # Restore the local domain mapping at logon if another process removed it.
 $hasLocalDomainMapping = Select-String -LiteralPath $hostsPath `
     -Pattern '^127\.0\.0\.1 aina365\.com www\.aina365\.com$' `
     -Quiet
 if (-not $hasLocalDomainMapping) {
-    & $localDomainScript
+    try {
+        & $localDomainScript
+    }
+    catch {
+        Write-Warning '로컬 hosts 매핑을 갱신하지 못했습니다. 공인 DNS 연결로 운영 서버 시작을 계속합니다.'
+    }
 }
 
 $port3000Open = Test-NetConnection -ComputerName 127.0.0.1 -Port 3000 -InformationLevel Quiet -WarningAction SilentlyContinue
 if (-not $port3000Open) {
-    Start-Process -FilePath 'npm.cmd' `
-        -ArgumentList @('run', 'start', '--', '-H', '0.0.0.0', '-p', '3000') `
+    Start-Process -FilePath 'node.exe' `
+        -ArgumentList @('node_modules/next/dist/bin/next', 'start', '-H', '0.0.0.0', '-p', '3000') `
         -WorkingDirectory $projectRoot `
         -WindowStyle Hidden `
         -RedirectStandardOutput (Join-Path $logDirectory 'next.stdout.log') `
         -RedirectStandardError (Join-Path $logDirectory 'next.stderr.log')
 
     Start-Sleep -Seconds 3
+    $port3000Open = Test-NetConnection -ComputerName 127.0.0.1 -Port 3000 -InformationLevel Quiet -WarningAction SilentlyContinue
+    if (-not $port3000Open) { throw 'JEONGO failed to listen on port 3000.' }
 }
 
 $previousErrorActionPreference = $ErrorActionPreference
@@ -37,10 +50,12 @@ $caddyExitCode = $LASTEXITCODE
 $ErrorActionPreference = $previousErrorActionPreference
 
 if ($caddyExitCode -ne 0) {
-    & $caddyPath start --config $caddyConfig --adapter caddyfile *> $null
-    if ($LASTEXITCODE -ne 0) {
-        throw "Caddy failed to start (exit code $LASTEXITCODE)."
-    }
+    Start-Process -FilePath $caddyPath `
+        -ArgumentList @('run', '--config', $caddyConfig, '--adapter', 'caddyfile') `
+        -WorkingDirectory $projectRoot `
+        -WindowStyle Hidden `
+        -RedirectStandardOutput (Join-Path $logDirectory 'caddy.stdout.log') `
+        -RedirectStandardError (Join-Path $logDirectory 'caddy.stderr.log')
 
     # On Windows, reload once after startup so persisted ACME certificates are
     # attached before the first browser TLS handshake.

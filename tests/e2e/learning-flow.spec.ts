@@ -49,7 +49,7 @@ test('guest can learn, earn rewards, persist after reload, and update analytics'
 
 test('CMS rejects users without a server-issued admin role', async ({ page }) => {
   await page.goto('/admin/content');
-  await expect(page.getByText('MySQL에서 관리자 역할이 부여된 계정이 필요합니다.')).toBeVisible();
+  await expect(page.getByText('관리자 역할이 부여된 계정이 필요합니다.')).toBeVisible();
 });
 
 test('AI tutor compares an actual recognized sentence deterministically', async ({ page }) => {

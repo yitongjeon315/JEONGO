@@ -1,4 +1,4 @@
-import type { ResultSetHeader, RowDataPacket } from 'mysql2';
+import { randomUUID } from 'node:crypto';
 import { getDb } from '@/lib/server/db';
 import { isSameOriginRequest, jsonError } from '@/lib/server/request';
 import { getCurrentUser } from '@/lib/server/session';
@@ -7,10 +7,11 @@ import { rankLeagueMembers } from '@/lib/social';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-interface UserSnapshotRow extends RowDataPacket { id: string; name: string; data: string | Record<string, unknown> }
-interface GuildRow extends RowDataPacket { id: string; name: string; level: number; exp: number; expNeeded: number; bossHp: number; bossMaxHp: number }
-interface GuildMemberRow extends RowDataPacket { userId: string; name: string; contribution: number }
-interface MembershipRow extends RowDataPacket { guildId: string }
+interface UserSnapshotRow extends Record<string, unknown> { id: string; name: string; data: string }
+interface GuildRow extends Record<string, unknown> { id: string; name: string; level: number; exp: number; expNeeded: number; bossHp: number; bossMaxHp: number }
+interface GuildMemberRow extends Record<string, unknown> { userId: string; name: string; contribution: number }
+interface MembershipRow extends Record<string, unknown> { guildId: string }
+interface BalanceRow extends Record<string, unknown> { gold: number }
 interface GuildRecommendationRow extends GuildRow { memberCount: number }
 
 function parseSnapshot(data: UserSnapshotRow['data']) {
@@ -60,7 +61,7 @@ export async function GET() {
     return Response.json({ league: '실버 리그 (Silver League)', leagueMembers, guild: guilds[0] ?? null, guildMembers: members.map((member) => ({ ...member, isUser: member.userId === user.id })), recommendations });
   } catch (error) {
     console.error('Social lookup failed', error);
-    return jsonError(error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 'MySQL 연결 설정이 필요합니다.' : '소셜 정보를 불러오지 못했습니다.', error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 503 : 500);
+    return jsonError(error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 'SQLite 연결 설정이 필요합니다.' : '소셜 정보를 불러오지 못했습니다.', error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 503 : 500);
   }
 }
 
@@ -78,8 +79,8 @@ export async function POST(request: Request) {
         await connection.beginTransaction();
         const [guilds] = await connection.execute<GuildRow[]>('SELECT id, name, level, exp, exp_needed AS expNeeded, boss_hp AS bossHp, boss_max_hp AS bossMaxHp FROM guilds WHERE id = ? LIMIT 1', [guildId]);
         if (!guilds[0]) { await connection.rollback(); return jsonError('길드를 찾을 수 없습니다.', 404); }
-        await connection.execute<ResultSetHeader>('DELETE FROM guild_members WHERE user_id = ?', [user.id]);
-        await connection.execute<ResultSetHeader>('INSERT INTO guild_members (guild_id, user_id) VALUES (?, ?)', [guildId, user.id]);
+        await connection.execute('DELETE FROM guild_members WHERE user_id = ?', [user.id]);
+        await connection.execute('INSERT INTO guild_members (guild_id, user_id) VALUES (?, ?)', [guildId, user.id]);
         await connection.commit();
         return Response.json({ joined: true, guild: guilds[0] });
       } catch (error) {
@@ -92,22 +93,28 @@ export async function POST(request: Request) {
     const connection = await getDb().getConnection();
     try {
       await connection.beginTransaction();
-      const [memberships] = await connection.execute<MembershipRow[]>('SELECT guild_id AS guildId FROM guild_members WHERE user_id = ? LIMIT 1 FOR UPDATE', [user.id]);
+      const [memberships] = await connection.execute<MembershipRow[]>('SELECT guild_id AS guildId FROM guild_members WHERE user_id = ? LIMIT 1', [user.id]);
       const guildId = memberships[0]?.guildId;
       if (!guildId) { await connection.rollback(); return jsonError('먼저 길드에 가입해 주세요.', 409); }
-      const [rows] = await connection.execute<UserSnapshotRow[]>('SELECT ? AS id, ? AS name, data FROM user_snapshots WHERE user_id = ? FOR UPDATE', [user.id, user.name, user.id]);
-      const snapshot = rows[0] ? parseSnapshot(rows[0].data) : null;
-      const stats = snapshot?.stats && typeof snapshot.stats === 'object' ? snapshot.stats as Record<string, unknown> : null;
-      const currentGold = Number(stats?.gold ?? 0);
-      if (!snapshot || !stats || currentGold < gold) {
+      const [balances] = await connection.execute<BalanceRow[]>('SELECT gold FROM account_balances WHERE user_id = ? LIMIT 1', [user.id]);
+      const currentGold = Number(balances[0]?.gold ?? 0);
+      if (!balances[0] || currentGold < gold) {
         await connection.rollback();
         return jsonError('골드가 부족합니다.', 409);
       }
-      stats.gold = currentGold - gold;
-      await connection.execute<ResultSetHeader>('UPDATE user_snapshots SET data = CAST(? AS JSON) WHERE user_id = ?', [JSON.stringify(snapshot), user.id]);
-      await connection.execute<ResultSetHeader>('UPDATE guild_members SET contribution = contribution + ? WHERE guild_id = ? AND user_id = ?', [gold, guildId, user.id]);
+      const remainingGold = currentGold - gold;
+      await connection.execute(
+        `UPDATE account_balances SET gold = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE user_id = ?`,
+        [remainingGold, user.id],
+      );
+      await connection.execute(
+        `INSERT INTO gold_transactions (id, user_id, amount, balance_after, reason, reference_key)
+         VALUES (?, ?, ?, ?, 'guild_contribution', ?)`,
+        [randomUUID(), user.id, -gold, remainingGold, `guild:${guildId}:${randomUUID()}`],
+      );
+      await connection.execute('UPDATE guild_members SET contribution = contribution + ? WHERE guild_id = ? AND user_id = ?', [gold, guildId, user.id]);
       const [guildRows] = await connection.execute<GuildRow[]>(
-        'SELECT id, name, level, exp, exp_needed AS expNeeded, boss_hp AS bossHp, boss_max_hp AS bossMaxHp FROM guilds WHERE id = ? FOR UPDATE',
+        'SELECT id, name, level, exp, exp_needed AS expNeeded, boss_hp AS bossHp, boss_max_hp AS bossMaxHp FROM guilds WHERE id = ?',
         [guildId],
       );
       const guild = guildRows[0];
@@ -121,12 +128,13 @@ export async function POST(request: Request) {
         nextExpNeeded = Math.floor(nextExpNeeded * 1.5);
       }
       const nextBossHp = Math.max(0, guild.bossHp - gold * 3);
-      await connection.execute<ResultSetHeader>(
-        'UPDATE guilds SET level = ?, exp = ?, exp_needed = ?, boss_hp = ? WHERE id = ?',
+      await connection.execute(
+        `UPDATE guilds SET level = ?, exp = ?, exp_needed = ?, boss_hp = ?,
+                updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
         [nextLevel, nextExp, nextExpNeeded, nextBossHp, guildId],
       );
       await connection.commit();
-      return Response.json({ contributed: true, remainingGold: currentGold - gold, damage: gold * 3, guild: { level: nextLevel, exp: nextExp, expNeeded: nextExpNeeded, bossHp: nextBossHp } });
+      return Response.json({ contributed: true, remainingGold, damage: gold * 3, guild: { level: nextLevel, exp: nextExp, expNeeded: nextExpNeeded, bossHp: nextBossHp } });
     } catch (error) {
       await connection.rollback();
       throw error;
@@ -135,7 +143,7 @@ export async function POST(request: Request) {
     }
   } catch (error) {
     console.error('Guild contribution failed', error);
-    return jsonError(error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 'MySQL 연결 설정이 필요합니다.' : '길드 기여를 저장하지 못했습니다.', error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 503 : 500);
+    return jsonError(error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 'SQLite 연결 설정이 필요합니다.' : '길드 기여를 저장하지 못했습니다.', error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 503 : 500);
   }
 }
 
@@ -144,10 +152,10 @@ export async function DELETE(request: Request) {
   try {
     const user = await getCurrentUser();
     if (!user) return jsonError('로그인이 필요합니다.', 401);
-    await getDb().execute<ResultSetHeader>('DELETE FROM guild_members WHERE user_id = ?', [user.id]);
+    await getDb().execute('DELETE FROM guild_members WHERE user_id = ?', [user.id]);
     return Response.json({ left: true });
   } catch (error) {
     console.error('Guild leave failed', error);
-    return jsonError(error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 'MySQL 연결 설정이 필요합니다.' : '길드에서 탈퇴하지 못했습니다.', error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 503 : 500);
+    return jsonError(error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 'SQLite 연결 설정이 필요합니다.' : '길드에서 탈퇴하지 못했습니다.', error instanceof Error && error.message === 'DATABASE_NOT_CONFIGURED' ? 503 : 500);
   }
 }

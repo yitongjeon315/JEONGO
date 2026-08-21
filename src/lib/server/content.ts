@@ -1,10 +1,9 @@
 import 'server-only';
 
-import type { RowDataPacket } from 'mysql2';
 import type { ContentCatalog, ContentQuest, ContentReward, VocabItem } from '@/lib/content-catalog';
 import { getDb } from './db';
 
-interface WordRow extends RowDataPacket {
+interface WordRow extends Record<string, unknown> {
   id: number;
   hanzi: string;
   pinyin: string;
@@ -12,8 +11,8 @@ interface WordRow extends RowDataPacket {
   hsk: string;
 }
 
-interface QuestRow extends RowDataPacket, ContentQuest {}
-interface RewardRow extends RowDataPacket, ContentReward {}
+interface QuestRow extends ContentQuest, Record<string, unknown> {}
+interface RewardRow extends ContentReward, Record<string, unknown> {}
 
 export async function getContentCatalog(): Promise<ContentCatalog> {
   const db = getDb();

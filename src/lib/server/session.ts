@@ -1,6 +1,5 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { cookies } from 'next/headers';
-import type { RowDataPacket } from 'mysql2';
 import { getDb } from './db';
 
 export const SESSION_COOKIE = 'jeongo_session';
@@ -13,7 +12,7 @@ export interface AuthUser {
   role: 'learner' | 'admin';
 }
 
-interface AuthUserRow extends RowDataPacket, AuthUser {}
+interface AuthUserRow extends AuthUser, Record<string, unknown> {}
 
 function tokenHash(token: string) {
   return createHash('sha256').update(token).digest('hex');
@@ -47,7 +46,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     `SELECT u.id, u.email, u.name, u.role
        FROM sessions s
        JOIN users u ON u.id = s.user_id
-      WHERE s.token_hash = ? AND s.expires_at > UTC_TIMESTAMP()
+      WHERE s.token_hash = ? AND s.expires_at > strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
       LIMIT 1`,
     [tokenHash(token)],
   );
