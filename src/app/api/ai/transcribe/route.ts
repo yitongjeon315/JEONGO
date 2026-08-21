@@ -1,3 +1,4 @@
+import { enforceAiAccess } from '@/lib/server/ai-access';
 import { isSameOriginRequest, jsonError } from '@/lib/server/request';
 
 export const runtime = 'nodejs';
@@ -6,6 +7,8 @@ const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) return jsonError('허용되지 않은 요청입니다.', 403);
+  const accessError = await enforceAiAccess('transcribe');
+  if (accessError) return accessError;
   try {
     const incoming = await request.formData();
     const audio = incoming.get('audio');

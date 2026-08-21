@@ -1,4 +1,5 @@
 import { fallbackTutorReply, normalizeTutorHistory, parseTutorReply } from '@/lib/ai-tutor';
+import { enforceAiAccess } from '@/lib/server/ai-access';
 import { isSameOriginRequest, jsonError } from '@/lib/server/request';
 
 export const runtime = 'nodejs';
@@ -18,6 +19,8 @@ function extractOutputText(response: OpenAIResponse) {
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) return jsonError('허용되지 않은 요청입니다.', 403);
+  const accessError = await enforceAiAccess('tutor');
+  if (accessError) return accessError;
 
   let body: Record<string, unknown>;
   try {

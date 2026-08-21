@@ -1,3 +1,4 @@
+import { enforceAiAccess } from '@/lib/server/ai-access';
 import { isSameOriginRequest, jsonError } from '@/lib/server/request';
 
 export const runtime = 'nodejs';
@@ -7,6 +8,8 @@ interface OpenAIResponse { output_text?: string; output?: Array<{ content?: Arra
 
 export async function POST(request: Request) {
   if (!isSameOriginRequest(request)) return jsonError('허용되지 않은 요청입니다.', 403);
+  const accessError = await enforceAiAccess('translate');
+  if (accessError) return accessError;
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return jsonError('AI 번역 API 설정이 필요합니다.', 503);
   try {

@@ -79,6 +79,15 @@ CREATE TABLE IF NOT EXISTS processed_learning_events (
 );
 CREATE INDEX IF NOT EXISTS idx_learning_events_user_occurred ON processed_learning_events(user_id, occurred_at);
 
+CREATE TABLE IF NOT EXISTS ai_rate_limit_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  scope TEXT NOT NULL CHECK(scope IN ('tutor', 'translate', 'transcribe')),
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ai_rate_limit_user_scope_created
+  ON ai_rate_limit_events(user_id, scope, created_at);
+
 CREATE TRIGGER IF NOT EXISTS create_initial_balance AFTER INSERT ON users BEGIN
   INSERT OR IGNORE INTO account_balances(user_id) VALUES (NEW.id);
 END;
