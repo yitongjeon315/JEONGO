@@ -1,7 +1,7 @@
 export type ChineseSpeechResult = {
   ok: boolean;
   voiceName?: string;
-  reason?: 'unsupported' | 'voice-unavailable';
+  reason?: 'unsupported' | 'voice-unavailable' | 'playback-error';
 };
 
 type ToneRecording = {
@@ -13,6 +13,26 @@ type ToneRecording = {
 const TONE_RECORDING_URL = '/before/audio/ma-four-tones.ogg';
 let toneRecordingPromise: Promise<ToneRecording> | null = null;
 let activeToneSource: AudioBufferSourceNode | null = null;
+let activeMandarinClip: HTMLAudioElement | null = null;
+
+export async function playMandarinClip(clipId: string): Promise<ChineseSpeechResult> {
+  if (typeof window === 'undefined' || typeof Audio === 'undefined' || !/^[a-z0-9-]+$/.test(clipId)) {
+    return { ok: false, reason: 'unsupported' };
+  }
+  try {
+    activeMandarinClip?.pause();
+    const audio = new Audio(`/before/audio/mandarin/${clipId}.wav`);
+    audio.preload = 'auto';
+    audio.volume = 1;
+    activeMandarinClip = audio;
+    audio.onended = () => { if (activeMandarinClip === audio) activeMandarinClip = null; };
+    await audio.play();
+    return { ok: true, voiceName: 'Microsoft Huihui · 중국 본토 표준어 고정 음원' };
+  } catch {
+    if (activeMandarinClip) activeMandarinClip = null;
+    return { ok: false, reason: 'playback-error' };
+  }
+}
 
 function findToneSegments(buffer: AudioBuffer) {
   const samples = buffer.getChannelData(0);
@@ -109,7 +129,7 @@ export async function playMandarinTone(toneIndex: number): Promise<ChineseSpeech
 
 type VoiceLike = Pick<SpeechSynthesisVoice, 'lang' | 'name' | 'default'>;
 
-const preferredMainlandNames = /xiaoxiao|xiaoyi|yunxi|huihui|yaoyao|kangkang|mandarin|mainland|china/i;
+const preferredMainlandNames = /xiaoxiao|xiaoyi|yunxi|yunyang|huihui|yaoyao|kangkang|putonghua|mandarin|mainland|china|普通话/i;
 const excludedNames = /cantonese|hong kong|taiwan|yue/i;
 
 export function selectMandarinVoice<T extends VoiceLike>(voices: T[]): T | null {
@@ -127,7 +147,9 @@ export function selectMandarinVoice<T extends VoiceLike>(voices: T[]): T | null 
       else if (lang.startsWith('zh-cn-')) score = 95;
       else if (lang.startsWith('zh-hans')) score = 85;
       else if (lang === 'cmn-cn' || lang.startsWith('cmn-hans')) score = 80;
-      if (preferredMainlandNames.test(name)) score += 20;
+      if (/xiaoxiao|xiaoyi/i.test(name)) score += 40;
+      else if (/yunxi|yunyang|huihui|yaoyao|kangkang/i.test(name)) score += 30;
+      else if (preferredMainlandNames.test(name)) score += 20;
       if (voice.default) score += 2;
       return { voice, score };
     })
@@ -168,11 +190,22 @@ export async function speakChinese(text: string): Promise<ChineseSpeechResult> {
   synth.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.voice = chineseVoice;
-  utterance.lang = chineseVoice.lang;
-  utterance.rate = text.length <= 1 ? 0.68 : 0.78;
+  utterance.lang = 'zh-CN';
+  utterance.rate = text.length <= 1 ? 0.82 : 0.88;
   utterance.pitch = 1;
   utterance.volume = 1;
-  synth.resume();
-  synth.speak(utterance);
-  return { ok: true, voiceName: chineseVoice.name };
+  return await new Promise((resolve) => {
+    let settled = false;
+    const finish = (result: ChineseSpeechResult) => {
+      if (settled) return;
+      settled = true;
+      window.clearTimeout(timeoutId);
+      resolve(result);
+    };
+    const timeoutId = window.setTimeout(() => finish({ ok: false, reason: 'playback-error' }), 1800);
+    utterance.onstart = () => finish({ ok: true, voiceName: chineseVoice.name });
+    utterance.onerror = () => finish({ ok: false, reason: 'playback-error' });
+    synth.resume();
+    synth.speak(utterance);
+  });
 }

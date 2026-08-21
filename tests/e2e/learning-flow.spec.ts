@@ -171,7 +171,7 @@ test('TOPIK start link opens the bundled learning service', async ({ page }) => 
 
 test('JEONGO exposes the independent BEFORE JEONGO app', async ({ page }) => {
   await page.goto('/home');
-  await expect(page.getByRole('link', { name: 'BEFORE JEONGO 병음 입문 앱 열기' })).toHaveAttribute('href', 'http://localhost:3002');
+  await expect(page.getByRole('link', { name: 'BEFORE JEONGO 병음 입문 앱 열기' })).toHaveAttribute('href', '/before');
 });
 
 test('new learner can complete onboarding and persist a placement result', async ({ page }) => {

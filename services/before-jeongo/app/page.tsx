@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Flame, Headphones, Home, Lightbulb, LockKeyhole, Play, RotateCcw, Sparkles, Star, Trophy, Volume2, Zap } from 'lucide-react';
-import { playMandarinTone, speakChinese } from '@/lib/browser-speech';
+import { playMandarinClip, playMandarinTone, speakChinese } from '@/lib/browser-speech';
 import {
   pinyinRounds, rhythmRounds, stages, toneCatchRounds, toneLessons, wordRounds,
   type ChoiceRound, type PinyinRound, type StageId,
@@ -13,6 +13,20 @@ const JEONGO_URL = process.env.NEXT_PUBLIC_JEONGO_URL ?? '';
 type View = 'map' | StageId | 'clear' | 'complete';
 interface SavedProgress { xp: number; unlocked: number; stars: Partial<Record<StageId, number>>; completed: StageId[] }
 const initialProgress: SavedProgress = { xp: 0, unlocked: 1, stars: {}, completed: [] };
+
+function speechFailureMessage(reason?: 'unsupported' | 'voice-unavailable' | 'playback-error') {
+  if (reason === 'voice-unavailable') return '중국 본토 표준어(zh-CN) 음성이 없어 잘못된 발음은 재생하지 않았어요.';
+  if (reason === 'playback-error') return '발음 재생이 시작되지 않았어요. 기기 소리 설정을 확인한 뒤 다시 눌러 주세요.';
+  return '이 브라우저에서는 발음을 재생할 수 없어요.';
+}
+
+async function playFixedMandarin(audioClip?: string, audioText?: string) {
+  if (audioClip) {
+    const fixedResult = await playMandarinClip(audioClip);
+    if (fixedResult.ok) return fixedResult;
+  }
+  return audioText ? await speakChinese(audioText) : { ok: false as const, reason: 'unsupported' as const };
+}
 
 export default function SoundQuestPage() {
   const [view, setView] = useState<View>('map');
@@ -113,31 +127,45 @@ function ChoiceGame({ stage, rounds, audioRequired = false, playLabel, onCorrect
   const [deck, setDeck] = useState<PlayableRound[]>(() => rounds.map((round) => ({ ...round })));
   const [index, setIndex] = useState(0); const [selected, setSelected] = useState(''); const [feedback, setFeedback] = useState('');
   const [audioPlayed, setAudioPlayed] = useState(!audioRequired); const [misses, setMisses] = useState(0); const [missedCurrent, setMissedCurrent] = useState(false);
+  const [audioNotice, setAudioNotice] = useState('');
   const round = deck[index];
-  const playRound = async () => { if (round.toneIndex !== undefined) await playMandarinTone(round.toneIndex); else if (round.audioText) await speakChinese(round.audioText); setAudioPlayed(true); };
+  const playRound = async () => {
+    const result = round.toneIndex !== undefined
+      ? await playMandarinTone(round.toneIndex)
+      : await playFixedMandarin(round.audioClip, round.audioText);
+    if (!result.ok) { setAudioPlayed(!audioRequired); setAudioNotice(speechFailureMessage(result.reason)); return; }
+    setAudioPlayed(true); setAudioNotice('중국 본토 표준 발음을 재생했어요.');
+  };
   const choose = (option: string) => {
     if (!audioPlayed || feedback) return; setSelected(option);
     if (option !== round.answer) { setMisses((value) => value + 1); setMissedCurrent(true); setFeedback('한 번 더 들어보면 잡을 수 있어요!'); onMiss(); window.setTimeout(() => { setSelected(''); setFeedback(''); if (audioRequired) setAudioPlayed(false); }, 650); return; }
-    onCorrect(10); setFeedback(`잡았다! ${round.reveal ?? round.answer}`); if (!audioRequired && round.audioText) void speakChinese(round.audioText);
+    onCorrect(10); setFeedback(`잡았다! ${round.reveal ?? round.answer}`); if (!audioRequired && round.audioText) void playRound();
     const nextDeck = missedCurrent && !round.retry ? [...deck, { ...round, id: `${round.id}-retry`, retry: true }] : deck; setDeck(nextDeck);
-    window.setTimeout(() => { if (index + 1 >= nextDeck.length) { onComplete(misses, nextDeck.length); return; } setIndex((value) => value + 1); setSelected(''); setFeedback(''); setMissedCurrent(false); setAudioPlayed(!audioRequired); }, 750);
+    window.setTimeout(() => { if (index + 1 >= nextDeck.length) { onComplete(misses, nextDeck.length); return; } setIndex((value) => value + 1); setSelected(''); setFeedback(''); setMissedCurrent(false); setAudioPlayed(!audioRequired); setAudioNotice(''); }, 750);
   };
-  return <main className="mini-game choice-game" data-testid={stage.id}><GameHeading stage={stage} progress={`${index + 1}/${deck.length}`} /><section className="challenge-card">{round.retry && <p className="retry-chip">다시 만난 소리 · 이번엔 내 것으로!</p>}<div className="challenge-orb">{stage.icon}</div><h2>{round.prompt}</h2>{round.audioText || round.toneIndex !== undefined ? <button type="button" onClick={() => void playRound()} className={`audio-portal ${audioPlayed ? 'has-played' : ''}`}><Headphones size={20} /> {audioPlayed ? '한 번 더 듣기' : playLabel}</button> : null}{audioRequired && !audioPlayed && <p className="audio-gate">먼저 소리를 재생하면 선택지가 활성화돼요.</p>}<div className="bubble-options">{round.options.map((option) => <button key={option} type="button" data-correct={option === round.answer ? 'true' : 'false'} disabled={!audioPlayed || Boolean(feedback)} aria-pressed={selected === option} onClick={() => choose(option)}>{option}</button>)}</div><p className={`game-feedback ${feedback.startsWith('잡았다') ? 'correct' : ''}`} role="status">{feedback || '정답을 외우지 말고 소리와 모양을 연결해 보세요.'}</p></section></main>;
+  return <main className="mini-game choice-game" data-testid={stage.id}><GameHeading stage={stage} progress={`${index + 1}/${deck.length}`} /><section className="challenge-card">{round.retry && <p className="retry-chip">다시 만난 소리 · 이번엔 내 것으로!</p>}<div className="challenge-orb">{stage.icon}</div><h2>{round.prompt}</h2>{round.audioText || round.toneIndex !== undefined ? <button type="button" onClick={() => void playRound()} className={`audio-portal ${audioPlayed ? 'has-played' : ''}`}><Headphones size={20} /> {audioPlayed ? '한 번 더 듣기' : playLabel}</button> : null}{audioRequired && !audioPlayed && <p className="audio-gate">먼저 소리를 재생하면 선택지가 활성화돼요.</p>}{audioNotice && <p className={`audio-notice ${audioPlayed ? 'ok' : 'error'}`} role="status">{audioNotice}</p>}<div className="bubble-options">{round.options.map((option) => <button key={option} type="button" data-correct={option === round.answer ? 'true' : 'false'} disabled={!audioPlayed || Boolean(feedback)} aria-pressed={selected === option} onClick={() => choose(option)}>{option}</button>)}</div><p className={`game-feedback ${feedback.startsWith('잡았다') ? 'correct' : ''}`} role="status">{feedback || '정답을 외우지 말고 소리와 모양을 연결해 보세요.'}</p></section></main>;
 }
 
 interface PlayablePinyinRound extends PinyinRound { retry?: boolean }
 function PinyinForge({ onCorrect, onMiss, onComplete }: { onCorrect: (base?: number) => void; onMiss: () => void; onComplete: (misses: number, total: number) => void }) {
   const [deck, setDeck] = useState<PlayablePinyinRound[]>(() => pinyinRounds.map((round) => ({ ...round })));
   const [index, setIndex] = useState(0); const [initial, setInitial] = useState(''); const [final, setFinal] = useState(''); const [feedback, setFeedback] = useState(''); const [showHint, setShowHint] = useState(false); const [misses, setMisses] = useState(0); const [missedCurrent, setMissedCurrent] = useState(false);
+  const [audioNotice, setAudioNotice] = useState('');
   const round = deck[index]; const assembled = `${initial}${final}`;
+  const playRound = async () => {
+    const result = round.toneRecordingIndex !== undefined
+      ? await playMandarinTone(round.toneRecordingIndex)
+      : await playFixedMandarin(round.audioClip, round.audioText);
+    setAudioNotice(result.ok ? `${round.pinyin} · 중국 본토 표준 발음을 재생했어요.` : speechFailureMessage(result.reason));
+  };
   const submit = () => {
     if (!initial || !final || feedback) return;
     if (initial !== round.initial || final !== round.final) { setMisses((value) => value + 1); setMissedCurrent(true); setFeedback('블록이 살짝 어긋났어요. 소리와 힌트를 다시 확인해요!'); setShowHint(true); onMiss(); window.setTimeout(() => { setInitial(''); setFinal(''); setFeedback(''); }, 750); return; }
-    onCorrect(14); void speakChinese(round.audioText); setFeedback(`완성! ${round.initial} + ${round.final} = ${round.initial}${round.final} · ${round.tone}`);
+    onCorrect(14); void playRound(); setFeedback(`완성! ${round.initial} + ${round.final} = ${round.pinyin} · ${round.tone}`);
     const nextDeck = missedCurrent && !round.retry ? [...deck, { ...round, id: `${round.id}-retry`, retry: true }] : deck; setDeck(nextDeck);
-    window.setTimeout(() => { if (index + 1 >= nextDeck.length) { onComplete(misses, nextDeck.length); return; } setIndex((value) => value + 1); setInitial(''); setFinal(''); setFeedback(''); setShowHint(false); setMissedCurrent(false); }, 850);
+    window.setTimeout(() => { if (index + 1 >= nextDeck.length) { onComplete(misses, nextDeck.length); return; } setIndex((value) => value + 1); setInitial(''); setFinal(''); setFeedback(''); setShowHint(false); setMissedCurrent(false); setAudioNotice(''); }, 850);
   };
-  return <main className="mini-game" data-testid="pinyin-forge"><GameHeading stage={stages[2]} progress={`${index + 1}/${deck.length}`} /><section className="forge-card">{round.retry && <p className="retry-chip">복습 블록 · 아까 헷갈린 소리예요</p>}<div className="forge-target"><button type="button" onClick={() => void speakChinese(round.audioText)} aria-label={`${round.hanzi} 소리 듣기`}><Volume2 size={19} /></button><b>{round.hanzi}</b><span><small>{round.korean}</small><strong>{round.tone}</strong></span></div><p>소리를 듣고 성모와 운모 블록을 하나씩 골라요.</p><div className="block-banks"><div><h3><span>1</span> 성모 · 첫소리</h3>{round.initialOptions.map((option) => <button key={option} type="button" data-part="initial" data-correct={option === round.initial ? 'true' : 'false'} aria-pressed={initial === option} onClick={() => setInitial(option)}>{option}</button>)}</div><div><h3><span>2</span> 운모 · 뒷소리</h3>{round.finalOptions.map((option) => <button key={option} type="button" data-part="final" data-correct={option === round.final ? 'true' : 'false'} aria-pressed={final === option} onClick={() => setFinal(option)}>{option}</button>)}</div></div><div className="forge-tray"><span>{initial || '?'}</span><i>+</i><span>{final || '?'}</span><i>=</i><strong>{assembled || '?'}</strong></div><button type="button" className="hint-link" onClick={() => setShowHint((value) => !value)}><Lightbulb size={14} /> {showHint ? round.hint : '막히면 힌트 보기'}</button><p className={`game-feedback ${feedback.startsWith('완성') ? 'correct' : ''}`} role="status">{feedback || '블록을 직접 조립하면 소리 구조가 눈에 보여요.'}</p><button type="button" className="forge-submit" disabled={!initial || !final || Boolean(feedback)} onClick={submit}>조립하기 <Zap size={16} /></button></section></main>;
+  return <main className="mini-game" data-testid="pinyin-forge"><GameHeading stage={stages[2]} progress={`${index + 1}/${deck.length}`} /><section className="forge-card">{round.retry && <p className="retry-chip">복습 블록 · 아까 헷갈린 소리예요</p>}<div className="forge-target"><button type="button" onClick={() => void playRound()} aria-label={`${round.hanzi} 소리 듣기`}><Volume2 size={19} /></button><b>{round.hanzi}</b><span><small>{round.korean}</small><strong>{round.pinyin} · {round.tone}</strong></span></div><p>소리를 듣고 성모와 운모 블록을 하나씩 골라요.</p>{audioNotice && <p className={`audio-notice ${audioNotice.includes('재생했어요') ? 'ok' : 'error'}`} role="status">{audioNotice}</p>}<div className="block-banks"><div><h3><span>1</span> 성모 · 첫소리</h3>{round.initialOptions.map((option) => <button key={option} type="button" data-part="initial" data-correct={option === round.initial ? 'true' : 'false'} aria-pressed={initial === option} onClick={() => setInitial(option)}>{option}</button>)}</div><div><h3><span>2</span> 운모 · 뒷소리</h3>{round.finalOptions.map((option) => <button key={option} type="button" data-part="final" data-correct={option === round.final ? 'true' : 'false'} aria-pressed={final === option} onClick={() => setFinal(option)}>{option}</button>)}</div></div><div className="forge-tray"><span>{initial || '?'}</span><i>+</i><span>{final || '?'}</span><i>=</i><strong>{assembled === `${round.initial}${round.final}` ? round.pinyin : assembled || '?'}</strong></div><button type="button" className="hint-link" onClick={() => setShowHint((value) => !value)}><Lightbulb size={14} /> {showHint ? round.hint : '막히면 힌트 보기'}</button><p className={`game-feedback ${feedback.startsWith('완성') ? 'correct' : ''}`} role="status">{feedback || '블록을 직접 조립하면 소리 구조가 눈에 보여요.'}</p><button type="button" className="forge-submit" disabled={!initial || !final || Boolean(feedback)} onClick={submit}>조립하기 <Zap size={16} /></button></section></main>;
 }
 
 function GameHeading({ stage, progress }: { stage: (typeof stages)[number]; progress: string }) { return <header className={`game-heading stage-${stage.color}`}><div><p>STAGE {stage.number}</p><h1>{stage.icon} {stage.title}</h1><span>{stage.description}</span></div><strong>{progress}</strong></header>; }

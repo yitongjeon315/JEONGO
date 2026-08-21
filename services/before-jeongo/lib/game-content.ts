@@ -27,6 +27,7 @@ export interface ChoiceRound {
   answer: string;
   options: string[];
   audioText?: string;
+  audioClip?: string;
   toneIndex?: number;
   reveal?: string;
 }
@@ -36,6 +37,9 @@ export interface PinyinRound {
   hanzi: string;
   korean: string;
   audioText: string;
+  pinyin: string;
+  toneRecordingIndex?: number;
+  audioClip?: string;
   initial: string;
   final: string;
   tone: string;
@@ -75,40 +79,40 @@ export const toneCatchRounds: ChoiceRound[] = [
 ];
 
 export const pinyinRounds: PinyinRound[] = [
-  { id: 'pf-1', hanzi: '妈', korean: '엄마', audioText: '妈', initial: 'm', final: 'a', tone: '1성', initialOptions: ['m', 'n', 'b'], finalOptions: ['ao', 'a', 'i'], hint: '입술을 닫았다 열며 m + 크게 a' },
-  { id: 'pf-2', hanzi: '爸', korean: '아빠', audioText: '爸', initial: 'b', final: 'a', tone: '4성', initialOptions: ['p', 'b', 'm'], finalOptions: ['a', 'o', 'ai'], hint: '입술을 붙였다 가볍게 b + a' },
-  { id: 'pf-3', hanzi: '你', korean: '너', audioText: '你', initial: 'n', final: 'i', tone: '3성', initialOptions: ['l', 'm', 'n'], finalOptions: ['u', 'i', 'a'], hint: '혀끝 n + 입꼬리를 당겨 i' },
-  { id: 'pf-4', hanzi: '好', korean: '좋다', audioText: '好', initial: 'h', final: 'ao', tone: '3성', initialOptions: ['h', 'f', 'x'], finalOptions: ['ou', 'ai', 'ao'], hint: '목에서 h + a에서 o로 움직이는 ao' },
-  { id: 'pf-5', hanzi: '我', korean: '나', audioText: '我', initial: 'w', final: 'o', tone: '3성', initialOptions: ['y', 'r', 'w'], finalOptions: ['e', 'o', 'u'], hint: '입술을 둥글게 w + o' },
-  { id: 'pf-6', hanzi: '是', korean: '~이다', audioText: '是', initial: 'sh', final: 'i', tone: '4성', initialOptions: ['s', 'x', 'sh'], finalOptions: ['i', 'u', 'e'], hint: '혀끝을 살짝 말아 sh + 짧은 i' },
-  { id: 'pf-7', hanzi: '中', korean: '가운데·중국', audioText: '中', initial: 'zh', final: 'ong', tone: '1성', initialOptions: ['j', 'zh', 'z'], finalOptions: ['ang', 'ong', 'eng'], hint: '혀를 말아 zh + 코로 울리는 ong' },
-  { id: 'pf-8', hanzi: '学', korean: '배우다', audioText: '学', initial: 'x', final: 'ue', tone: '2성', initialOptions: ['q', 'x', 'sh'], finalOptions: ['ie', 'ue', 'uo'], hint: '입꼬리를 당긴 부드러운 x + üe' },
-  { id: 'pf-9', hanzi: '请', korean: '청하다·부탁', audioText: '请', initial: 'q', final: 'ing', tone: '3성', initialOptions: ['q', 'ch', 'j'], finalOptions: ['in', 'ing', 'ong'], hint: '공기가 나는 q + 코로 끝나는 ing' },
-  { id: 'pf-10', hanzi: '家', korean: '집', audioText: '家', initial: 'j', final: 'ia', tone: '1성', initialOptions: ['zh', 'q', 'j'], finalOptions: ['iao', 'ia', 'ie'], hint: '혀를 앞쪽에 둔 j + 빠르게 ia' },
+  { id: 'pf-1', hanzi: '妈', korean: '엄마', audioText: '妈', pinyin: 'mā', toneRecordingIndex: 0, initial: 'm', final: 'a', tone: '1성', initialOptions: ['m', 'n', 'b'], finalOptions: ['ao', 'a', 'i'], hint: '입술을 닫았다 열며 m + 크게 a' },
+  { id: 'pf-2', hanzi: '爸', korean: '아빠', audioText: '爸', audioClip: 'pf-2', pinyin: 'bà', initial: 'b', final: 'a', tone: '4성', initialOptions: ['p', 'b', 'm'], finalOptions: ['a', 'o', 'ai'], hint: '입술을 붙였다 가볍게 b + a' },
+  { id: 'pf-3', hanzi: '你', korean: '너', audioText: '你', audioClip: 'pf-3', pinyin: 'nǐ', initial: 'n', final: 'i', tone: '3성', initialOptions: ['l', 'm', 'n'], finalOptions: ['u', 'i', 'a'], hint: '혀끝 n + 입꼬리를 당겨 i' },
+  { id: 'pf-4', hanzi: '好', korean: '좋다', audioText: '好', audioClip: 'pf-4', pinyin: 'hǎo', initial: 'h', final: 'ao', tone: '3성', initialOptions: ['h', 'f', 'x'], finalOptions: ['ou', 'ai', 'ao'], hint: '목에서 h + a에서 o로 움직이는 ao' },
+  { id: 'pf-5', hanzi: '我', korean: '나', audioText: '我', audioClip: 'pf-5', pinyin: 'wǒ', initial: 'w', final: 'o', tone: '3성', initialOptions: ['y', 'r', 'w'], finalOptions: ['e', 'o', 'u'], hint: '입술을 둥글게 w + o' },
+  { id: 'pf-6', hanzi: '是', korean: '~이다', audioText: '是', audioClip: 'pf-6', pinyin: 'shì', initial: 'sh', final: 'i', tone: '4성', initialOptions: ['s', 'x', 'sh'], finalOptions: ['i', 'u', 'e'], hint: '혀끝을 살짝 말아 sh + 짧은 i' },
+  { id: 'pf-7', hanzi: '中', korean: '가운데·중국', audioText: '中', audioClip: 'pf-7', pinyin: 'zhōng', initial: 'zh', final: 'ong', tone: '1성', initialOptions: ['j', 'zh', 'z'], finalOptions: ['ang', 'ong', 'eng'], hint: '혀를 말아 zh + 코로 울리는 ong' },
+  { id: 'pf-8', hanzi: '学', korean: '배우다', audioText: '学', audioClip: 'pf-8', pinyin: 'xué', initial: 'x', final: 'ue', tone: '2성', initialOptions: ['q', 'x', 'sh'], finalOptions: ['ie', 'ue', 'uo'], hint: '입꼬리를 당긴 부드러운 x + üe' },
+  { id: 'pf-9', hanzi: '请', korean: '청하다·부탁', audioText: '请', audioClip: 'pf-9', pinyin: 'qǐng', initial: 'q', final: 'ing', tone: '3성', initialOptions: ['q', 'ch', 'j'], finalOptions: ['in', 'ing', 'ong'], hint: '공기가 나는 q + 코로 끝나는 ing' },
+  { id: 'pf-10', hanzi: '家', korean: '집', audioText: '家', audioClip: 'pf-10', pinyin: 'jiā', initial: 'j', final: 'ia', tone: '1성', initialOptions: ['zh', 'q', 'j'], finalOptions: ['iao', 'ia', 'ie'], hint: '혀를 앞쪽에 둔 j + 빠르게 ia' },
 ];
 
 export const wordRounds: ChoiceRound[] = [
-  { id: 'ws-1', prompt: '你 · “너, 당신”의 병음은?', answer: 'nǐ', options: ['nǐ', 'ní', 'lǐ'], audioText: '你', reveal: 'n + i + 3성 = nǐ' },
-  { id: 'ws-2', prompt: '好 · “좋다”의 병음은?', answer: 'hǎo', options: ['hào', 'hǎo', 'háo'], audioText: '好', reveal: 'h + ao + 3성 = hǎo' },
-  { id: 'ws-3', prompt: '我 · “나”의 병음은?', answer: 'wǒ', options: ['wō', 'wó', 'wǒ'], audioText: '我', reveal: 'w + o + 3성 = wǒ' },
-  { id: 'ws-4', prompt: '是 · “~이다”의 병음은?', answer: 'shì', options: ['shì', 'sì', 'xì'], audioText: '是', reveal: 'sh + i + 4성 = shì' },
-  { id: 'ws-5', prompt: '不 · “아니다”의 병음은?', answer: 'bù', options: ['pù', 'bú', 'bù'], audioText: '不', reveal: 'b + u + 4성 = bù' },
-  { id: 'ws-6', prompt: '人 · “사람”의 병음은?', answer: 'rén', options: ['rén', 'rěn', 'rèng'], audioText: '人', reveal: 'r + en + 2성 = rén' },
-  { id: 'ws-7', prompt: '水 · “물”의 병음은?', answer: 'shuǐ', options: ['suǐ', 'shuì', 'shuǐ'], audioText: '水', reveal: 'sh + ui + 3성 = shuǐ' },
-  { id: 'ws-8', prompt: '茶 · “차”의 병음은?', answer: 'chá', options: ['chā', 'chá', 'zhá'], audioText: '茶', reveal: 'ch + a + 2성 = chá' },
-  { id: 'ws-9', prompt: '妈妈 · “엄마”의 병음은?', answer: 'māma', options: ['māma', 'mǎma', 'màmā'], audioText: '妈妈', reveal: '두 번째 ma는 가볍게 읽어요' },
-  { id: 'ws-10', prompt: '朋友 · “친구”의 병음은?', answer: 'péngyou', options: ['pèngyǒu', 'péngyou', 'pěngyóu'], audioText: '朋友', reveal: 'péng + 가벼운 you' },
-  { id: 'ws-11', prompt: '中国 · “중국”의 병음은?', answer: 'Zhōngguó', options: ['Zhòngguǒ', 'Zōngguó', 'Zhōngguó'], audioText: '中国', reveal: 'Zhōng 1성 + guó 2성' },
-  { id: 'ws-12', prompt: '学习 · “공부하다”의 병음은?', answer: 'xuéxí', options: ['xuéxí', 'xuěxǐ', 'shuéxí'], audioText: '学习', reveal: 'xué 2성 + xí 2성' },
+  { id: 'ws-1', prompt: '你 · “너, 당신”의 병음은?', answer: 'nǐ', options: ['nǐ', 'ní', 'lǐ'], audioText: '你', audioClip: 'ws-1', reveal: 'n + i + 3성 = nǐ' },
+  { id: 'ws-2', prompt: '好 · “좋다”의 병음은?', answer: 'hǎo', options: ['hào', 'hǎo', 'háo'], audioText: '好', audioClip: 'ws-2', reveal: 'h + ao + 3성 = hǎo' },
+  { id: 'ws-3', prompt: '我 · “나”의 병음은?', answer: 'wǒ', options: ['wō', 'wó', 'wǒ'], audioText: '我', audioClip: 'ws-3', reveal: 'w + o + 3성 = wǒ' },
+  { id: 'ws-4', prompt: '是 · “~이다”의 병음은?', answer: 'shì', options: ['shì', 'sì', 'xì'], audioText: '是', audioClip: 'ws-4', reveal: 'sh + i + 4성 = shì' },
+  { id: 'ws-5', prompt: '不 · “아니다”의 병음은?', answer: 'bù', options: ['pù', 'bú', 'bù'], audioText: '不', audioClip: 'ws-5', reveal: 'b + u + 4성 = bù' },
+  { id: 'ws-6', prompt: '人 · “사람”의 병음은?', answer: 'rén', options: ['rén', 'rěn', 'rèng'], audioText: '人', audioClip: 'ws-6', reveal: 'r + en + 2성 = rén' },
+  { id: 'ws-7', prompt: '水 · “물”의 병음은?', answer: 'shuǐ', options: ['suǐ', 'shuì', 'shuǐ'], audioText: '水', audioClip: 'ws-7', reveal: 'sh + ui + 3성 = shuǐ' },
+  { id: 'ws-8', prompt: '茶 · “차”의 병음은?', answer: 'chá', options: ['chā', 'chá', 'zhá'], audioText: '茶', audioClip: 'ws-8', reveal: 'ch + a + 2성 = chá' },
+  { id: 'ws-9', prompt: '妈妈 · “엄마”의 병음은?', answer: 'māma', options: ['māma', 'mǎma', 'màmā'], audioText: '妈妈', audioClip: 'ws-9', reveal: '두 번째 ma는 가볍게 읽어요' },
+  { id: 'ws-10', prompt: '朋友 · “친구”의 병음은?', answer: 'péngyou', options: ['pèngyǒu', 'péngyou', 'pěngyóu'], audioText: '朋友', audioClip: 'ws-10', reveal: 'péng + 가벼운 you' },
+  { id: 'ws-11', prompt: '中国 · “중국”의 병음은?', answer: 'Zhōngguó', options: ['Zhòngguǒ', 'Zōngguó', 'Zhōngguó'], audioText: '中国', audioClip: 'ws-11', reveal: 'Zhōng 1성 + guó 2성' },
+  { id: 'ws-12', prompt: '学习 · “공부하다”의 병음은?', answer: 'xuéxí', options: ['xuéxí', 'xuěxǐ', 'shuéxí'], audioText: '学习', audioClip: 'ws-12', reveal: 'xué 2성 + xí 2성' },
 ];
 
 export const rhythmRounds: ChoiceRound[] = [
-  { id: 'rr-1', prompt: '인사말 “안녕하세요”를 찾아요', answer: '你好 · ní hǎo', options: ['你好 · ní hǎo', '你是 · nǐ shì', '我好 · wǒ hǎo'], audioText: '你好', reveal: '3성+3성은 앞의 3성이 2성처럼 올라가요' },
-  { id: 'rr-2', prompt: '“나는 ~입니다”를 찾아요', answer: '我是 · wǒ shì', options: ['你是 · nǐ shì', '我是 · wǒ shì', '不是 · bú shì'], audioText: '我是', reveal: 'wǒ는 낮게, shì는 짧게 내려요' },
-  { id: 'rr-3', prompt: '“아닙니다”를 찾아요', answer: '不是 · bú shì', options: ['不是 · bú shì', '好吃 · hǎochī', '谢谢 · xièxie'], audioText: '不是', reveal: '不 뒤에 4성이 오면 bú(2성)로 바뀌어요' },
-  { id: 'rr-4', prompt: '“감사합니다”를 찾아요', answer: '谢谢 · xièxie', options: ['再见 · zàijiàn', '你好 · ní hǎo', '谢谢 · xièxie'], audioText: '谢谢', reveal: '첫 음절은 4성, 둘째는 가볍게 읽어요' },
-  { id: 'rr-5', prompt: '“안녕히 가세요”를 찾아요', answer: '再见 · zàijiàn', options: ['再见 · zàijiàn', '中国 · Zhōngguó', '朋友 · péngyou'], audioText: '再见', reveal: '4성이 연속되어도 각각 또렷하게 내려요' },
-  { id: 'rr-6', prompt: '“중국인”을 찾아요', answer: '中国人 · Zhōngguó rén', options: ['中国话 · Zhōngguóhuà', '中国人 · Zhōngguó rén', '一个人 · yí ge rén'], audioText: '中国人', reveal: '1성 → 2성 → 2성의 계단 리듬이에요' },
-  { id: 'rr-7', prompt: '“한 사람”을 찾아요', answer: '一个人 · yí ge rén', options: ['一个人 · yí ge rén', '这个人 · zhège rén', '两个人 · liǎng ge rén'], audioText: '一个人', reveal: '一 뒤에 4성이 오면 yí(2성)로 읽어요' },
-  { id: 'rr-8', prompt: '“아주 좋아요”를 찾아요', answer: '很好 · hěn hǎo', options: ['不好 · bù hǎo', '好人 · hǎo rén', '很好 · hěn hǎo'], audioText: '很好', reveal: '연속 3성에서는 실제 말의 높이가 자연스럽게 변해요' },
+  { id: 'rr-1', prompt: '인사말 “안녕하세요”를 찾아요', answer: '你好 · ní hǎo', options: ['你好 · ní hǎo', '你是 · nǐ shì', '我好 · wǒ hǎo'], audioText: '你好', audioClip: 'rr-1', reveal: '3성+3성은 앞의 3성이 2성처럼 올라가요' },
+  { id: 'rr-2', prompt: '“나는 ~입니다”를 찾아요', answer: '我是 · wǒ shì', options: ['你是 · nǐ shì', '我是 · wǒ shì', '不是 · bú shì'], audioText: '我是', audioClip: 'rr-2', reveal: 'wǒ는 낮게, shì는 짧게 내려요' },
+  { id: 'rr-3', prompt: '“아닙니다”를 찾아요', answer: '不是 · bú shì', options: ['不是 · bú shì', '好吃 · hǎochī', '谢谢 · xièxie'], audioText: '不是', audioClip: 'rr-3', reveal: '不 뒤에 4성이 오면 bú(2성)로 바뀌어요' },
+  { id: 'rr-4', prompt: '“감사합니다”를 찾아요', answer: '谢谢 · xièxie', options: ['再见 · zàijiàn', '你好 · ní hǎo', '谢谢 · xièxie'], audioText: '谢谢', audioClip: 'rr-4', reveal: '첫 음절은 4성, 둘째는 가볍게 읽어요' },
+  { id: 'rr-5', prompt: '“안녕히 가세요”를 찾아요', answer: '再见 · zàijiàn', options: ['再见 · zàijiàn', '中国 · Zhōngguó', '朋友 · péngyou'], audioText: '再见', audioClip: 'rr-5', reveal: '4성이 연속되어도 각각 또렷하게 내려요' },
+  { id: 'rr-6', prompt: '“중국인”을 찾아요', answer: '中国人 · Zhōngguó rén', options: ['中国话 · Zhōngguóhuà', '中国人 · Zhōngguó rén', '一个人 · yí ge rén'], audioText: '中国人', audioClip: 'rr-6', reveal: '1성 → 2성 → 2성의 계단 리듬이에요' },
+  { id: 'rr-7', prompt: '“한 사람”을 찾아요', answer: '一个人 · yí ge rén', options: ['一个人 · yí ge rén', '这个人 · zhège rén', '两个人 · liǎng ge rén'], audioText: '一个人', audioClip: 'rr-7', reveal: '一 뒤에 4성이 오면 yí(2성)로 읽어요' },
+  { id: 'rr-8', prompt: '“아주 좋아요”를 찾아요', answer: '很好 · hěn hǎo', options: ['不好 · bù hǎo', '好人 · hǎo rén', '很好 · hěn hǎo'], audioText: '很好', audioClip: 'rr-8', reveal: '연속 3성에서는 실제 말의 높이가 자연스럽게 변해요' },
 ];
